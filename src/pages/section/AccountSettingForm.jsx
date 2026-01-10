@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import InputText from '../../components/formElements/InputText';
 import AccountSettingModalPassword from './AccountSettingModalPassword';
 import ChangePhotoModal from '../../components/account/ChangePhotoModal';
-import logo from '/assets/images/Logo.png';
+import logo from '/images/Logo.png';
 import { toast } from 'react-hot-toast';
 import FullScreenLoading from '../../components/FullScreenLoading';
 
@@ -72,7 +72,7 @@ function AccountSettingForm() {
       setAccountData(res.data);
       window.location.reload();
     } catch (error) {
-      toast.error(`更新個人資料失敗: ${error.message || '發生未知錯誤'}`)
+      toast.error(`更新個人資料失敗: ${error.message || '發生未知錯誤'}`);
     }
   };
 

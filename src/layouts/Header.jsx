@@ -269,21 +269,21 @@ const Header = () => {
   return (
     <>
       <nav
-        className='navbar navbar-expand-lg top-auto py-lg-0 position-fixed w-100 py-0'
+        className="navbar navbar-expand-lg top-auto py-lg-0 position-fixed w-100 py-0"
         style={{
           top: `${scrollPosition}px`,
           transition: 'top .3s',
           display: isSearchVisible ? 'none' : 'block',
         }}
       >
-        <div className='container'>
+        <div className="container">
           {/* <!-- Logo --> */}
-          <h1 className='fs-0'>
+          <h1 className="fs-0">
             <NavLink
-              className='navbar-brand d-flex py-lg-0 d-lg-block d-none'
-              to='/'
+              className="navbar-brand d-flex py-lg-0 d-lg-block d-none"
+              to="/"
             >
-              <img src='./assets/images/Logo-navbar.svg' alt='logo' />
+              <img src="images/Logo-navbar.svg" alt="logo" />
             </NavLink>
           </h1>
 
@@ -298,86 +298,86 @@ const Header = () => {
                 }
                 ${isOffcanvasOpen ? 'toggled' : ''}
             `}
-            type='button'
-            role='button'
-            aria-controls='offcanvasNav'
+            type="button"
+            role="button"
+            aria-controls="offcanvasNav"
             aria-expanded={isOffcanvasOpen}
           >
             <svg
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-              id='burgerIcon'
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              id="burgerIcon"
               className={`burger-icon ${isOffcanvasOpen ? 'd-none' : ''}`}
             >
               <path
-                d='M4 12H20M4 6H20M4 18H20'
-                stroke='white'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
+                d="M4 12H20M4 6H20M4 18H20"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
             <svg
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
               className={`${isOffcanvasOpen ? '' : 'd-none'}`}
             >
               <path
-                d='M18 6L6 18M6 6L18 18'
-                stroke='white'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
+                d="M18 6L6 18M6 6L18 18"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </button>
 
           {/* <!-- Desktop menu --> */}
-          <div className='collapse navbar-collapse' id='navbarNav'>
-            <ul className='navbar-nav py-lg-7 mb-2 mb-lg-0 gap-lg-7'>
-              <li className='nav-item'>
-                <NavLink className='nav-link py-lg-3 px-lg-5' to='/all-posts'>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav py-lg-7 mb-2 mb-lg-0 gap-lg-7">
+              <li className="nav-item">
+                <NavLink className="nav-link py-lg-3 px-lg-5" to="/all-posts">
                   所有貼文
                 </NavLink>
               </li>
-              <li className='nav-item'>
-                <NavLink className='nav-link py-lg-3 px-lg-5' to='/guide-line'>
+              <li className="nav-item">
+                <NavLink className="nav-link py-lg-3 px-lg-5" to="/guide-line">
                   使用指南
                 </NavLink>
               </li>
-              <li className='nav-item'>
-                <NavLink className='nav-link py-lg-3 px-lg-5' to='/about-us'>
+              <li className="nav-item">
+                <NavLink className="nav-link py-lg-3 px-lg-5" to="/about-us">
                   關於我們
                 </NavLink>
               </li>
-              <li className='nav-item'>
+              <li className="nav-item">
                 <a
                   onClick={handleClick(toggleSearch)}
-                  className='nav-link p-lg-2 search-icon'
-                  href='#'
-                  type='button'
-                  aria-label='開啟搜尋'
+                  className="nav-link p-lg-2 search-icon"
+                  href="#"
+                  type="button"
+                  aria-label="開啟搜尋"
                   aria-expanded={isSearchVisible}
                 >
                   <svg
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d='M21 21L16.7 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z'
-                      stroke='black'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
+                      d="M21 21L16.7 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                      stroke="black"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </a>
@@ -385,12 +385,12 @@ const Header = () => {
               {!isLogin ? (
                 <>
                   <li
-                    className='nav-item border border-black'
-                    id='desktop-auth-button'
+                    className="nav-item border border-black"
+                    id="desktop-auth-button"
                   >
                     <NavLink
-                      to='/login'
-                      className='nav-link nav-item-btn py-lg-3 px-lg-5'
+                      to="/login"
+                      className="nav-link nav-item-btn py-lg-3 px-lg-5"
                     >
                       登入/註冊
                     </NavLink>
@@ -398,62 +398,62 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <li className='nav-item border border-black dropdown nav-account-menu'>
+                  <li className="nav-item border border-black dropdown nav-account-menu">
                     <a
-                      className='nav-link dropdown-toggle nav-dropdown-btn py-3 px-5 position-relative d-flex align-items-center'
-                      href='#'
-                      id='accountDropdown'
-                      role='button'
-                      data-bs-toggle='dropdown'
-                      aria-expanded='false'
+                      className="nav-link dropdown-toggle nav-dropdown-btn py-3 px-5 position-relative d-flex align-items-center"
+                      href="#"
+                      id="accountDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
                     >
                       我的帳號
-                      <span className='position-absolute top-0 start-100 translate-middle badge rounded-circle bg-primary p-1'>
-                        <span className='visually-hidden'>unread messages</span>
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-primary p-1">
+                        <span className="visually-hidden">unread messages</span>
                       </span>
                     </a>
                     <ul
                       className={`dropdown-menu nav-dropdown-menu mt-1 border-0 ${
                         isAccountMenuOpen ? 'show' : ''
                       }`}
-                      aria-labelledby='accountDropdown'
+                      aria-labelledby="accountDropdown"
                     >
                       <li>
                         <NavLink
-                          to='/account/setting'
-                          className='dropdown-item'
+                          to="/account/setting"
+                          className="dropdown-item"
                         >
                           個人設定
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/notifications'
-                          className='dropdown-item'
+                          to="/account/notifications"
+                          className="dropdown-item"
                         >
                           全部通知
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/my-posts'
-                          className='dropdown-item'
+                          to="/account/my-posts"
+                          className="dropdown-item"
                         >
                           我的發文
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/following'
-                          className='dropdown-item'
+                          to="/account/following"
+                          className="dropdown-item"
                         >
                           我的追蹤
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/history'
-                          className='dropdown-item'
+                          to="/account/history"
+                          className="dropdown-item"
                         >
                           領取紀錄
                         </NavLink>
@@ -464,9 +464,9 @@ const Header = () => {
                             e.preventDefault();
                             handleLogout();
                           }}
-                          className='dropdown-item logout'
-                          href='#'
-                          id='logout'
+                          className="dropdown-item logout"
+                          href="#"
+                          id="logout"
                         >
                           登出
                         </a>
@@ -483,26 +483,26 @@ const Header = () => {
             className={`offcanvas offcanvas-start w-100 border-0 d-lg-none ${
               isOffcanvasOpen ? 'show' : ''
             }`}
-            tabIndex='-1'
-            id='offcanvasNav'
-            aria-labelledby='offcanvasNavLabel'
+            tabIndex="-1"
+            id="offcanvasNav"
+            aria-labelledby="offcanvasNavLabel"
           >
-            <div className='offcanvas-header d-flex justify-content-between mb-12'>
-              <h1 className='offcanvas-title' id='offcanvasNavLabel'>
-                <Link to='/'>
-                  <img src='./assets/images/Logo-navbar.svg' alt='logo' />
+            <div className="offcanvas-header d-flex justify-content-between mb-12">
+              <h1 className="offcanvas-title" id="offcanvasNavLabel">
+                <Link to="/">
+                  <img src="/images/Logo-navbar.svg" alt="logo" />
                 </Link>
               </h1>
               {!isLogin ? (
                 <>
                   <div
-                    className='nav-item border border-black'
-                    id='mobile-auth-button'
+                    className="nav-item border border-black"
+                    id="mobile-auth-button"
                   >
                     <NavLink
                       onClick={handleNavLinkClick}
-                      to='/login'
-                      className='nav-link nav-item-btn py-3 px-5 fw-bold'
+                      to="/login"
+                      className="nav-link nav-item-btn py-3 px-5 fw-bold"
                     >
                       登入/註冊
                     </NavLink>
@@ -512,83 +512,83 @@ const Header = () => {
                 <>
                   <div
                     ref={accountMenuRef}
-                    className='nav-item border border-black dropdown nav-account-menu'
+                    className="nav-item border border-black dropdown nav-account-menu"
                   >
                     <a
                       onClick={toggleAccountMenu}
-                      className='nav-link dropdown-toggle nav-dropdown-btn py-3 px-5 position-relative d-flex align-items-center'
-                      href='#'
-                      id='accountDropdown'
-                      role='button'
-                      aria-expanded='false'
+                      className="nav-link dropdown-toggle nav-dropdown-btn py-3 px-5 position-relative d-flex align-items-center"
+                      href="#"
+                      id="accountDropdown"
+                      role="button"
+                      aria-expanded="false"
                     >
                       我的帳號
-                      <span className='position-absolute top-0 start-100 translate-middle badge rounded-circle bg-primary p-1'>
-                        <span className='visually-hidden'>unread messages</span>
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-primary p-1">
+                        <span className="visually-hidden">unread messages</span>
                       </span>
                     </a>
                     <ul
                       className={`dropdown-menu nav-dropdown-menu mt-1 border-0 ${
                         isAccountMenuOpen ? 'show' : ''
                       }`}
-                      aria-labelledby='accountDropdown'
+                      aria-labelledby="accountDropdown"
                     >
                       <li>
                         <NavLink
-                          to='/account/setting'
+                          to="/account/setting"
                           onClick={() => {
                             closeAccountMenu();
                             handleNavLinkClick();
                           }}
-                          className='dropdown-item'
+                          className="dropdown-item"
                         >
                           個人設定
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/notifications'
+                          to="/account/notifications"
                           onClick={() => {
                             closeAccountMenu();
                             handleNavLinkClick();
                           }}
-                          className='dropdown-item'
+                          className="dropdown-item"
                         >
                           全部通知
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/my-posts'
+                          to="/account/my-posts"
                           onClick={() => {
                             closeAccountMenu();
                             handleNavLinkClick();
                           }}
-                          className='dropdown-item'
+                          className="dropdown-item"
                         >
                           我的發文
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/following'
+                          to="/account/following"
                           onClick={() => {
                             closeAccountMenu();
                             handleNavLinkClick();
                           }}
-                          className='dropdown-item'
+                          className="dropdown-item"
                         >
                           我的追蹤
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
-                          to='/account/history'
+                          to="/account/history"
                           onClick={() => {
                             closeAccountMenu();
                             handleNavLinkClick();
                           }}
-                          className='dropdown-item'
+                          className="dropdown-item"
                         >
                           領取紀錄
                         </NavLink>
@@ -600,9 +600,9 @@ const Header = () => {
                             closeAccountMenu();
                             handleLogout();
                           }}
-                          className='dropdown-item logout'
-                          href='#'
-                          id='logout'
+                          className="dropdown-item logout"
+                          href="#"
+                          id="logout"
                         >
                           登出
                         </a>
@@ -612,65 +612,65 @@ const Header = () => {
                 </>
               )}
             </div>
-            <ul className='offcanvas-body navbar-nav vh-100 pt-0'>
-              <li className='nav-item mb-10'>
-                <ul className='search-form d-flex gap-2 flex-wrap'>
-                  <li className='input-group rounded-3 bg-white'>
+            <ul className="offcanvas-body navbar-nav vh-100 pt-0">
+              <li className="nav-item mb-10">
+                <ul className="search-form d-flex gap-2 flex-wrap">
+                  <li className="input-group rounded-3 bg-white">
                     <input
                       onChange={handleSearchInputChange}
                       onKeyDown={handleEnterKeyPress}
-                      className='form-control search-input py-2 px-5 bg-white'
-                      type='text'
-                      name='search'
-                      placeholder='附近美味'
+                      className="form-control search-input py-2 px-5 bg-white"
+                      type="text"
+                      name="search"
+                      placeholder="附近美味"
                       value={searchInput}
                     />
                     <a
                       onClick={handleSearch}
-                      href='#'
-                      className='input-group-text border-0 bg-transparent py-2 ps-0 pe-5'
+                      href="#"
+                      className="input-group-text border-0 bg-transparent py-2 ps-0 pe-5"
                     >
                       <svg
-                        width='16'
-                        height='16'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d='M21 21L16.7 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z'
-                          stroke='black'
-                          strokeWidth='2'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
+                          d="M21 21L16.7 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
                     </a>
                   </li>
-                  <li className='dropdown position-relative'>
+                  <li className="dropdown position-relative">
                     <button
                       onClick={handleLocationClick}
-                      className='dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 rounded-3 bg-white border-0'
-                      type='button'
+                      className="dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 rounded-3 bg-white border-0"
+                      type="button"
                       aria-expanded={isLocationOpen}
                     >
                       {selectedLocation}
                       <svg
-                        width='16'
-                        height='16'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                         className={`ms-5 dropdown-arrow ${
                           isLocationOpen ? 'flip-arrow' : ''
                         }`}
                       >
                         <path
-                          d='M6 9L12 15L18 9'
-                          stroke='black'
-                          strokeWidth='2'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
+                          d="M6 9L12 15L18 9"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
                     </button>
@@ -687,8 +687,8 @@ const Header = () => {
                               e.preventDefault();
                               handleLocationSelect('全部地區');
                             }}
-                            className='dropdown-item'
-                            href='#'
+                            className="dropdown-item"
+                            href="#"
                           >
                             全部地區
                           </a>
@@ -700,8 +700,8 @@ const Header = () => {
                                 e.preventDefault();
                                 handleLocationSelect(location.name);
                               }}
-                              className='dropdown-item'
-                              href='#'
+                              className="dropdown-item"
+                              href="#"
                             >
                               {location.name}
                             </a>
@@ -710,30 +710,30 @@ const Header = () => {
                       </ul>
                     )}
                   </li>
-                  <li className='dropdown'>
+                  <li className="dropdown">
                     <button
                       onClick={handleFoodTypeClick}
-                      className='dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 rounded-3 bg-white border-0'
-                      type='button'
+                      className="dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 rounded-3 bg-white border-0"
+                      type="button"
                       aria-expanded={isFoodTypeOpen}
                     >
                       {selectedFoodType}
                       <svg
-                        width='16'
-                        height='16'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                         className={`ms-5 dropdown-arrow ${
                           isFoodTypeOpen ? 'flip-arrow' : ''
                         }`}
                       >
                         <path
-                          d='M6 9L12 15L18 9'
-                          stroke='black'
-                          strokeWidth='2'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
+                          d="M6 9L12 15L18 9"
+                          stroke="black"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
                     </button>
@@ -749,8 +749,8 @@ const Header = () => {
                               e.preventDefault();
                               handleFoodTypeSelect('全部類型');
                             }}
-                            className='dropdown-item'
-                            href='#'
+                            className="dropdown-item"
+                            href="#"
                           >
                             全部類型
                           </a>
@@ -762,8 +762,8 @@ const Header = () => {
                                 e.preventDefault();
                                 handleFoodTypeSelect(foodType.type);
                               }}
-                              className='dropdown-item'
-                              href='#'
+                              className="dropdown-item"
+                              href="#"
                             >
                               {foodType.type}
                             </a>
@@ -774,45 +774,45 @@ const Header = () => {
                   </li>
                 </ul>
               </li>
-              <li className='nav-item mb-10'>
-                <h2 className='fs-1 fw-bolder'>
+              <li className="nav-item mb-10">
+                <h2 className="fs-1 fw-bolder">
                   <a
                     onClick={(e) => openShareFoodModal(e)}
-                    className='nav-link p-0'
-                    href='#'
+                    className="nav-link p-0"
+                    href="#"
                   >
                     分享美味
                   </a>
                 </h2>
               </li>
-              <li className='nav-item mb-10'>
-                <h2 className='fs-1 fw-bolder'>
+              <li className="nav-item mb-10">
+                <h2 className="fs-1 fw-bolder">
                   <NavLink
                     onClick={handleNavLinkClick}
-                    className='nav-link p-0'
-                    to='/all-posts'
+                    className="nav-link p-0"
+                    to="/all-posts"
                   >
                     所有貼文
                   </NavLink>
                 </h2>
               </li>
-              <li className='nav-item mb-10'>
-                <h2 className='fs-1 fw-bolder'>
+              <li className="nav-item mb-10">
+                <h2 className="fs-1 fw-bolder">
                   <NavLink
                     onClick={handleNavLinkClick}
-                    className='nav-link p-0'
-                    to='/guide-line'
+                    className="nav-link p-0"
+                    to="/guide-line"
                   >
                     使用指南
                   </NavLink>
                 </h2>
               </li>
-              <li className='nav-item'>
-                <h2 className='fs-1 fw-bolder'>
+              <li className="nav-item">
+                <h2 className="fs-1 fw-bolder">
                   <NavLink
                     onClick={handleNavLinkClick}
-                    className='nav-link p-0'
-                    to='/about-us'
+                    className="nav-link p-0"
+                    to="/about-us"
                   >
                     關於我們
                   </NavLink>
@@ -826,70 +826,70 @@ const Header = () => {
       {/* <!-- Search bar for desktop --> */}
       <div
         className={`search ${isSearchVisible ? '' : 'd-none'}`}
-        id='searchBar'
-        role='search'
+        id="searchBar"
+        role="search"
       >
-        <div className='search-bar container d-flex'>
-          <Link to='/' className='navbar-brand d-flex align-items-center me-4'>
-            <img src='./assets/images/Logo-navbar.svg' alt='logo' />
+        <div className="search-bar container d-flex">
+          <Link to="/" className="navbar-brand d-flex align-items-center me-4">
+            <img src="/images/Logo-navbar.svg" alt="logo" />
           </Link>
-          <ul className='search-form d-flex py-7 gap-2 ms-auto me-2 flex-grow-1 justify-content-end'>
-            <li className='input-group mb-5 mb-lg-0 rounded-3 bg-white'>
+          <ul className="search-form d-flex py-7 gap-2 ms-auto me-2 flex-grow-1 justify-content-end">
+            <li className="input-group mb-5 mb-lg-0 rounded-3 bg-white">
               <input
                 onChange={handleSearchInputChange}
                 onKeyDown={handleEnterKeyPress}
-                className='form-control search-input py-2 px-5 bg-white'
-                type='text'
-                name='search'
-                placeholder='附近美味'
+                className="form-control search-input py-2 px-5 bg-white"
+                type="text"
+                name="search"
+                placeholder="附近美味"
                 value={searchInput}
               />
               <a
                 onClick={handleSearch}
-                href='#'
-                className='input-group-text border-0 bg-transparent py-2 ps-0 pe-5'
+                href="#"
+                className="input-group-text border-0 bg-transparent py-2 ps-0 pe-5"
               >
                 <svg
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d='M21 21L16.7 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z'
-                    stroke='black'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
+                    d="M21 21L16.7 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                    stroke="black"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </a>
             </li>
-            <li className='dropdown' ref={locationDropdownRef}>
+            <li className="dropdown" ref={locationDropdownRef}>
               <button
                 onClick={handleLocationClick}
-                className='nav-link dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 gap-5 rounded-3 bg-white'
-                type='button'
+                className="nav-link dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 gap-5 rounded-3 bg-white"
+                type="button"
                 aria-expanded={isLocationOpen}
               >
                 {selectedLocation}
                 <svg
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                   className={`dropdown-arrow ${
                     isLocationOpen ? 'flip-arrow' : ''
                   }`}
                 >
                   <path
-                    d='M6 9L12 15L18 9'
-                    stroke='black'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
+                    d="M6 9L12 15L18 9"
+                    stroke="black"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </button>
@@ -906,8 +906,8 @@ const Header = () => {
                         e.preventDefault();
                         handleLocationSelect('全部地區');
                       }}
-                      className='dropdown-item'
-                      href='#'
+                      className="dropdown-item"
+                      href="#"
                     >
                       全部地區
                     </a>
@@ -919,8 +919,8 @@ const Header = () => {
                           e.preventDefault();
                           handleLocationSelect(location.name);
                         }}
-                        className='dropdown-item'
-                        href='#'
+                        className="dropdown-item"
+                        href="#"
                       >
                         {location.name}
                       </a>
@@ -929,30 +929,30 @@ const Header = () => {
                 </ul>
               )}
             </li>
-            <li className='dropdown' ref={foodTypeDropdownRef}>
+            <li className="dropdown" ref={foodTypeDropdownRef}>
               <button
                 onClick={handleFoodTypeClick}
-                className='nav-link dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 gap-5 rounded-3 bg-white'
-                type='button'
+                className="nav-link dropdown-btn d-flex align-items-center justify-content-between py-2 ps-5 pe-2 gap-5 rounded-3 bg-white"
+                type="button"
                 aria-expanded={isFoodTypeOpen}
               >
                 {selectedFoodType}
                 <svg
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                   className={`dropdown-arrow ${
                     isFoodTypeOpen ? 'flip-arrow' : ''
                   }`}
                 >
                   <path
-                    d='M6 9L12 15L18 9'
-                    stroke='black'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
+                    d="M6 9L12 15L18 9"
+                    stroke="black"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </button>
@@ -968,8 +968,8 @@ const Header = () => {
                         e.preventDefault();
                         handleFoodTypeSelect('全部類型');
                       }}
-                      className='dropdown-item'
-                      href='#'
+                      className="dropdown-item"
+                      href="#"
                     >
                       全部類型
                     </a>
@@ -981,8 +981,8 @@ const Header = () => {
                           e.preventDefault();
                           handleFoodTypeSelect(foodType.type);
                         }}
-                        className='dropdown-item'
-                        href='#'
+                        className="dropdown-item"
+                        href="#"
                       >
                         {foodType.type}
                       </a>
@@ -994,23 +994,23 @@ const Header = () => {
           </ul>
           <a
             onClick={handleClick(toggleSearch)}
-            className='close-btn d-flex flex-column align-items-center justify-content-center ms-2 bg-black rounded-bottom-3 text-white fw-bold'
-            aria-label='關閉搜尋'
+            className="close-btn d-flex flex-column align-items-center justify-content-center ms-2 bg-black rounded-bottom-3 text-white fw-bold"
+            aria-label="關閉搜尋"
           >
             <svg
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-              className='mb-2'
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="mb-2"
             >
               <path
-                d='M18 6L6 18M6 6L18 18'
-                stroke='white'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
+                d="M18 6L6 18M6 6L18 18"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
             關閉
