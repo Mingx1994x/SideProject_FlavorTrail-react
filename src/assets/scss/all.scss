@@ -3,37 +3,37 @@
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
 
 @import 'bootstrap/scss/functions';
-@import './helpers/variables';
+@import '@/assets/scss/helpers/variables';
 
-@import './helpers/custom-colors.scss';
+@import '@/assets/scss/helpers/custom-colors.scss';
 @import 'bootstrap/scss/bootstrap';
 
-@import './helpers/utils.scss';
-@import './base/base';
-@import './components/button.scss';
-@import './components/dropdown.scss';
-@import './components/marquee';
-@import './components/allnotifylist';
-@import './components/postCard.scss';
-@import './components/foodtalk';
-@import './components/timePicker.scss';
-@import './components/foodCard.scss';
-@import './components/inviteBtn.scss';
-@import './components/allnotify-filter-status.scss';
-@import './components/alertModal.scss';
+@import '@/assets/scss/helpers/utils.scss';
+@import '@/assets/scss/base/base';
+@import '@/assets/scss/components/button.scss';
+@import '@/assets/scss/components/dropdown.scss';
+@import '@/assets/scss/components/marquee';
+@import '@/assets/scss/components/allnotifylist';
+@import '@/assets/scss/components/postCard.scss';
+@import '@/assets/scss/components/foodtalk';
+@import '@/assets/scss/components/timePicker.scss';
+@import '@/assets/scss/components/foodCard.scss';
+@import '@/assets/scss/components/inviteBtn.scss';
+@import '@/assets/scss/components/allnotify-filter-status.scss';
+@import '@/assets/scss/components/alertModal.scss';
 
-@import './layout/header.scss';
-@import './layout/footer.scss';
-@import './layout/account-nav.scss';
-@import './layout/account-setting.scss';
-@import './layout/rectangle-CTA.scss';
-@import './layout/circle-CTA.scss';
+@import '@/assets/scss/layout/header.scss';
+@import '@/assets/scss/layout/footer.scss';
+@import '@/assets/scss/layout/account-nav.scss';
+@import '@/assets/scss/layout/account-setting.scss';
+@import '@/assets/scss/layout/rectangle-CTA.scss';
+@import '@/assets/scss/layout/circle-CTA.scss';
 
-@import './pages/index.scss';
-@import './pages/allPost.scss';
-@import './pages/postPage.scss';
-@import './pages/event.scss';
-@import './pages/account-notification';
-@import './pages/login.scss';
-@import './pages/guideLine.scss';
-@import './pages/aboutUs.scss';
+@import '@/assets/scss/pages/index.scss';
+@import '@/assets/scss/pages/allPost.scss';
+@import '@/assets/scss/pages/postPage.scss';
+@import '@/assets/scss/pages/event.scss';
+@import '@/assets/scss/pages/account-notification';
+@import '@/assets/scss/pages/login.scss';
+@import '@/assets/scss/pages/guideLine.scss';
+@import '@/assets/scss/pages/aboutUs.scss';

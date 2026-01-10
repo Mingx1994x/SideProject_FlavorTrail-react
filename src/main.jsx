@@ -4,7 +4,7 @@ import { createHashRouter, RouterProvider } from 'react-router';
 import { Provider } from 'react-redux';
 import routes from './routes/index.jsx';
 import store from './redux/store';
-import '../assets/scss/all.scss';
+import '@/assets/scss/all.scss';
 import { Toaster } from 'react-hot-toast';
 
 // import App from './App.jsx'
