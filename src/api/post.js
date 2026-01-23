@@ -19,5 +19,5 @@ export function getComments() {
 }
 
 export function createComment(data) {
-  return flavorTrailApi.post('/comments', { data })
+  return flavorTrailApi.post('/comments', { ...data })
 }
