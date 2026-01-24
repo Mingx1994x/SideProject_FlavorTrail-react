@@ -34,8 +34,8 @@ import imgGuideContactURl2 from '/images/guide-contact-2.jpg'
 // deco
 import decoArrowPinkUrl1 from '/images/deco/arrow-pink-1.png'
 import decoArrowPinkUrl2 from '/images/deco/arrow-pink-2.png'
-import decoTalkPinkUrl from '../../public/images/deco/talk-pink.svg'
-import decoTalkGreenUrl from '../../public/images/deco/talk-green.svg'
+import decoTalkPinkUrl from '/images/deco/talk-pink.svg'
+import decoTalkGreenUrl from '/images/deco/talk-green.svg'
 
 // icon
 import iconCloseUrl from '/images/icon/x.svg'
