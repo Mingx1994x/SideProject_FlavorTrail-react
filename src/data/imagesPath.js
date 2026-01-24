@@ -31,7 +31,11 @@ import imgGuideBannerURl from '/images/guide-banner.jpg'
 import imgGuideContactURl1 from '/images/guide-contact-1.jpg'
 import imgGuideContactURl2 from '/images/guide-contact-2.jpg'
 
-
+// deco
+import decoArrowPinkUrl1 from '/images/deco/arrow-pink-1.png'
+import decoArrowPinkUrl2 from '/images/deco/arrow-pink-2.png'
+import decoTalkPinkUrl from '../../public/images/deco/talk-pink.svg'
+import decoTalkGreenUrl from '../../public/images/deco/talk-green.svg'
 
 
 export {
@@ -56,5 +60,9 @@ export {
   imgEventURl2,
   imgGuideBannerURl,
   imgGuideContactURl1,
-  imgGuideContactURl2
+  imgGuideContactURl2,
+  decoArrowPinkUrl1,
+  decoArrowPinkUrl2,
+  decoTalkPinkUrl,
+  decoTalkGreenUrl
 }

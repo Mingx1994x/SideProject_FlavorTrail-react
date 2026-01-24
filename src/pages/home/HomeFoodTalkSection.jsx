@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import AlertModal from '../../components/AlertModal';
+import { decoTalkGreenUrl, decoTalkPinkUrl } from '../../data/imagesPath';
 
 const { VITE_BASE_URL } = import.meta.env;
 
@@ -95,10 +96,7 @@ const HomeFoodTalkSection = () => {
                     }}
                   >
                     <div className="foodtalk-back show w-100 h-100 position-absolute top-0 left-0">
-                      <img
-                        src="./assets/images/deco/talk-pink.svg"
-                        alt="talk-pink"
-                      />
+                      <img src={decoTalkPinkUrl} alt="talk-pink" />
                     </div>
                     <div className="bg-primary">
                       <div className="foodtalk-img">
@@ -153,7 +151,7 @@ const HomeFoodTalkSection = () => {
               </h2>
             </div>
             <img
-              src="./assets/images/deco/talk-green.svg"
+              src={decoTalkGreenUrl}
               alt="talk-green"
               className="position-absolute talk-talk"
             />

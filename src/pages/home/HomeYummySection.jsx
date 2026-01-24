@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import AlertModal from '../../components/AlertModal';
+import { decoArrowPinkUrl1, decoArrowPinkUrl2 } from '@/data/imagesPath';
 
 const { VITE_BASE_URL } = import.meta.env;
 const HomeYummySection = () => {
@@ -101,10 +102,10 @@ const HomeYummySection = () => {
                   <picture>
                     <source
                       media="(min-width:992px)"
-                      srcSet="./assets/images/deco/arrow-pink-1.png"
+                      srcSet={decoArrowPinkUrl1}
                     />
                     <img
-                      src="./assets/images/deco/arrow-pink-2.png"
+                      src={decoArrowPinkUrl2}
                       className="d-block pe-7 pe-lg-0 pt-lg-16"
                       alt="deco-arrow"
                     />
