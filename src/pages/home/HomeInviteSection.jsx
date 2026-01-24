@@ -1,0 +1,71 @@
+import { Link } from 'react-router';
+import { imgHomeURl6 } from '@/data/imagesPath';
+
+const HomeInviteSection = () => {
+  return (
+    <section className="invite py-19">
+      <div className="container">
+        <div className="invite-content mb-16 mb-lg-19">
+          <h2 className="fs-4 fs-lg-3 text-xxl-end me-xxl-20 text-primary fw-bold">
+            WE INVITE YOU
+          </h2>
+          <h3 className="col-xxl-4 ps-xxl-12 invite-title text-primary fw-bolder ms-xl-auto">
+            <div>
+              一起來
+              <span className="deco-invite text-white">玩</span>
+            </div>
+          </h3>
+        </div>
+        <div className="invite-event row">
+          <div className="col-lg-6">
+            <svg
+              className="mb-5"
+              width="80"
+              height="62"
+              viewBox="0 0 80 62"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 21.311L22.4371 62L75.117 47.1438L80 5.74886C80 5.74886 67.8139 23.4876 57.231 21.4441C47.0968 19.4873 41.5893 0 41.5893 0C41.5893 0 39.0375 23.6713 27.6927 28.4091C17.3846 32.714 0 21.311 0 21.311Z"
+                fill="#00503F"
+              />
+            </svg>
+            <h2 className="fs-1 fw-bolder">愛心分享：街友送餐活動</h2>
+            <div className="my-5 text-gray-700">2024.11.15</div>
+            <p className="mb-5 text-gray-700">
+              我們總是不小心在忙碌的生活中忽略一些需要我們的關愛和支持的人。為了讓社會多一份溫暖，我們決定舉辦這次「愛心分享：街友送餐活動」。這不是一個普通的活動，而是一個讓我們能夠用實際行動傳遞愛心的機會。8月15日，讓我們集合在台北市中山區中山公園，準備好一份份溫暖的餐點，送給街友們。活動結束後，我們還會一起聚餐，分享彼此的感動與故事。真心期待你的參與，讓我們一起為這個社會帶來一點溫暖！
+            </p>
+          </div>
+          <div className="col-lg-6">
+            <div className="invite-event-img position-relative">
+              <img src={imgHomeURl6} alt="home-event-img" />
+              <Link
+                to="/event"
+                className="invite-btn position-absolute bottom-0 end-0 d-flex justify-content-center align-items-center"
+              >
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 18L15 12L9 6"
+                    stroke="black"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HomeInviteSection;
