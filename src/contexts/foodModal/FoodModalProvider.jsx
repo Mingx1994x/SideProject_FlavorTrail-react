@@ -1,34 +1,15 @@
+import { useEffect, useRef } from 'react';
 import { Modal } from 'bootstrap';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 
 import { shareFoodModalContext } from './shareFoodContext';
-import AlertModal from '@/components/AlertModal';
-import ShareFoodModal from '../../components/ShareFoodModal';
-import { useEffect, useRef } from 'react';
+import ShareFoodModal from '@/components/ShareFoodModal';
 
 const FoodModalProvider = ({ children }) => {
-  const { isLogin } = useSelector((state) => state.loginSlice.loginStatus);
-  const navigate = useNavigate();
-
   const foodModalRef = useRef(null);
   const foodModal = useRef(null);
   const openFoodModal = () => {
-    if (isLogin) {
-      foodModal.current?.show();
-    } else {
-      AlertModal.confirmAction({
-        title: '請先登入',
-        text: '迷路的尋者，登入後才能使用會員功能喔！',
-        icon: 'info',
-        confirmButtonText: '登入',
-        cancelButtonText: '取消',
-        onConfirm: () => {
-          navigate('/login');
-        },
-      });
-    }
+    foodModal.current?.show();
   };
 
   const closeFoodModal = () => {

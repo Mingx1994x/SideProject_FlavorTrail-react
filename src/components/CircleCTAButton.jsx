@@ -1,8 +1,9 @@
-import { useRef, useEffect, useContext } from 'react';
+import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PropTypes from 'prop-types';
-import { shareFoodModalContext } from '../contexts/foodModal/shareFoodContext';
+
+import useOpenFoodModal from '../contexts/foodModal/useFoodModal';
 
 const CircleCTAButton = ({
   title,
@@ -12,7 +13,7 @@ const CircleCTAButton = ({
   endPosition,
 }) => {
   const circleCTARef = useRef(null);
-  const { openFoodModal } = useContext(shareFoodModalContext);
+  const openFoodModal = useOpenFoodModal();
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
