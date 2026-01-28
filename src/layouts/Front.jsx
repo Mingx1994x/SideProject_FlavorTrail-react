@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
+
 import Footer from './Footer';
 import Header from './Header';
-import { useEffect } from 'react';
+import FoodModalProvider from '@/contexts/foodModal/FoodModalProvider';
 
 const Front = () => {
   const { pathname } = useLocation();
@@ -15,9 +17,11 @@ const Front = () => {
 
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <FoodModalProvider>
+        <Header />
+        <Outlet />
+        <Footer />
+      </FoodModalProvider>
     </>
   );
 };

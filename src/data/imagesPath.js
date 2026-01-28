@@ -37,6 +37,8 @@ import decoArrowPinkUrl2 from '/images/deco/arrow-pink-2.png'
 import decoTalkPinkUrl from '../../public/images/deco/talk-pink.svg'
 import decoTalkGreenUrl from '../../public/images/deco/talk-green.svg'
 
+// icon
+import iconCloseUrl from '/images/icon/x.svg'
 
 export {
   logoUrl,
@@ -64,5 +66,6 @@ export {
   decoArrowPinkUrl1,
   decoArrowPinkUrl2,
   decoTalkPinkUrl,
-  decoTalkGreenUrl
+  decoTalkGreenUrl,
+  iconCloseUrl
 }
