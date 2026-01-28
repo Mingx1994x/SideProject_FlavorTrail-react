@@ -12,7 +12,7 @@ const CircleCTAButton = ({
   endPosition,
 }) => {
   const circleCTARef = useRef(null);
-  const { openShareFoodModal } = useContext(shareFoodModalContext);
+  const { openFoodModal } = useContext(shareFoodModalContext);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -57,7 +57,10 @@ const CircleCTAButton = ({
   return (
     <div className="cta-button d-lg-block d-none" ref={circleCTARef}>
       <a
-        onClick={(e) => openShareFoodModal(e)}
+        onClick={(e) => {
+          e.preventDefault();
+          openFoodModal();
+        }}
         className="CTA d-flex justify-content-center align-items-center rounded-circle"
       >
         <p className="CTA-content-title text-center fs-4 fw-bold lh-xs text-deco-bright-green">

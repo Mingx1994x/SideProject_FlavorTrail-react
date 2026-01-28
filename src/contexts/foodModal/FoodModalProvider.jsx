@@ -5,17 +5,18 @@ import PropTypes from 'prop-types';
 
 import { shareFoodModalContext } from './shareFoodContext';
 import AlertModal from '@/components/AlertModal';
+import ShareFoodModal from '../../components/ShareFoodModal';
+import { useEffect, useRef } from 'react';
 
 const FoodModalProvider = ({ children }) => {
   const { isLogin } = useSelector((state) => state.loginSlice.loginStatus);
   const navigate = useNavigate();
-  const openShareFoodModal = (e) => {
-    e.preventDefault();
+
+  const foodModalRef = useRef(null);
+  const foodModal = useRef(null);
+  const openFoodModal = () => {
     if (isLogin) {
-      const shareFoodModal = new Modal(
-        document.getElementById('shareFoodModal'),
-      );
-      shareFoodModal.show();
+      foodModal.current?.show();
     } else {
       AlertModal.confirmAction({
         title: '請先登入',
@@ -30,9 +31,20 @@ const FoodModalProvider = ({ children }) => {
     }
   };
 
+  const closeFoodModal = () => {
+    foodModal.current?.hide();
+  };
+
+  useEffect(() => {
+    if (foodModalRef.current) {
+      foodModal.current = new Modal(foodModalRef.current);
+    }
+  }, []);
+
   return (
-    <shareFoodModalContext.Provider value={{ openShareFoodModal }}>
+    <shareFoodModalContext.Provider value={{ openFoodModal, closeFoodModal }}>
       {children}
+      <ShareFoodModal ref={foodModalRef} />
     </shareFoodModalContext.Provider>
   );
 };

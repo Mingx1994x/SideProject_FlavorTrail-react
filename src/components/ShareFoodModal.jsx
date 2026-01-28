@@ -13,11 +13,12 @@ import TimePicker from './formElements/TimePicker';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectCity from './formElements/SelectCity';
-import { useEffect, useState } from 'react';
+import { forwardRef, useContext, useEffect, useState } from 'react';
+import { iconCloseUrl } from '../data/imagesPath';
+import { shareFoodModalContext } from '../contexts/foodModal/shareFoodContext';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-const ShareFoodModal = () => {
+const ShareFoodModal = forwardRef((_props, ref) => {
   const methods = useForm({
     defaultValues: {
       redeemCode: '',
@@ -74,7 +75,7 @@ const ShareFoodModal = () => {
   useEffect(() => {
     if (selectedCity) {
       const selectedCityData = cities.find(
-        (city) => city.name === selectedCity
+        (city) => city.name === selectedCity,
       );
       setDistricts(selectedCityData ? selectedCityData.districts : []);
     } else {
@@ -111,13 +112,15 @@ const ShareFoodModal = () => {
           loading: '發送食物中...',
           success: '分享食物成功',
           error: '分享失敗，請稍候再試',
-        }
+        },
       );
     } catch (error) {
       toast.error(`發送貼文失敗:: ${error.message || '未知錯誤'}`);
     }
     reset();
   };
+
+  const { closeFoodModal } = useContext(shareFoodModalContext);
 
   return (
     <>
@@ -128,6 +131,7 @@ const ShareFoodModal = () => {
           tabIndex="-1"
           aria-labelledby="shareFoodModal"
           aria-hidden="true"
+          ref={ref}
         >
           <div className="modal-dialog modal-xl">
             <div className="modal-content bg-white">
@@ -139,11 +143,12 @@ const ShareFoodModal = () => {
                   分享美味
                 </h1>
                 <img
-                  src="./assets/images/icon/x.svg"
+                  src={iconCloseUrl}
                   alt="Close"
                   className="ms-auto pointer"
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={closeFoodModal}
                 />
               </div>
               <div className="modal-body p-lg-7">
@@ -483,6 +488,9 @@ const ShareFoodModal = () => {
       </FormProvider>
     </>
   );
-};
+});
+
+// ESLint 需要檢查 react/display-name
+ShareFoodModal.displayName = 'ShareFoodModal';
 
 export default ShareFoodModal;
