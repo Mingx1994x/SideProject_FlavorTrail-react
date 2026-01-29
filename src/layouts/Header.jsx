@@ -2,11 +2,12 @@ import axios from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { setIsLogin } from '../redux/LoginStateSlice';
-const { VITE_BASE_URL } = import.meta.env;
-import AlertModal from '../components/AlertModal';
-import { Modal } from 'bootstrap';
+import { setIsLogin } from '@/redux/LoginStateSlice';
+import AlertModal from '@/components/AlertModal';
+import useOpenFoodModal from '@/contexts/foodModal/useFoodModal';
+
 import { logoNavbarUrl } from '@/data/imagesPath';
+const { VITE_BASE_URL } = import.meta.env;
 
 const Header = () => {
   const navigate = useNavigate();
@@ -247,26 +248,7 @@ const Header = () => {
     e.preventDefault();
     handler();
   };
-  const openShareFoodModal = (e) => {
-    e.preventDefault();
-    if (isLogin) {
-      const shareFoodModal = new Modal(
-        document.getElementById('shareFoodModal'),
-      );
-      shareFoodModal.show();
-    } else {
-      AlertModal.confirmAction({
-        title: '請先登入',
-        text: '迷路的尋者，登入後才能使用會員功能喔！',
-        icon: 'info',
-        confirmButtonText: '登入',
-        cancelButtonText: '取消',
-        onConfirm: () => {
-          navigate('/login');
-        },
-      });
-    }
-  };
+  const openFoodModal = useOpenFoodModal();
   return (
     <>
       <nav
@@ -778,7 +760,10 @@ const Header = () => {
               <li className="nav-item mb-10">
                 <h2 className="fs-1 fw-bolder">
                   <a
-                    onClick={(e) => openShareFoodModal(e)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openFoodModal();
+                    }}
                     className="nav-link p-0"
                     href="#"
                   >
