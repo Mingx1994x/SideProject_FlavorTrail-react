@@ -1,34 +1,9 @@
-import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
-import { Modal } from 'bootstrap';
-
-import ShareFoodModal from '@/components/ShareFoodModal';
-import AlertModal from '@/components/AlertModal';
+import useOpenFoodModal from '@/contexts/foodModal/useFoodModal';
 import { imgHomeURl1, logoUrl } from '@/data/imagesPath';
 
 const HomeBannerSection = () => {
-  const { isLogin } = useSelector((state) => state.loginSlice.loginStatus);
-  const navigate = useNavigate();
-  const openShareFoodModal = (e) => {
-    e.preventDefault();
-    if (isLogin) {
-      const shareFoodModal = new Modal(
-        document.getElementById('shareFoodModal'),
-      );
-      shareFoodModal.show();
-    } else {
-      AlertModal.confirmAction({
-        title: '請先登入',
-        text: '迷路的尋者，登入後才能使用會員功能喔！',
-        icon: 'info',
-        confirmButtonText: '登入',
-        cancelButtonText: '取消',
-        onConfirm: () => {
-          navigate('/login');
-        },
-      });
-    }
-  };
+  const openFoodModal = useOpenFoodModal();
+
   return (
     <section className="banner container">
       <div>
@@ -56,7 +31,10 @@ const HomeBannerSection = () => {
 
             <span>（</span>
             <a
-              onClick={(e) => openShareFoodModal(e)}
+              onClick={(e) => {
+                e.preventDefault();
+                openFoodModal();
+              }}
               href="#"
               className="banner-cta"
             >
@@ -65,7 +43,6 @@ const HomeBannerSection = () => {
             <span>）</span>
           </div>
         </div>
-        <ShareFoodModal />
       </div>
     </section>
   );
