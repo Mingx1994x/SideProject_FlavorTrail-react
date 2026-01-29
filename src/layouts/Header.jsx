@@ -6,6 +6,7 @@ import { setIsLogin } from '../redux/LoginStateSlice';
 const { VITE_BASE_URL } = import.meta.env;
 import AlertModal from '../components/AlertModal';
 import { Modal } from 'bootstrap';
+import { logoNavbarUrl } from '@/data/imagesPath';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ const Header = () => {
           setIsLogin({
             uid: '',
             isLogin: false,
-          })
+          }),
         );
 
         handleNavLinkClick();
@@ -250,7 +251,7 @@ const Header = () => {
     e.preventDefault();
     if (isLogin) {
       const shareFoodModal = new Modal(
-        document.getElementById('shareFoodModal')
+        document.getElementById('shareFoodModal'),
       );
       shareFoodModal.show();
     } else {
@@ -283,7 +284,7 @@ const Header = () => {
               className="navbar-brand d-flex py-lg-0 d-lg-block d-none"
               to="/"
             >
-              <img src="images/Logo-navbar.svg" alt="logo" />
+              <img src={logoNavbarUrl} alt="logo" />
             </NavLink>
           </h1>
 
@@ -490,7 +491,7 @@ const Header = () => {
             <div className="offcanvas-header d-flex justify-content-between mb-12">
               <h1 className="offcanvas-title" id="offcanvasNavLabel">
                 <Link to="/">
-                  <img src="/images/Logo-navbar.svg" alt="logo" />
+                  <img src={logoNavbarUrl} alt="logo" />
                 </Link>
               </h1>
               {!isLogin ? (
@@ -831,7 +832,7 @@ const Header = () => {
       >
         <div className="search-bar container d-flex">
           <Link to="/" className="navbar-brand d-flex align-items-center me-4">
-            <img src="/images/Logo-navbar.svg" alt="logo" />
+            <img src={logoNavbarUrl} alt="logo" />
           </Link>
           <ul className="search-form d-flex py-7 gap-2 ms-auto me-2 flex-grow-1 justify-content-end">
             <li className="input-group mb-5 mb-lg-0 rounded-3 bg-white">
