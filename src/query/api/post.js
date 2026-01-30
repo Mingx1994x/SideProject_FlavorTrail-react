@@ -1,4 +1,4 @@
-import flavorTrailApi from "./apiInstance"
+import { flavorTrailApi } from './apiInstance'
 
 // 貼文相關
 export function getPosts() {
