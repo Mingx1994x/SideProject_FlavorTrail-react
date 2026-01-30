@@ -39,6 +39,10 @@ import decoTalkGreenUrl from '/images/deco/talk-green.svg'
 
 // icon
 import iconCloseUrl from '/images/icon/x.svg'
+import iconTwitterUrl from '/images/icon/twitter.svg'
+import iconInstagramUrl from '/images/icon/instagram.svg'
+import iconFacebookUrl from '/images/icon/facebook.svg'
+import iconLineUrl from '/images/icon/hugeicons_line.svg'
 
 export {
   logoUrl,
@@ -67,5 +71,9 @@ export {
   decoArrowPinkUrl2,
   decoTalkPinkUrl,
   decoTalkGreenUrl,
-  iconCloseUrl
+  iconCloseUrl,
+  iconTwitterUrl,
+  iconInstagramUrl,
+  iconFacebookUrl,
+  iconLineUrl
 }

@@ -1,39 +1,24 @@
-import { Link, useNavigate } from 'react-router';
-import { Modal } from 'bootstrap';
-import { useSelector } from 'react-redux';
-import ShareFoodModal from '../components/ShareFoodModal';
-import AlertModal from '../components/AlertModal';
+import { Link } from 'react-router';
+import useOpenFoodModal from '../contexts/foodModal/useFoodModal';
+
+import {
+  iconFacebookUrl,
+  iconInstagramUrl,
+  iconLineUrl,
+  iconTwitterUrl,
+  logoUrl,
+} from '@/data/imagesPath';
 
 const Footer = () => {
-  const { isLogin } = useSelector((state) => state.loginSlice.loginStatus);
-  const navigate = useNavigate();
-  const openShareFoodModal = (e) => {
-    e.preventDefault();
-    if (isLogin) {
-      const shareFoodModal = new Modal(
-        document.getElementById('shareFoodModal')
-      );
-      shareFoodModal.show();
-    } else {
-      AlertModal.confirmAction({
-        title: '請先登入',
-        text: '迷路的尋者，登入後才能使用會員功能喔！',
-        icon: 'info',
-        confirmButtonText: '登入',
-        cancelButtonText: '取消',
-        onConfirm: () => {
-          navigate('/login');
-        },
-      });
-    }
-  };
+  const openFoodModal = useOpenFoodModal();
+
   return (
     <>
       <footer className="footer">
         <div className="container">
           <div className="footer-header d-flex flex-lg-row flex-column-reverse mb-lg-19 mb-16">
             <Link to="/" className="footer-logo">
-              <img src="/images/Logo.png" alt="logo" />
+              <img src={logoUrl} alt="logo" />
             </Link>
             <div className="slogan ms-auto mt-lg-12 fs-2 fw-bolder lh-1">
               <p>快樂齊分享，美味</p>
@@ -109,14 +94,16 @@ const Footer = () => {
                     </li>
                     <li>
                       <a
-                        onClick={(e) => openShareFoodModal(e)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openFoodModal();
+                        }}
                         href="#"
                         className="footer-nav__link"
                       >
                         我要分享
                       </a>
                     </li>
-                    <ShareFoodModal />
                     <li>
                       <a href="#" className="footer-nav__link">
                         我的追蹤
@@ -129,16 +116,16 @@ const Footer = () => {
             <div className="col-3 d-lg-flex justify-content-end align-items-end">
               <div className="footer-social d-flex flex-lg-row flex-column align-items-end gap-2">
                 <a href="#" className="p-2">
-                  <img src="/images/icon/twitter.svg" alt="twitter" />
+                  <img src={iconTwitterUrl} alt="twitter" />
                 </a>
                 <a href="#" className="p-2">
-                  <img src="/images/icon/instagram.svg" alt="instagram" />
+                  <img src={iconInstagramUrl} alt="instagram" />
                 </a>
                 <a href="#" className="p-2">
-                  <img src="/images/icon/facebook.svg" alt="facebook" />
+                  <img src={iconFacebookUrl} alt="facebook" />
                 </a>
                 <a href="#" className="p-2">
-                  <img src="/images/icon/hugeicons_line.svg" alt="line" />
+                  <img src={iconLineUrl} alt="line" />
                 </a>
               </div>
             </div>
