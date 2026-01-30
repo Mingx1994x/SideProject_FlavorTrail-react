@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 
-import { createComment } from '../../query/api/post';
+import useCreateComment from '../../query/useCreateComment';
 import { getUserId } from '../../utils/loginUser';
 import { daysFormat } from '../../utils/formatTIme';
 
 import AlertModal from '../AlertModal';
-import {
-  commentQueriesKey,
-  commentQueryOption,
-} from '../../query/handleQueryOption';
+import { commentQueryOption } from '../../query/handleQueryOption';
 
 const logoUrl = './assets/images/Logo.png';
 
@@ -26,26 +23,12 @@ const PostComments = ({ id, commentCount }) => {
   const { data: allComments } = useQuery(commentQueryOption());
 
   useEffect(() => {
-    console.log(allComments);
     if (allComments) {
       setComments(allComments.filter((comment) => comment.postId == id));
     }
   }, [allComments, id]);
 
-  const queryClient = useQueryClient();
-  const { mutate: createCommentMutation } = useMutation({
-    mutationFn: createComment,
-    onSuccess: () => {
-      setNewComment('');
-      queryClient.invalidateQueries(commentQueriesKey.all);
-    },
-    onError: (error) => {
-      AlertModal.errorMessage({
-        title: '連線失敗',
-        text: `${error}，請稍後再試`,
-      });
-    },
-  });
+  const { mutate: createCommentMutation } = useCreateComment();
 
   const submitComment = (type = 'normal') => {
     if (!isLogin) {
@@ -69,13 +52,20 @@ const PostComments = ({ id, commentCount }) => {
       return;
     }
 
-    createCommentMutation({
-      postId,
-      userId: getUserId(uid),
-      type,
-      comment: newComment,
-      createDate: daysFormat(),
-    });
+    createCommentMutation(
+      {
+        postId,
+        userId: getUserId(uid),
+        type,
+        comment: newComment,
+        createDate: daysFormat(),
+      },
+      {
+        onSuccess: () => {
+          setNewComment('');
+        },
+      },
+    );
   };
 
   return (
