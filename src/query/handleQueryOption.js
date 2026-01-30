@@ -1,5 +1,18 @@
 import { queryKeys } from "../data/queryKeys";
-import { getComments } from "./api/post";
+import { getComments, getPostById } from "./api/post";
+
+// post 
+// KEY
+export const postQueriesKey = {
+  all: [queryKeys.post],
+  detail: (postId) => [queryKeys.post, postId],
+}
+
+//Query Options
+export const postByIdQueryOption = (id) => ({
+  queryKey: postQueriesKey.detail(id),
+  queryFn: () => getPostById(id),
+})
 
 // post comments
 // KEY

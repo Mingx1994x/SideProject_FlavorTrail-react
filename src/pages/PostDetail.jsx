@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 
-import { getPostById } from '../query/api/post';
-import { daysFromNow } from '../utils/formatTIme';
+import { daysFromNow } from '@/utils/formatTIme';
+import { postByIdQueryOption } from '@/query/handleQueryOption';
 
 // components
-import FullScreenLoading from '../components/FullScreenLoading';
+import FullScreenLoading from '@/components/FullScreenLoading';
+import PostComments from '@/components/postPage/PostComments';
+import OtherPosts from '@/components/postPage/OtherPosts';
 import PostBreadcrumbSection from './post-detail/PostBreadcrumbSection';
 import PostHeroSection from './post-detail/PostHeroSection';
 import PostMobileFoodInfo from './post-detail/PostMobileFoodInfo';
-import PostComments from '../components/postPage/PostComments';
-import OtherPosts from '../components/postPage/OtherPosts';
 import PostSidebarFoodInfo from './post-detail/PostSidebarFoodInfo';
 
 const logoUrl = './assets/images/Logo.png';
@@ -18,14 +18,7 @@ const logoUrl = './assets/images/Logo.png';
 const PostDetail = () => {
   const { id } = useParams();
 
-  const {
-    data: post,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['post', id],
-    queryFn: () => getPostById(id),
-  });
+  const { data: post, isLoading, error } = useQuery(postByIdQueryOption(id));
 
   // foodApplyModal
   // const foodApplyRef = useRef(null);
