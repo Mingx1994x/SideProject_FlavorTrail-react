@@ -1,33 +1,36 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import axios from 'axios';
-import dayjs from 'dayjs';
-
-import { getUserId } from '../../utils/loginUser';
+import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
-import AlertModal from '../AlertModal';
 
-const { VITE_BASE_URL } = import.meta.env;
+import useCreateComment from '../../query/useCreateComment';
+import { getUserId } from '../../utils/loginUser';
+import { daysFormat } from '../../utils/formatTIme';
+
+import AlertModal from '../AlertModal';
+import { commentQueryOption } from '../../query/handleQueryOption';
+
 const logoUrl = './assets/images/Logo.png';
+
 const PostComments = ({ id, commentCount }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState(null);
   const { id: postId } = useParams();
   const { uid, isLogin } = useSelector((state) => state.loginSlice.loginStatus);
   const navigate = useNavigate();
-  const getComments = useCallback(async () => {
-    try {
-      const res = await axios.get(`${VITE_BASE_URL}/comments?_expand=user`);
-      setComments(res.data.filter((comment) => comment.postId == id));
-    } catch (error) {
-      AlertModal.errorMessage({
-        title: '連線失敗',
-        text: `${error}，請稍後再試`,
-      });
+
+  const { data: allComments } = useQuery(commentQueryOption());
+
+  useEffect(() => {
+    if (allComments) {
+      setComments(allComments.filter((comment) => comment.postId == id));
     }
-  }, [id]);
-  const createComment = async (type = 'normal') => {
+  }, [allComments, id]);
+
+  const { mutate: createCommentMutation } = useCreateComment();
+
+  const submitComment = (type = 'normal') => {
     if (!isLogin) {
       AlertModal.confirmAction({
         title: '請先登入',
@@ -48,27 +51,22 @@ const PostComments = ({ id, commentCount }) => {
       });
       return;
     }
-    try {
-      await axios.post(`${VITE_BASE_URL}/comments`, {
+
+    createCommentMutation(
+      {
         postId,
         userId: getUserId(uid),
         type,
         comment: newComment,
-        createDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      });
-      setNewComment('');
-      getComments();
-    } catch (error) {
-      AlertModal.errorMessage({
-        title: '連線失敗',
-        text: `${error}，請稍後再試`,
-      });
-    }
+        createDate: daysFormat(),
+      },
+      {
+        onSuccess: () => {
+          setNewComment('');
+        },
+      },
+    );
   };
-
-  useEffect(() => {
-    getComments();
-  }, [id, getComments]);
 
   return (
     <div className="bg-white rounded-3 p-5 mt-5 mb-14">
@@ -143,7 +141,7 @@ const PostComments = ({ id, commentCount }) => {
           style={{
             cursor: 'pointer',
           }}
-          onClick={() => createComment()}
+          onClick={() => submitComment()}
         >
           <svg
             width="16"
