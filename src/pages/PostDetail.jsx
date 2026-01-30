@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 
-import { getPostById } from '../api/post';
+import { getPostById } from '../query/api/post';
 import { daysFromNow } from '../utils/formatTIme';
 
 // components

@@ -4,11 +4,15 @@ import { useNavigate, useParams } from 'react-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 
-import { createComment, getComments } from '../../api/post';
+import { createComment } from '../../query/api/post';
 import { getUserId } from '../../utils/loginUser';
 import { daysFormat } from '../../utils/formatTIme';
 
 import AlertModal from '../AlertModal';
+import {
+  commentQueriesKey,
+  commentQueryOption,
+} from '../../query/handleQueryOption';
 
 const logoUrl = './assets/images/Logo.png';
 
@@ -19,10 +23,7 @@ const PostComments = ({ id, commentCount }) => {
   const { uid, isLogin } = useSelector((state) => state.loginSlice.loginStatus);
   const navigate = useNavigate();
 
-  const { data: allComments } = useQuery({
-    queryKey: ['comments'],
-    queryFn: getComments,
-  });
+  const { data: allComments } = useQuery(commentQueryOption());
 
   useEffect(() => {
     console.log(allComments);
@@ -36,10 +37,13 @@ const PostComments = ({ id, commentCount }) => {
     mutationFn: createComment,
     onSuccess: () => {
       setNewComment('');
-      queryClient.invalidateQueries(['comments']);
+      queryClient.invalidateQueries(commentQueriesKey.all);
     },
     onError: (error) => {
-      console.error(error);
+      AlertModal.errorMessage({
+        title: '連線失敗',
+        text: `${error}，請稍後再試`,
+      });
     },
   });
 
@@ -72,22 +76,6 @@ const PostComments = ({ id, commentCount }) => {
       comment: newComment,
       createDate: daysFormat(),
     });
-    // try {
-    //   await axios.post(`${VITE_BASE_URL}/comments`, {
-    //     postId,
-    //     userId: getUserId(uid),
-    //     type,
-    //     comment: newComment,
-    //     createDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    //   });
-    //   setNewComment('');
-    //   getComments();
-    // } catch (error) {
-    //   AlertModal.errorMessage({
-    //     title: '連線失敗',
-    //     text: `${error}，請稍後再試`,
-    //   });
-    // }
   };
 
   return (
