@@ -6,13 +6,13 @@
   position: relative;
   letter-spacing: -0.04em;
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     z-index: 1;
     display: block;
     width: 105px;
     height: 118px;
-    background-image: url("/assets/images/deco/guide-pen.svg");
+    background-image: url('/images/deco/guide-pen.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -1,10 +1,21 @@
+import {
+  decoGuideUrl1,
+  decoGuideUrl2,
+  decoGuideUrl3,
+  iconGuideBannerHand,
+  iconGuideBannerHandshake,
+  imgGuideBannerURl,
+  imgGuideContactURl1,
+  imgGuideContactURl2,
+} from '@/data/imagesPath';
+
 function GuideLine() {
   return (
     <>
       <section className="guide-banner container mb-lg-12 nav-mt">
         <div className="guide-banner__cover position-relative mt-4 mt-lg-7">
           <img
-            src="./assets/images/guide-banner.jpg"
+            src={imgGuideBannerURl}
             alt="banner-img"
             className="guide-banner__img"
           />
@@ -89,10 +100,7 @@ function GuideLine() {
               aria-selected="true"
             >
               <div className="text-center">
-                <img
-                  src="./assets/images/icon/guide-banner-handshake.svg"
-                  alt="guide-handshake"
-                />
+                <img src={iconGuideBannerHandshake} alt="guide-handshake" />
                 <h2 className="display-1 pt-5 letter-space">(我想分享)</h2>
                 <h4 className="fw-bold pt-5">SHARER</h4>
               </div>
@@ -108,10 +116,7 @@ function GuideLine() {
               aria-selected="false"
             >
               <div className="text-center">
-                <img
-                  src="./assets/images/icon/guide-banner-hand.svg"
-                  alt="guide-hand"
-                />
+                <img src={iconGuideBannerHand} alt="guide-hand" />
                 <h2 className="display-1 pt-5 letter-space">(我想領取)</h2>
                 <h4 className="fw-bold pt-5">RECEIVER</h4>
               </div>
@@ -133,7 +138,7 @@ function GuideLine() {
                     <div className="col d-lg-none">
                       <div className="text-center pt-10 pb-12">
                         <img
-                          src="./assets/images/icon/guide-banner-handshake.svg"
+                          src={iconGuideBannerHandshake}
                           alt="guide-handshake"
                         />
                         <h2 className="display-3 text-deco-bright-green pt-5 letter-space">
@@ -146,7 +151,7 @@ function GuideLine() {
                     </div>
                     <div className="col">
                       <div className="d-flex flex-column align-items-lg-start align-items-center pt-12 mb-14 pt-lg-0 mb-lg-0">
-                        <img src="./assets/images/deco/guide-1.svg" alt="deco-guide-1" />
+                        <img src={decoGuideUrl1} alt="deco-guide-1" />
                         <h3 className="text-deco-bright-green pt-7 fw-bold">
                           發佈食物大作戰
                         </h3>
@@ -169,7 +174,7 @@ function GuideLine() {
                     <div className="col">
                       <div className="mb-14 mb-lg-0 ">
                         <div className="text-center text-lg-start">
-                          <img src="./assets/images/deco/guide-2.svg" alt="deco-guide-2" />
+                          <img src={decoGuideUrl2} alt="deco-guide-2" />
                           <h3 className="text-deco-bright-green pt-7 fw-bold">
                             追蹤申請狀態
                           </h3>
@@ -188,7 +193,7 @@ function GuideLine() {
                     <div className="col">
                       <div className="mb-12 mb-lg-0 d-flex flex-column align-items-lg-start align-items-md-center">
                         <div className="text-center text-lg-start">
-                          <img src="./assets/images/deco/guide-3.svg" alt="deco-guide-3" />
+                          <img src={decoGuideUrl3} alt="deco-guide-3" />
                           <h3 className="text-deco-bright-green pt-7 fw-bold">
                             面交步驟
                           </h3>
@@ -252,10 +257,7 @@ function GuideLine() {
                   <div className="d-flex flex-column flex-lg-row mb-lg-18 px-lg-0">
                     <div className="col d-lg-none">
                       <div className="text-center pt-10 pb-12">
-                        <img
-                          src="./assets/images/icon/guide-banner-hand.svg"
-                          alt="guide-hand"
-                        />
+                        <img src={iconGuideBannerHand} alt="guide-hand" />
                         <h2 className="display-3 text-deco-pink pt-5 letter-space">
                           (我想領取)
                         </h2>
@@ -625,7 +627,7 @@ function GuideLine() {
                   </h3>
                   <img
                     className="guide-contact-img img-fluid object-fit-cover"
-                    src="./assets/images/guide-contact-1.jpg"
+                    src={imgGuideContactURl1}
                     alt="guide-contact-picture1"
                   />
                 </div>
@@ -633,7 +635,7 @@ function GuideLine() {
               <div className="col-lg-4">
                 <img
                   className="guide-contact-img guide-contact-img-two img-fluid object-fit-cover"
-                  src="./assets/images/guide-contact-2.jpg"
+                  src={imgGuideContactURl2}
                   alt="guide-contact-picture2"
                 />
               </div>
