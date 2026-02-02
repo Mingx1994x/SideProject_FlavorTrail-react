@@ -5,7 +5,7 @@
     width: 100%;
     @include media-breakpoint-up(lg) {
       height: 690px;
-      background-image: url("/assets/images/deco/guide-tip-path-group-desktop.svg");
+      background-image: url('/images/deco/guide-tip-path-group-desktop.svg');
       background-size: contain;
       background-repeat: no-repeat;
     }

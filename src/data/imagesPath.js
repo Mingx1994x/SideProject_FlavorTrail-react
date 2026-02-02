@@ -30,6 +30,11 @@ import imgEventURl2 from '/images/event-2.jpg'
 import imgGuideBannerURl from '/images/guide-banner.jpg'
 import imgGuideContactURl1 from '/images/guide-contact-1.jpg'
 import imgGuideContactURl2 from '/images/guide-contact-2.jpg'
+import iconGuideBannerHand from '/images/icon/guide-banner-hand.svg'
+import iconGuideBannerHandshake from '/images/icon/guide-banner-handshake.svg'
+import decoGuideUrl1 from '/images/deco/guide-1.svg';
+import decoGuideUrl2 from '/images/deco/guide-2.svg';
+import decoGuideUrl3 from '/images/deco/guide-3.svg';
 
 // deco
 import decoArrowPinkUrl1 from '/images/deco/arrow-pink-1.png'
@@ -67,6 +72,11 @@ export {
   imgGuideBannerURl,
   imgGuideContactURl1,
   imgGuideContactURl2,
+  iconGuideBannerHand,
+  iconGuideBannerHandshake,
+  decoGuideUrl1,
+  decoGuideUrl2,
+  decoGuideUrl3,
   decoArrowPinkUrl1,
   decoArrowPinkUrl2,
   decoTalkPinkUrl,
