@@ -36,12 +36,17 @@ const AboutUsMarquee = () => {
   }, []);
 
   useEffect(() => {
-    const aboutShare = document.querySelector('#aboutShare');
-    const aboutDiscover = document.querySelector('#aboutDiscover');
-    const aboutConnect = document.querySelector('#aboutConnect');
-    const aboutShareTimeline = gsap.timeline();
-    const aboutDiscoverTimeline = gsap.timeline();
-    const aboutConnectTimeline = gsap.timeline();
+    const elements = [
+      document.querySelector('#aboutShare'),
+      document.querySelector('#aboutDiscover'),
+      document.querySelector('#aboutConnect'),
+    ];
+    const timeline = {
+      share: gsap.timeline(),
+      discover: gsap.timeline(),
+      connect: gsap.timeline(),
+    };
+
     let primaryColor = '#00503F';
     let whiteColor = '#FFFFFF';
     const slideInAnimation = (target, element, timeline) => {
@@ -97,30 +102,34 @@ const AboutUsMarquee = () => {
         borderColor: primaryColor,
       });
     };
-    aboutShare.addEventListener('mouseover', (e) => {
-      let targetMarquee = e.target.closest('.aboutService-marquee-desktop');
-      slideInAnimation(aboutShare, targetMarquee, aboutShareTimeline);
+
+    const handleMouseover = (e) => {
+      const element = e.currentTarget;
+      const marquee = element.closest('.aboutService-marquee-desktop');
+      const targetTimelineKey = element.dataset.about;
+      slideInAnimation(marquee, element, timeline[targetTimelineKey]);
+    };
+
+    const handleMouseleave = (e) => {
+      const element = e.currentTarget;
+      const marquee = element.closest('.aboutService-marquee-desktop');
+      const targetTimelineKey = element.dataset.about;
+      slideOutAnimation(marquee, element, timeline[targetTimelineKey]);
+    };
+
+    elements.forEach((el) => {
+      el.addEventListener('mouseover', handleMouseover);
     });
-    aboutShare.addEventListener('mouseleave', (e) => {
-      let targetMarquee = e.target.closest('.aboutService-marquee-desktop');
-      slideOutAnimation(aboutShare, targetMarquee, aboutShareTimeline);
+
+    elements.forEach((el) => {
+      el.addEventListener('mouseleave', handleMouseleave);
     });
-    aboutDiscover.addEventListener('mouseover', (e) => {
-      let targetMarquee = e.target.closest('.aboutService-marquee-desktop');
-      slideInAnimation(aboutDiscover, targetMarquee, aboutDiscoverTimeline);
-    });
-    aboutDiscover.addEventListener('mouseleave', (e) => {
-      let targetMarquee = e.target.closest('.aboutService-marquee-desktop');
-      slideOutAnimation(aboutDiscover, targetMarquee, aboutDiscoverTimeline);
-    });
-    aboutConnect.addEventListener('mouseover', (e) => {
-      let targetMarquee = e.target.closest('.aboutService-marquee-desktop');
-      slideInAnimation(aboutConnect, targetMarquee, aboutConnectTimeline);
-    });
-    aboutConnect.addEventListener('mouseleave', (e) => {
-      let targetMarquee = e.target.closest('.aboutService-marquee-desktop');
-      slideOutAnimation(aboutConnect, targetMarquee, aboutConnectTimeline);
-    });
+
+    return () => {
+      elements.forEach((el) => {
+        el.removeEventListener('mouseover', handleMouseover);
+      });
+    };
   }, []);
 
   return (
@@ -525,6 +534,7 @@ const AboutUsMarquee = () => {
         <div
           className="marquee aboutService-marquee-desktop py-12 d-flex"
           id="aboutShare"
+          data-about="share"
         >
           <div className="marquee-scroll d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
@@ -787,6 +797,7 @@ const AboutUsMarquee = () => {
         <div
           className="marquee aboutService-marquee-desktop py-12 d-flex"
           id="aboutDiscover"
+          data-about="discover"
         >
           <div className="marquee-scroll-reverse d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
@@ -1049,6 +1060,7 @@ const AboutUsMarquee = () => {
         <div
           className="marquee aboutService-marquee-desktop py-12 d-flex"
           id="aboutConnect"
+          data-about="connect"
         >
           <div className="marquee-scroll d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
