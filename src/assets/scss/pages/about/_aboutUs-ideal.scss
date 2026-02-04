@@ -7,7 +7,7 @@
     position: relative;
     width: 100%;
     height: 351px;
-    background: url('/assets/images/about-1.jpg') no-repeat center;
+    background: url('/images/about-1.jpg') no-repeat center;
     background-size: 240%;
     @include media-breakpoint-up(sm) {
       background-size: 150%;
@@ -24,11 +24,11 @@
     position: absolute;
     top: 42%;
     left: 0;
-    background: url('/assets/images/deco/about-banner-path-sm-1.svg') no-repeat;
+    background: url('/images/deco/about-banner-path-sm-1.svg') no-repeat;
     @include media-breakpoint-up(sm) {
       top: 30%;
       left: -30%;
-      background: url('/assets/images/deco/about-banner-path-1.svg') no-repeat;
+      background: url('/images/deco/about-banner-path-1.svg') no-repeat;
     }
     @include media-breakpoint-up(lg) {
       top: 57%;
@@ -42,11 +42,11 @@
     position: absolute;
     top: 10%;
     left: 72%;
-    background: url('/assets/images/deco/about-banner-path-sm-2.svg') no-repeat;
+    background: url('/images/deco/about-banner-path-sm-2.svg') no-repeat;
     @include media-breakpoint-up(sm) {
       top: -5%;
       left: 70%;
-      background: url('/assets/images/deco/about-banner-path-2.svg') no-repeat;
+      background: url('/images/deco/about-banner-path-2.svg') no-repeat;
     }
     @include media-breakpoint-up(lg) {
       top: 18%;
@@ -59,7 +59,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url('/assets/images/Noise.png') no-repeat;
+    background: url('/images/Noise.png') no-repeat;
     opacity: 0.5;
     mix-blend-mode: soft-light;
   }
@@ -69,9 +69,9 @@
     left: 3%;
     width: 219px;
     height: 247px;
-    background: url('/assets/images/deco/about-banner-sm-hand.svg') no-repeat;
+    background: url('/images/deco/about-banner-sm-hand.svg') no-repeat;
     @include media-breakpoint-up(lg) {
-      background: url('/assets/images/deco/about-banner-big-hand.svg') no-repeat;
+      background: url('/images/deco/about-banner-big-hand.svg') no-repeat;
       width: 425px;
       height: 481px;
       top: 60%;

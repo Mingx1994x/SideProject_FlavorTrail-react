@@ -1,5 +1,6 @@
-import AboutUsMarquee from '../components/AboutUsMarquee';
+import AboutUsMarquee from '@/components/AboutUsMarquee';
 import PropTypes from 'prop-types';
+import { imgAboutURl2 } from '@/data/imagesPath';
 
 /* our story section 中的外框字型跟堆疊效果 */
 const SingleTextSVG = ({ text, viewBox, position, className, isMobile }) => {
@@ -36,13 +37,20 @@ const SingleTextSVG = ({ text, viewBox, position, className, isMobile }) => {
   );
 };
 
-function getStackCount (isMobile, count) {
+function getStackCount(isMobile, count) {
   const defaultCount = isMobile ? 8 : 16;
   return count || defaultCount;
 }
-const StackedTextSVG = ({ text, viewBox, position, count, isMobile, className }) => {
+const StackedTextSVG = ({
+  text,
+  viewBox,
+  position,
+  count,
+  isMobile,
+  className,
+}) => {
   const actualCount = getStackCount(isMobile, count);
-  
+
   const stackedElements = [];
   for (let i = 0; i < actualCount; i++) {
     stackedElements.push(
@@ -53,7 +61,7 @@ const StackedTextSVG = ({ text, viewBox, position, count, isMobile, className })
         viewBox={viewBox}
       >
         <text
-          className={i === 0 ? "stroke-text" : ""}
+          className={i === 0 ? 'stroke-text' : ''}
           x={position.x}
           y={position.y}
           stroke="white"
@@ -63,19 +71,21 @@ const StackedTextSVG = ({ text, viewBox, position, count, isMobile, className })
           {text}
         </text>
         <text
-          className={i === 0 ? "fill-text" : "stack-pattern fill-text"}
+          className={i === 0 ? 'fill-text' : 'stack-pattern fill-text'}
           x={position.x}
           y={position.y}
           fill="#00503F"
         >
           {text}
         </text>
-      </svg>
+      </svg>,
     );
   }
 
   return (
-    <h2 className={`${isMobile ? 'd-lg-none d-block' : 'd-none d-lg-block'} stack-container`}>
+    <h2
+      className={`${isMobile ? 'd-lg-none d-block' : 'd-none d-lg-block'} stack-container`}
+    >
       {stackedElements}
     </h2>
   );
@@ -86,10 +96,10 @@ SingleTextSVG.propTypes = {
   viewBox: PropTypes.string.isRequired,
   position: PropTypes.shape({
     x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired
+    y: PropTypes.number.isRequired,
   }).isRequired,
   className: PropTypes.string,
-  isMobile: PropTypes.bool
+  isMobile: PropTypes.bool,
 };
 
 StackedTextSVG.propTypes = {
@@ -97,11 +107,11 @@ StackedTextSVG.propTypes = {
   viewBox: PropTypes.string.isRequired,
   position: PropTypes.shape({
     x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired
+    y: PropTypes.number.isRequired,
   }).isRequired,
   className: PropTypes.string,
   isMobile: PropTypes.bool,
-  count: PropTypes.number
+  count: PropTypes.number,
 };
 
 /* ABOUT US 頁面本體 */
@@ -162,15 +172,15 @@ const AboutUs = () => {
 
             <div className="about-story__title-first-right title-wrapper">
               <StackedTextSVG
-                text={"的"}
-                viewBox={"0 -15 100 100"}
+                text={'的'}
+                viewBox={'0 -15 100 100'}
                 position={{ x: 0, y: 60 }}
                 className="title-stroke-svg__our-right"
                 isMobile={false}
               />
               <StackedTextSVG
-                text={"的"}
-                viewBox={"0 0 100 100"}
+                text={'的'}
+                viewBox={'0 0 100 100'}
                 position={{ x: 0, y: 60 }}
                 className="title-stroke-svg__our-right"
                 isMobile={true}
@@ -179,7 +189,7 @@ const AboutUs = () => {
             </div>
 
             <div className="about-story__title-second-left title-wrapper">
-            <StackedTextSVG
+              <StackedTextSVG
                 text="故"
                 viewBox="0 0 100 100"
                 position={{ x: 16, y: 73 }}
@@ -231,7 +241,7 @@ const AboutUs = () => {
             <div className="about-story__background">
               <img
                 className="about-story__background-img"
-                src="./assets/images/about-2.jpg"
+                src={imgAboutURl2}
                 alt="about-story__background"
               />
             </div>
