@@ -1,56 +1,44 @@
 import PropTypes from 'prop-types';
 
-function getStackCount(isMobile, count) {
-  const defaultCount = isMobile ? 8 : 16;
-  return count || defaultCount;
-}
-
 const StackedTextSVG = ({
   text,
   viewBox,
   position,
   count,
-  isMobile,
-  className,
+  displayClass,
+  strokeStyleClass,
 }) => {
-  const actualCount = getStackCount(isMobile, count);
-
-  const stackedElements = [];
-  for (let i = 0; i < actualCount; i++) {
-    stackedElements.push(
-      <svg
-        key={i}
-        className={`title-stroke-svg ${className} w-100`}
-        aria-label={text}
-        viewBox={viewBox}
-      >
-        <text
-          className={i === 0 ? 'stroke-text' : ''}
-          x={position.x}
-          y={position.y}
-          stroke="white"
-          strokeWidth="8"
-          fill="none"
-        >
-          {text}
-        </text>
-        <text
-          className={i === 0 ? 'fill-text' : 'stack-pattern fill-text'}
-          x={position.x}
-          y={position.y}
-          fill="#00503F"
-        >
-          {text}
-        </text>
-      </svg>,
-    );
-  }
+  const { x, y } = position;
 
   return (
-    <h2
-      className={`${isMobile ? 'd-lg-none d-block' : 'd-none d-lg-block'} stack-container`}
-    >
-      {stackedElements}
+    <h2 className={`stack-container ${displayClass} `}>
+      {Array.from({ length: count }, (_, index) => (
+        <svg
+          key={index}
+          className={`title-stroke-svg ${strokeStyleClass} w-100`}
+          aria-label={text}
+          viewBox={viewBox}
+        >
+          <text
+            className={index === 0 ? 'stroke-text' : ''}
+            x={x}
+            y={y}
+            stroke="white"
+            strokeWidth="8"
+            fill="none"
+          >
+            {text}
+          </text>
+          <text
+            className={index === 0 ? 'fill-text' : 'stack-pattern fill-text'}
+            x={x}
+            y={y}
+            fill="#00503F"
+          >
+            {text}
+          </text>
+        </svg>
+      ))}
     </h2>
   );
 };
@@ -62,9 +50,9 @@ StackedTextSVG.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
   }).isRequired,
-  className: PropTypes.string,
-  isMobile: PropTypes.bool,
   count: PropTypes.number,
+  displayClass: PropTypes.string,
+  strokeStyleClass: PropTypes.string,
 };
 
 export default StackedTextSVG;

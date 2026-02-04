@@ -2,6 +2,28 @@ import { imgAboutURl2 } from '@/data/imagesPath';
 import StackedTextSVG from '@/components/StackedTextSVG';
 import SingleTextSVG from '@/components/SingleTextSVG';
 
+const titleTextPositions = {
+  default: {
+    topLeft: { x: 4, y: 60 },
+    topRight: { x: 0, y: 60 },
+    bottomLeft: { x: 32, y: 60 },
+    bottomRight: { x: 34, y: 89 },
+  },
+  desktop: {
+    topLeft: { x: 2, y: 74 },
+    topRight: { x: 0, y: 60 },
+    bottomLeft: { x: 16, y: 73 },
+    bottomRight: { x: 18, y: 87 },
+  },
+};
+
+const titleTextStyle = {
+  topLeft: 'title-stroke-svg__our-left',
+  topRight: 'title-stroke-svg__our-right',
+  bottomLeft: 'title-stroke-svg__story-left',
+  bottomRight: 'title-stroke-svg__story-right',
+};
+
 const AboutOurStorySection = () => {
   return (
     <section className="about-story position-relative bg-primary py-12 py-lg-18">
@@ -11,16 +33,16 @@ const AboutOurStorySection = () => {
             <SingleTextSVG
               text="我們"
               viewBox="0 0 160 100"
-              position={{ x: 2, y: 74 }}
-              className="title-stroke-svg__our-left"
-              isMobile={false}
+              position={titleTextPositions.desktop.topLeft}
+              displayClass="d-none d-lg-block"
+              strokeStyleClass={titleTextStyle.topLeft}
             />
             <SingleTextSVG
               text="我們"
               viewBox="0 0 140 100"
-              position={{ x: 4, y: 60 }}
-              className="title-stroke-svg__our-left"
-              isMobile={true}
+              position={titleTextPositions.default.topLeft}
+              displayClass="d-lg-none d-block"
+              strokeStyleClass={titleTextStyle.topLeft}
             />
           </div>
 
@@ -28,16 +50,17 @@ const AboutOurStorySection = () => {
             <StackedTextSVG
               text={'的'}
               viewBox={'0 -15 100 100'}
-              position={{ x: 0, y: 60 }}
-              className="title-stroke-svg__our-right"
-              isMobile={false}
+              position={titleTextPositions.desktop.topRight}
+              displayClass="d-none d-lg-block"
+              strokeStyleClass={titleTextStyle.topRight}
+              count={16}
             />
             <StackedTextSVG
               text={'的'}
               viewBox={'0 0 100 100'}
-              position={{ x: 0, y: 60 }}
-              className="title-stroke-svg__our-right"
-              isMobile={true}
+              position={titleTextPositions.default.topRight}
+              displayClass="d-lg-none d-block"
+              strokeStyleClass={titleTextStyle.topRight}
               count={8}
             />
           </div>
@@ -46,17 +69,18 @@ const AboutOurStorySection = () => {
             <StackedTextSVG
               text="故"
               viewBox="0 0 100 100"
-              position={{ x: 16, y: 73 }}
-              className="title-stroke-svg__story-left"
-              isMobile={false}
+              position={titleTextPositions.desktop.bottomLeft}
+              displayClass="d-none d-lg-block"
+              strokeStyleClass={titleTextStyle.bottomLeft}
+              count={16}
             />
 
             <StackedTextSVG
               text="故"
               viewBox="0 0 100 100"
-              position={{ x: 32, y: 60 }}
-              className="title-stroke-svg__story-left"
-              isMobile={true}
+              position={titleTextPositions.default.bottomLeft}
+              displayClass="d-lg-none d-block"
+              strokeStyleClass={titleTextStyle.bottomLeft}
               count={8}
             />
           </div>
@@ -65,16 +89,16 @@ const AboutOurStorySection = () => {
             <SingleTextSVG
               text="事"
               viewBox="0 0 100 100"
-              position={{ x: 18, y: 87 }}
-              className="title-stroke-svg__story-right"
-              isMobile={false}
+              position={titleTextPositions.desktop.bottomRight}
+              displayClass="d-none d-lg-block"
+              strokeStyleClass="title-stroke-svg__story-right"
             />
             <SingleTextSVG
               text={'事'}
               viewBox="0 0 100 100"
-              position={{ x: 34, y: 89 }}
-              className="title-stroke-svg__story-right"
-              isMobile={true}
+              position={titleTextPositions.default.bottomRight}
+              displayClass="d-lg-none d-block"
+              strokeStyleClass="title-stroke-svg__story-right"
             />
           </div>
 

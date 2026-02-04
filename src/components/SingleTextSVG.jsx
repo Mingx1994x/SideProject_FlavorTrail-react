@@ -1,32 +1,33 @@
 import PropTypes from 'prop-types';
 
-const SingleTextSVG = ({ text, viewBox, position, className, isMobile }) => {
+const SingleTextSVG = ({
+  text,
+  viewBox,
+  position,
+  displayClass,
+  strokeStyleClass,
+}) => {
+  const { x, y } = position;
+
   return (
-    <h2>
+    <h2 className={`${displayClass}`}>
       <svg
-        className={`${
-          isMobile ? 'd-lg-none d-block' : 'd-none d-lg-block'
-        } title-stroke-svg ${className} w-100`}
+        className={`title-stroke-svg ${strokeStyleClass} w-100`}
         aria-label={text}
         viewBox={viewBox}
         preserveAspectRatio="xMinYMin meet"
       >
         <text
           className="stroke-text"
-          x={position.x}
-          y={position.y}
+          x={x}
+          y={y}
           stroke="white"
           strokeWidth="8"
           fill="none"
         >
           {text}
         </text>
-        <text
-          className="fill-text"
-          x={position.x}
-          y={position.y}
-          fill="#00503F"
-        >
+        <text className="fill-text" x={x} y={y} fill="#00503F">
           {text}
         </text>
       </svg>
@@ -41,8 +42,8 @@ SingleTextSVG.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
   }).isRequired,
-  className: PropTypes.string,
-  isMobile: PropTypes.bool,
+  displayClass: PropTypes.string,
+  strokeStyleClass: PropTypes.string,
 };
 
 export default SingleTextSVG;
