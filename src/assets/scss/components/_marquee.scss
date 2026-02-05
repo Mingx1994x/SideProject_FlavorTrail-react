@@ -23,11 +23,10 @@
   }
 }
 
-.marquee-scroll {
-  animation: marquee 20s linear infinite;
-}
-
+.marquee-scroll,
 .marquee-scroll2 {
+  flex-shrink: 0; // 防止內容被壓縮
+  min-width: 100%; // 確保每組至少佔滿一個螢幕寬度
   animation: marquee 20s linear infinite;
 }
 

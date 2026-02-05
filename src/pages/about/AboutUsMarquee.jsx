@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { Collapse } from 'bootstrap';
+import Marquee from '../../components/Marquee';
 
 const AboutUsMarquee = () => {
   useEffect(() => {
@@ -17,14 +18,15 @@ const AboutUsMarquee = () => {
 
     const clickHandler = (e) => {
       let targetCollapse = e.target.closest('.marquee').dataset.collapse;
+
       switch (targetCollapse) {
-        case 'shareCollapse':
+        case 'share':
           shareCollapse.toggle();
           break;
-        case 'discoverCollapse':
+        case 'discover':
           discoverCollapse.toggle();
           break;
-        case 'connectCollapse':
+        case 'connect':
           connectCollapse.toggle();
           break;
       }
@@ -136,7 +138,7 @@ const AboutUsMarquee = () => {
     <>
       {/* <!-- mobile --> */}
       <section className="aboutService d-lg-none">
-        <div className="d-flex flex-column border-top border-primary border-4 ">
+        {/* <div className="d-flex flex-column border-top border-primary border-4 ">
           <div className="marquee py-8 d-flex" data-collapse="shareCollapse">
             <div className="marquee-scroll d-flex align-items-center">
               <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
@@ -266,8 +268,21 @@ const AboutUsMarquee = () => {
               無論是派對後的剩餘餐點、即將到期的食材，或是購買過量的零食，都可以在這裡找到新主人！
             </p>
           </div>
-        </div>
-        <div className="d-flex flex-column border-top border-primary border-4">
+        </div> */}
+        <Marquee text="分享美味" svgName="share">
+          <div
+            className="aboutService-content collapse px-4 py-8"
+            id="shareCollapse"
+          >
+            <h3 className="aboutService-title display-3 mb-7">分享美味</h3>
+            <p>
+              輕鬆發佈你不再需要的食物，找到願意接受的人。
+              <br />
+              無論是派對後的剩餘餐點、即將到期的食材，或是購買過量的零食，都可以在這裡找到新主人！
+            </p>
+          </div>
+        </Marquee>
+        {/* <div className="d-flex flex-column border-top border-primary border-4">
           <div className="marquee py-8 d-flex" data-collapse="discoverCollapse">
             <div className="marquee-scroll-reverse d-flex align-items-center">
               <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
@@ -397,8 +412,21 @@ const AboutUsMarquee = () => {
               我們提供地區搜尋、詳細的食物資訊，以及便捷的預約系統，讓美味不浪費！
             </p>
           </div>
-        </div>
-        <div className="d-flex flex-column border-top border-bottom border-primary border-4">
+        </div> */}
+        <Marquee text="尋找美食" svgName="discover">
+          <div
+            className="aboutService-content collapse px-4 py-8"
+            id="discoverCollapse"
+          >
+            <h3 className="aboutService-title display-3 mb-7">尋找美食</h3>
+            <p>
+              在你附近發現免費的美味食物，快速領取不浪費。
+              <br />
+              我們提供地區搜尋、詳細的食物資訊，以及便捷的預約系統，讓美味不浪費！
+            </p>
+          </div>
+        </Marquee>
+        {/* <div className="d-flex flex-column border-top border-bottom border-primary border-4">
           <div className="marquee py-8 d-flex" data-collapse="connectCollapse">
             <div className="marquee-scroll d-flex align-items-center">
               <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
@@ -526,7 +554,18 @@ const AboutUsMarquee = () => {
               方便的留言功能，讓你能夠詢問食物的詳細資訊、安排面交時間，建立溫暖的社群連結。
             </p>
           </div>
-        </div>
+        </div> */}
+        <Marquee text="食客互動" svgName="connect">
+          <div
+            className="aboutService-content collapse px-4 py-8"
+            id="connectCollapse"
+          >
+            <h3 className="aboutService-title display-3 mb-7">食客互動</h3>
+            <p>
+              方便的留言功能，讓你能夠詢問食物的詳細資訊、安排面交時間，建立溫暖的社群連結。
+            </p>
+          </div>
+        </Marquee>
       </section>
 
       {/* <!-- desktop --> */}
