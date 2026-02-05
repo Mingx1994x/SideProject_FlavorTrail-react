@@ -19,10 +19,13 @@ const marqueeSVGContent = {
   },
 };
 
-const Marquee = ({ text, svgName, children }) => {
+const Marquee = ({ text, svgName, clickFunction, children }) => {
   return (
-    <div className="d-flex flex-column border-top border-primary border-4 ">
-      <div className="marquee py-8 d-flex" data-collapse={text}>
+    <div
+      className="d-flex flex-column border-top border-primary border-4 "
+      onClick={clickFunction}
+    >
+      <div className="marquee py-8 d-flex">
         <div className="marquee-scroll d-flex align-items-center">
           <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
             {text}
@@ -52,6 +55,7 @@ const Marquee = ({ text, svgName, children }) => {
 Marquee.propTypes = {
   text: PropTypes.string.isRequired,
   svgName: PropTypes.oneOf(['share', 'discover', 'connect']).isRequired,
+  clickFunction: PropTypes.func,
   children: PropTypes.node,
 };
 
