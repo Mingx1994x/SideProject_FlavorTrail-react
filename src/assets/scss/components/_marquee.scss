@@ -24,9 +24,11 @@
 }
 
 .marquee-scroll,
-.marquee-scroll2 {
+.marquee-scroll-reverse {
   flex-shrink: 0; // 防止內容被壓縮
   min-width: 100%; // 確保每組至少佔滿一個螢幕寬度
+}
+.marquee-scroll {
   animation: marquee 20s linear infinite;
 }
 
@@ -34,9 +36,14 @@
   animation: marquee2 20s linear infinite;
 }
 
+.marquee-scroll2 {
+  animation: marquee 20s linear infinite;
+}
+
 .marquee-scroll2-reverse {
   animation: marquee2 20s linear infinite;
 }
+
 .marquee {
   background-color: #fff;
   overflow: hidden;

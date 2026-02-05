@@ -155,6 +155,7 @@ const AboutUsMarquee = () => {
         <Marquee
           text="尋找美食"
           svgName="discover"
+          direction="right"
           clickFunction={() => handleCollapse('discover')}
         >
           <div
@@ -194,7 +195,7 @@ const AboutUsMarquee = () => {
           id="aboutShare"
           data-about="share"
         >
-          <div className="marquee-scroll d-flex align-items-center">
+          <div className="marquee-scroll2 d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
               分享美味
             </p>
@@ -310,7 +311,7 @@ const AboutUsMarquee = () => {
               />
             </svg>
           </div>
-          <div className="marquee-scroll d-flex align-items-center">
+          <div className="marquee-scroll2 d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
               分享美味
             </p>
@@ -457,7 +458,7 @@ const AboutUsMarquee = () => {
           id="aboutDiscover"
           data-about="discover"
         >
-          <div className="marquee-scroll-reverse d-flex align-items-center">
+          <div className="marquee-scroll2-reverse d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
               尋找美食
             </p>
@@ -573,7 +574,7 @@ const AboutUsMarquee = () => {
               />
             </svg>
           </div>
-          <div className="marquee-scroll-reverse d-flex align-items-center">
+          <div className="marquee-scroll2-reverse d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
               尋找美食
             </p>
@@ -720,7 +721,7 @@ const AboutUsMarquee = () => {
           id="aboutConnect"
           data-about="connect"
         >
-          <div className="marquee-scroll d-flex align-items-center">
+          <div className="marquee-scroll2 d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
               食客互動
             </p>
@@ -838,7 +839,7 @@ const AboutUsMarquee = () => {
               />
             </svg>
           </div>
-          <div className="marquee-scroll d-flex align-items-center">
+          <div className="marquee-scroll2 d-flex align-items-center">
             <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
               食客互動
             </p>

@@ -19,14 +19,22 @@ const marqueeSVGContent = {
   },
 };
 
-const Marquee = ({ text, svgName, clickFunction, children }) => {
+const Marquee = ({
+  text,
+  svgName,
+  direction = 'left',
+  clickFunction,
+  children,
+}) => {
   return (
     <div
       className="d-flex flex-column border-top border-primary border-4 "
       onClick={clickFunction}
     >
       <div className="marquee py-8 d-flex">
-        <div className="marquee-scroll d-flex align-items-center">
+        <div
+          className={`${direction === 'left' ? 'marquee-scroll' : 'marquee-scroll-reverse'} d-flex align-items-center`}
+        >
           <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
             {text}
           </p>
@@ -36,7 +44,9 @@ const Marquee = ({ text, svgName, clickFunction, children }) => {
           </p>
           <img src={marqueeSVGContent.mobile[svgName]} alt={text} />
         </div>
-        <div className="marquee-scroll2 d-flex align-items-center">
+        <div
+          className={`${direction === 'left' ? 'marquee-scroll' : 'marquee-scroll-reverse'} d-flex align-items-center`}
+        >
           <p className="aboutService-marquee-text display-3 display-lg-1 text-primary text-nowrap mb-0">
             {text}
           </p>
@@ -55,6 +65,7 @@ const Marquee = ({ text, svgName, clickFunction, children }) => {
 Marquee.propTypes = {
   text: PropTypes.string.isRequired,
   svgName: PropTypes.oneOf(['share', 'discover', 'connect']).isRequired,
+  direction: PropTypes.oneOf(['right', 'left']),
   clickFunction: PropTypes.func,
   children: PropTypes.node,
 };
