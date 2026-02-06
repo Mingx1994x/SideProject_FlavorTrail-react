@@ -37,12 +37,35 @@ const AboutUsMarquee = () => {
   }, []);
 
   // desktop marquee 互動功能
+  const shareDesktopRef = useRef();
+  const discoverDesktopRef = useRef();
+  const connectDesktopRef = useRef();
+
+  const shareDesktopTitleRef = useRef();
+  const shareDesktopContentRef = useRef();
+  const discoverDesktopTitleRef = useRef();
+  const discoverDesktopContentRef = useRef();
+  const connectDesktopTitleRef = useRef();
+  const connectDesktopContentRef = useRef();
   useEffect(() => {
-    const elements = [
-      document.querySelector('#aboutShare'),
-      document.querySelector('#aboutDiscover'),
-      document.querySelector('#aboutConnect'),
-    ];
+    const marqueeDesktopRef = {
+      share: shareDesktopRef.current,
+      discover: discoverDesktopRef.current,
+      connect: connectDesktopRef.current,
+    };
+
+    const AnimationTitle = {
+      share: shareDesktopTitleRef.current,
+      discover: discoverDesktopTitleRef.current,
+      connect: connectDesktopTitleRef.current,
+    };
+
+    const AnimationContent = {
+      share: shareDesktopContentRef.current,
+      discover: discoverDesktopContentRef.current,
+      connect: connectDesktopContentRef.current,
+    };
+
     const timeline = {
       share: gsap.timeline(),
       discover: gsap.timeline(),
@@ -51,7 +74,7 @@ const AboutUsMarquee = () => {
 
     let primaryColor = '#00503F';
     let whiteColor = '#FFFFFF';
-    const slideInAnimation = (target, element, timeline) => {
+    const slideInAnimation = (targetRight, targeLeft, element, timeline) => {
       timeline.clear();
       timeline.to(element, {
         backgroundColor: primaryColor,
@@ -59,7 +82,7 @@ const AboutUsMarquee = () => {
       });
 
       timeline.to(
-        target.children[4],
+        targeLeft,
         {
           duration: 0.3,
           x: 0,
@@ -68,7 +91,7 @@ const AboutUsMarquee = () => {
         '-=.1',
       );
       timeline.to(
-        target.children[5],
+        targetRight,
         {
           duration: 0.3,
           xPercent: -100,
@@ -77,10 +100,10 @@ const AboutUsMarquee = () => {
         '-=.4',
       );
     };
-    const slideOutAnimation = (target, element, timeline) => {
+    const slideOutAnimation = (targetRight, targeLeft, element, timeline) => {
       timeline.clear();
       timeline.to(
-        target.children[4],
+        targeLeft,
         {
           duration: 0.3,
           x: -400,
@@ -89,7 +112,7 @@ const AboutUsMarquee = () => {
         '0',
       );
       timeline.to(
-        target.children[5],
+        targetRight,
         {
           duration: 0.3,
           xPercent: 0,
@@ -105,36 +128,46 @@ const AboutUsMarquee = () => {
       });
     };
 
-    const handleMouseover = (e) => {
-      const element = e.currentTarget;
-      const marquee = element.closest('.aboutService-marquee-desktop');
-      const targetTimelineKey = element.dataset.about;
-      slideInAnimation(marquee, element, timeline[targetTimelineKey]);
+    const bindHover = (key) => {
+      const targetElement = marqueeDesktopRef[key];
+      if (!targetElement) return;
+
+      const handleMouseEnter = () => {
+        slideInAnimation(
+          AnimationContent[key],
+          AnimationTitle[key],
+          targetElement,
+          timeline[key],
+        );
+      };
+
+      const handleMouseLeave = () => {
+        slideOutAnimation(
+          AnimationContent[key],
+          AnimationTitle[key],
+          targetElement,
+          timeline[key],
+        );
+      };
+
+      targetElement.addEventListener('mouseenter', handleMouseEnter);
+      targetElement.addEventListener('mouseleave', handleMouseLeave);
+
+      return () => {
+        targetElement.removeEventListener('mouseenter', handleMouseEnter);
+        targetElement.removeEventListener('mouseleave', handleMouseLeave);
+      };
     };
 
-    const handleMouseleave = (e) => {
-      const element = e.currentTarget;
-      const marquee = element.closest('.aboutService-marquee-desktop');
-      const targetTimelineKey = element.dataset.about;
-      slideOutAnimation(marquee, element, timeline[targetTimelineKey]);
-    };
+    const cleanups = [];
 
-    elements.forEach((el) => {
-      el?.addEventListener('mouseover', handleMouseover);
-    });
-
-    elements.forEach((el) => {
-      el?.addEventListener('mouseleave', handleMouseleave);
+    Object.keys(marqueeDesktopRef).forEach((key) => {
+      const cleanup = bindHover(key);
+      cleanup && cleanups.push(cleanup);
     });
 
     return () => {
-      elements.forEach((el) => {
-        el?.removeEventListener('mouseover', handleMouseover);
-      });
-
-      elements.forEach((el) => {
-        el?.removeEventListener('mouseleave', handleMouseleave);
-      });
+      cleanups.forEach((fn) => fn());
     };
   }, []);
 
@@ -196,8 +229,16 @@ const AboutUsMarquee = () => {
 
       {/* <!-- desktop --> */}
       <section className="aboutService d-none d-lg-block">
-        <MarqueeDesktop text="分享美味" svgName="share" id="aboutShare">
-          <div className="aboutService-content contentTitle ps-12">
+        <MarqueeDesktop
+          text="分享美味"
+          svgName="share"
+          id="aboutShare"
+          ref={shareDesktopRef}
+        >
+          <div
+            className="aboutService-content contentTitle ps-12"
+            ref={shareDesktopTitleRef}
+          >
             <h3 className="aboutService-title display-3 display-lg-1 mb-0">
               分享美味
             </h3>
@@ -207,7 +248,10 @@ const AboutUsMarquee = () => {
               美味
             </h3>
           </div>
-          <div className="aboutService-content contentText pe-12">
+          <div
+            className="aboutService-content contentText pe-12"
+            ref={shareDesktopContentRef}
+          >
             <p className="aboutService-text text-end">
               輕鬆發佈你不再需要的食物，找到願意接受的人。
               <br />
@@ -227,9 +271,13 @@ const AboutUsMarquee = () => {
           text="尋找美食"
           svgName="discover"
           id="aboutDiscover"
+          ref={discoverDesktopRef}
           direction="right"
         >
-          <div className="aboutService-content contentTitle ps-12">
+          <div
+            className="aboutService-content contentTitle ps-12"
+            ref={discoverDesktopTitleRef}
+          >
             <h3 className="aboutService-title display-3 display-lg-1 mb-0">
               尋找美食
             </h3>
@@ -239,7 +287,10 @@ const AboutUsMarquee = () => {
               美食
             </h3>
           </div>
-          <div className="aboutService-content contentText pe-12">
+          <div
+            className="aboutService-content contentText pe-12"
+            ref={discoverDesktopContentRef}
+          >
             <p className="aboutService-text text-end">
               在你附近發現免費的美味食物，快速領取不浪費。
               <br />
@@ -255,8 +306,16 @@ const AboutUsMarquee = () => {
           </div>
         </MarqueeDesktop>
 
-        <MarqueeDesktop text="食客互動" svgName="connect" id="aboutConnect">
-          <div className="aboutService-content contentTitle ps-12">
+        <MarqueeDesktop
+          text="食客互動"
+          svgName="connect"
+          id="aboutConnect"
+          ref={connectDesktopRef}
+        >
+          <div
+            className="aboutService-content contentTitle ps-12"
+            ref={connectDesktopTitleRef}
+          >
             <h3 className="aboutService-title display-3 display-lg-1 mb-0">
               食客互動
             </h3>
@@ -266,7 +325,10 @@ const AboutUsMarquee = () => {
               互動
             </h3>
           </div>
-          <div className="aboutService-content contentText pe-12">
+          <div
+            className="aboutService-content contentText pe-12"
+            ref={connectDesktopContentRef}
+          >
             <p className="aboutService-text2 text-end">
               方便的留言功能，讓你能夠詢問食物的詳細資訊、安排面交時間，建立溫暖的社群連結。
             </p>
