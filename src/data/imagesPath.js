@@ -36,6 +36,11 @@ import decoGuideUrl1 from '/images/deco/guide-1.svg';
 import decoGuideUrl2 from '/images/deco/guide-2.svg';
 import decoGuideUrl3 from '/images/deco/guide-3.svg';
 
+// login 
+import decoLoginUrl1 from '/images/deco/login-deco-1.svg'
+import decoLoginUrl2 from '/images/deco/login-deco-2.svg'
+import decoLoginUrl3 from '/images/deco/login-deco-3.svg'
+
 // deco
 import decoArrowPinkUrl1 from '/images/deco/arrow-pink-1.png'
 import decoArrowPinkUrl2 from '/images/deco/arrow-pink-2.png'
@@ -77,6 +82,9 @@ export {
   decoGuideUrl1,
   decoGuideUrl2,
   decoGuideUrl3,
+  decoLoginUrl1,
+  decoLoginUrl2,
+  decoLoginUrl3,
   decoArrowPinkUrl1,
   decoArrowPinkUrl2,
   decoTalkPinkUrl,

@@ -6,6 +6,13 @@ import { Link, useNavigate } from 'react-router';
 import { setIsLogin } from '../redux/LoginStateSlice';
 import AlertModal from '../components/AlertModal';
 import toast from 'react-hot-toast';
+import {
+  decoLoginUrl1,
+  decoLoginUrl2,
+  decoLoginUrl3,
+  imgHomeURl2,
+  logoUrl,
+} from '../data/imagesPath';
 const { VITE_LOGIN_URL } = import.meta.env;
 const Login = () => {
   const navigate = useNavigate();
@@ -35,7 +42,7 @@ const Login = () => {
         setIsLogin({
           uid: res.data.uid,
           isLogin: true,
-        })
+        }),
       );
       AlertModal.successMessage({
         text: '尊敬的尋者唷！歡迎回來！',
@@ -73,7 +80,7 @@ const Login = () => {
               className="footer-logo position-absolute top-0 start-0 z-2"
             >
               <img
-                src="./assets/images/Logo.png"
+                src={logoUrl}
                 alt="logo"
                 style={{
                   width: '174px',
@@ -83,20 +90,14 @@ const Login = () => {
             </Link>
             <img
               className="login-img object-fit-cover"
-              src="./assets/images/home-2.jpg"
-              alt="img"
+              src={imgHomeURl2}
+              alt="img_home2"
             />
             <div className="login-deco-1 position-absolute d-none d-lg-block">
-              <img
-                src="./assets/images/deco/login-deco-1.svg"
-                alt="login-deco"
-              />
+              <img src={decoLoginUrl1} alt="login-deco1" />
             </div>
             <div className="login-deco-2 position-absolute d-none d-lg-block">
-              <img
-                src="./assets/images/deco/login-deco-2.svg"
-                alt="login-deco"
-              />
+              <img src={decoLoginUrl2} alt="login-deco2" />
             </div>
             <div
               className="login-deco-3 position-absolute d-none d-lg-block"
@@ -115,10 +116,7 @@ const Login = () => {
                 <p>快樂齊分享，美味</p>
                 <p className="vertical-text text-lg-vertical ms-auto">再出發</p>
               </div>
-              <img
-                src="./assets/images/deco/login-deco-3.svg"
-                alt="login-deco"
-              />
+              <img src={decoLoginUrl3} alt="login-deco" />
             </div>
           </div>
         </div>
