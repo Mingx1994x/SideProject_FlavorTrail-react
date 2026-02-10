@@ -1,11 +1,13 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router';
-import { setIsLogin } from '../redux/LoginStateSlice';
-import AlertModal from '../components/AlertModal';
+import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+
+// import { setIsLogin } from '../redux/LoginStateSlice';
+import AlertModal from '../components/AlertModal';
+import { login } from '../query/api/auth';
 import {
   decoLoginUrl1,
   decoLoginUrl2,
@@ -13,10 +15,9 @@ import {
   imgHomeURl2,
   logoUrl,
 } from '../data/imagesPath';
-const { VITE_LOGIN_URL } = import.meta.env;
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   //form
   const {
     register,
@@ -29,29 +30,32 @@ const Login = () => {
 
   //eye
   const [passwordHidden, setPasswordHidden] = useState(true);
-
-  const signin = async (formData) => {
-    try {
-      const { email, password } = formData;
-      const res = await axios.post(`${VITE_LOGIN_URL}/admin/signin`, {
-        username: email,
-        password,
-      });
+  const submitData = (data) => {
+    const { email, password } = data;
+    loginMutation({
+      email,
+      password,
+    });
+  };
+  const { mutate: loginMutation } = useMutation({
+    mutationFn: (data) => login(data),
+    onSuccess: (res) => {
       reset();
-      dispatch(
-        setIsLogin({
-          uid: res.data.uid,
-          isLogin: true,
-        }),
-      );
+      // dispatch(
+      //   setIsLogin({
+      //     uid: res.data.uid,
+      //     isLogin: true,
+      //   }),
+      // );
       AlertModal.successMessage({
-        text: '尊敬的尋者唷！歡迎回來！',
+        text: `尊敬的${res.data.user.nickname}！歡迎回來！`,
       });
       navigate('/');
-    } catch (error) {
+    },
+    onError: (error) => {
       toast.error(`無法載入用戶資料: ${error.message || '發生未知錯誤'}`);
-    }
-  };
+    },
+  });
 
   return (
     <section className="login container mt-7 mb-18">
@@ -123,7 +127,7 @@ const Login = () => {
 
         <div className="col-lg-5">
           <h2 className="fs-1 fw-bolder mb-14">歡迎回來！</h2>
-          <form className="row g-3" onSubmit={handleSubmit(signin)}>
+          <form className="row g-3" onSubmit={handleSubmit(submitData)}>
             <div className="col-12">
               <div className="mb-12">
                 <label htmlFor="validationUsername" className="form-label mb-4">
