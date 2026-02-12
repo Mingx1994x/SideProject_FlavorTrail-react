@@ -1,10 +1,12 @@
+import { imgHomeURl6 } from '@/data/imagesPath';
+
 function EventBanner() {
   return (
     <>
       <section className="event-banner container mb-lg-12">
         <img
-          src="./assets/images/home_event-6.jpg"
-          alt="banner-img"
+          src={imgHomeURl6}
+          alt="event-banner-img"
           className="mt-4 mt-lg-7 event-banner-cover"
         />
         <div className="event-banner-header d-flex justify-content-between mb-lg-14 mb-10">

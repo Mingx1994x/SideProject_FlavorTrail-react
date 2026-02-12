@@ -25,12 +25,12 @@
       top: 10px;
       right: -120px;
       content: '';
-      background-image: url('/assets/images/deco/event-1-sm.svg');
+      background-image: url('/images/deco/event-1-sm.svg');
       background-repeat: no-repeat;
       width: 266px;
       height: 260px;
       @include media-breakpoint-up(lg) {
-        background-image: url('/assets/images/deco/event-1.svg');
+        background-image: url('/images/deco/event-1.svg');
         width: 310px;
         height: 410px;
         top: -58px;
@@ -52,12 +52,12 @@
       top: 20px;
       left: -63px;
       content: '';
-      background-image: url('/assets/images/deco/event-2-sm.svg');
+      background-image: url('/images/deco/event-2-sm.svg');
       background-repeat: no-repeat;
       width: 266px;
       height: 260px;
       @include media-breakpoint-up(lg) {
-        background-image: url('/assets/images/deco/event-2.svg');
+        background-image: url('/images/deco/event-2.svg');
         width: 365px;
         height: 410px;
         top: -100px;
@@ -79,12 +79,12 @@
       top: -20px;
       right: -95px;
       content: '';
-      background-image: url('/assets/images/deco/event-3-sm.svg');
+      background-image: url('/images/deco/event-3-sm.svg');
       background-repeat: no-repeat;
       width: 266px;
       height: 260px;
       @include media-breakpoint-up(lg) {
-        background-image: url('/assets/images/deco/event-3.svg');
+        background-image: url('/images/deco/event-3.svg');
         width: 410px;
         height: 400px;
         top: -107px;

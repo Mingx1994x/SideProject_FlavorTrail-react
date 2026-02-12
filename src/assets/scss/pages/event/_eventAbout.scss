@@ -6,7 +6,7 @@
   &::after {
     content: '';
     position: absolute;
-    background-image: url('/assets/images/deco/event-path-sm.svg');
+    background-image: url('/images/deco/event-path-sm.svg');
     background-repeat: no-repeat;
     background-size: contain;
     width: 748px;
@@ -18,7 +18,7 @@
       left: 24px;
     }
     @include media-breakpoint-up(lg) {
-      background-image: url('/assets/images/deco/event-path.svg');
+      background-image: url('/images/deco/event-path.svg');
       bottom: -290px;
       left: 550px;
       width: 1412px;

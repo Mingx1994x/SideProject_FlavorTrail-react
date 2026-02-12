@@ -1,9 +1,9 @@
-import EventAbout from "../components/event/EventAbout";
-import EventAgenda from "../components/event/EventAgenda";
-import EventBanner from "../components/event/EventBanner";
-import EventBreadcrumb from "../components/event/EventBreadcrumb";
-import EventDeliverMeals from "../components/event/EventDeliverMeals";
-import EventMarquee from "../components/event/EventMarquee";
+import EventAbout from '@/pages/event/EventAbout';
+import EventAgenda from '@/pages/event/EventAgenda';
+import EventBanner from '@/pages/event/EventBanner';
+import EventBreadcrumb from '@/pages/event/EventBreadcrumb';
+import EventDeliverMeals from '@/pages/event/EventDeliverMeals';
+import EventMarquee from '@/pages/event/EventMarquee';
 
 function Event() {
   return (
