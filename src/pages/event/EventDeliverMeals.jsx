@@ -1,3 +1,5 @@
+import { imgEventURl1, imgEventURl2 } from '../../data/imagesPath';
+
 function EventDeliverMeals() {
   return (
     <>
@@ -7,14 +9,14 @@ function EventDeliverMeals() {
             <div className="col-lg-4">
               <img
                 className="event-deliver-meals-img img-fluid object-fit-cover"
-                src="./assets/images/event-1.jpg"
+                src={imgEventURl1}
                 alt="event-picture1"
               />
             </div>
             <div className="col-lg-6">
               <img
                 className="event-deliver-meals-img img-fluid object-fit-cover"
-                src="./assets/images/event-2.jpg"
+                src={imgEventURl2}
                 alt="event-picture2"
               />
             </div>
