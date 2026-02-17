@@ -22,7 +22,7 @@
       transform: translate(-49%, -34%);
       width: 100%;
       height: 284px;
-      background-image: url('/assets/images/deco/our-story-sm.svg');
+      background-image: url('/images/deco/our-story-sm.svg');
       z-index: -1;
       background-repeat: no-repeat;
       background-size: contain;
@@ -35,7 +35,7 @@
         height: 351px;
       }
       @include media-breakpoint-up(lg) {
-        background-image: url('/assets/images/deco/our-story-lg.svg');
+        background-image: url('/images/deco/our-story-lg.svg');
         transform: translate(-42%, -50%);
         height: 478px;
       }

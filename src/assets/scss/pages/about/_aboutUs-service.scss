@@ -1,7 +1,9 @@
 .aboutService {
-  svg {
+  svg,
+  img {
     height: 64px;
     width: auto;
+    display: inline-block;
     vertical-align: bottom;
     padding-top: 5px;
     margin-left: map-get($spacers, 7);
