@@ -1,7 +1,7 @@
-import { hexApi } from "./apiInstance";
+import { flavorTrailApiNew } from "./apiInstance";
 
 export const login = (data) => {
-  return hexApi.post(`/admin/signin`, {
+  return flavorTrailApiNew.post(`/auth/login`, {
     ...data
   })
 }

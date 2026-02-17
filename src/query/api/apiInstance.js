@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const { VITE_BASE_URL, VITE_LOGIN_URL } = import.meta.env;
+const { VITE_BASE_URL, VITE_LOGIN_URL, VITE_BASE_URL_NEW } = import.meta.env;
 
+// json-server
 export const flavorTrailApi = axios.create({
   baseURL: VITE_BASE_URL
 })
@@ -29,3 +30,16 @@ hexApi.interceptors.response.use(
   },
 )
 
+// google sheet 資料庫
+export const flavorTrailApiNew = axios.create({
+  baseURL: VITE_BASE_URL_NEW
+})
+
+flavorTrailApiNew.interceptors.response.use(
+  (response) => {
+    return Promise.resolve(response.data)
+  },
+  (error) => {
+    return Promise.reject(error.response?.data)
+  },
+)

@@ -14,6 +14,7 @@ import AccountPosts from '../pages/account/AccountPosts';
 import AccountFollowing from '../pages/account/AccountFollowing';
 import AccountHistory from '../pages/account/AccountHistory';
 import PostDetail from '../pages/PostDetail';
+import Auth from '../layouts/Auth';
 
 const routes = [
   {
@@ -74,7 +75,13 @@ const routes = [
   },
   {
     path: '/login',
-    element: <Login />,
+    element: <Auth />,
+    children: [
+      {
+        index: true,
+        element: <Login />,
+      },
+    ],
   },
   {
     path: '*',
