@@ -11,3 +11,7 @@ export function daysFromNow(date) {
 export function daysFormat() {
   return dayjs().format('YYYY-MM-DD HH:mm:ss')
 }
+
+export function formatTime(expired) {
+  return new Date(expired * 1000).toUTCString()
+}
