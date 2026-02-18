@@ -1,29 +1,36 @@
-import Account from './Account';
-import { useState } from 'react';
+import { createHashRouter, RouterProvider } from 'react-router';
+import { Toaster } from 'react-hot-toast';
+import routes from '@/routes';
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const router = createHashRouter(routes);
+const App = () => {
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button
-          className="btn btn-primary"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <Account />
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: 'white',
+            },
+            iconTheme: {
+              primary: '#00503F',
+              secondary: 'white',
+            },
+          },
+          error: {
+            style: {
+              background: 'white',
+            },
+            iconTheme: {
+              primary: 'red',
+              secondary: 'white',
+            },
+          },
+        }}
+      />
+      <RouterProvider router={router} />;
     </>
   );
-}
+};
 
 export default App;
