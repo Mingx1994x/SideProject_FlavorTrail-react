@@ -1,9 +1,10 @@
 import { createHashRouter, RouterProvider } from 'react-router';
 import { Toaster } from 'react-hot-toast';
 import routes from '@/routes';
-
+import { useAuthInit } from './hooks/useAuthInit';
 const router = createHashRouter(routes);
 const App = () => {
+  useAuthInit();
   return (
     <>
       <Toaster
