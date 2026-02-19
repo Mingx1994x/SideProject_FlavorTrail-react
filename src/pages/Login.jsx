@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-// import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { useMutation } from '@tanstack/react-query';
+import { Link, Navigate, useNavigate } from 'react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 
-// import { setIsLogin } from '../redux/LoginStateSlice';
-import AlertModal from '../components/AlertModal';
-import { login } from '../query/api/auth';
+import AlertModal from '@/components/AlertModal';
+import { login } from '@/query/api/auth';
+import { queryKeys } from '@/data/queryKeys';
+import { keepToken } from '@/utils/handleToken';
 
 const Login = () => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   //form
   const {
     register,
@@ -31,25 +31,28 @@ const Login = () => {
       password,
     });
   };
+
+  const queryClient = useQueryClient();
   const { mutate: loginMutation } = useMutation({
+    mutationKey: [queryKeys.auth],
     mutationFn: (data) => login(data),
     onSuccess: (res) => {
       reset();
-      // dispatch(
-      //   setIsLogin({
-      //     uid: res.data.uid,
-      //     isLogin: true,
-      //   }),
-      // );
+      keepToken(res.data.token);
+      queryClient.invalidateQueries([queryKeys.auth]);
       AlertModal.successMessage({
         text: `尊敬的${res.data.user.nickname}！歡迎回來！`,
       });
-      navigate('/');
+      navigate('/account/setting');
     },
     onError: (error) => {
       toast.error(`無法載入用戶資料: ${error.message || '發生未知錯誤'}`);
     },
   });
+
+  const { isLogin } = useSelector((state) => state.authSlice);
+
+  if (isLogin) return <Navigate to="/account/setting" replace />;
 
   return (
     <>
@@ -136,7 +139,6 @@ const Login = () => {
             </div>
             <div className="col-12">
               <button
-                href="#"
                 type="submit"
                 className="btn btn-dark w-100 mb-12 rounded-3 d-flex align-items-center justify-content-center"
               >
@@ -145,12 +147,12 @@ const Login = () => {
             </div>
             <div className="col-12">
               沒有 Flavor Trail 帳號嗎？
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="link-primary ms-2 text-decoration-underline"
               >
                 立即註冊
-              </a>
+              </Link>
             </div>
           </div>
         </div>

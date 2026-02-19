@@ -2,10 +2,10 @@ import axios from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { setIsLogin } from '@/redux/LoginStateSlice';
-import AlertModal from '@/components/AlertModal';
-import useOpenFoodModal from '@/contexts/foodModal/useFoodModal';
 
+import AlertModal from '@/components/AlertModal';
+import { setLogout } from '@/redux/AuthStateSlice';
+import useOpenFoodModal from '@/contexts/foodModal/useFoodModal';
 import { logoNavbarUrl } from '@/data/imagesPath';
 const { VITE_BASE_URL } = import.meta.env;
 
@@ -28,8 +28,7 @@ const Header = () => {
   const [foodTypes, setFoodTypes] = useState([]);
 
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
-
-  const { isLogin } = useSelector((state) => state.loginSlice.loginStatus);
+  const { isLogin } = useSelector((state) => state.authSlice);
   const dispatch = useDispatch();
 
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
@@ -69,12 +68,7 @@ const Header = () => {
       confirmButtonText: '登出',
       cancelButtonText: '取消',
       onConfirm: () => {
-        dispatch(
-          setIsLogin({
-            uid: '',
-            isLogin: false,
-          }),
-        );
+        dispatch(setLogout());
 
         handleNavLinkClick();
         navigate('/');
