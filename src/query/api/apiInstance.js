@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "../../utils/handleToken";
 
 const { VITE_BASE_URL, VITE_LOGIN_URL, VITE_BASE_URL_NEW } = import.meta.env;
 
@@ -42,4 +43,18 @@ flavorTrailApiNew.interceptors.response.use(
   (error) => {
     return Promise.reject(error.response?.data)
   },
+)
+
+flavorTrailApiNew.interceptors.request.use(
+  (config) => {
+    const token = getToken()
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
 )
