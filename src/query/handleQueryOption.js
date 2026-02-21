@@ -36,11 +36,11 @@ export const commentQueryOption = () => ({
   queryFn: getComments,
 })
 export const userQueryOption = () => ({
-  queryKeys: authQueriesKey.user,
+  queryKey: authQueriesKey.user,
   queryFn: getUserProfileData
 })
 // city
 export const cityQueryOption = () => ({
-  queryKeys: cityQueriesKey.city,
+  queryKey: cityQueriesKey.city,
   queryFn: getCityData
 })
