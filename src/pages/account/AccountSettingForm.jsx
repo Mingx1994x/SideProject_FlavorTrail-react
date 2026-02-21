@@ -1,20 +1,29 @@
 import axios from 'axios';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import InputText from '../../components/formElements/InputText';
-import AccountSettingModalPassword from './AccountSettingModalPassword';
-import ChangePhotoModal from '../../components/account/ChangePhotoModal';
-import logo from '/images/Logo.png';
+import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import FullScreenLoading from '../../components/FullScreenLoading';
+
+import FullScreenLoading from '@/components/FullScreenLoading';
+import ChangePhotoModal from '@/components/account/ChangePhotoModal';
+import AccountSettingModalPassword from '@/pages/account/AccountSettingModalPassword';
+import InputText from '@/components/formElements/InputText';
+import SelectCity from '@/components/formElements/SelectCity';
+
+import {
+  cityQueryOption,
+  userQueryOption,
+} from '../../query/handleQueryOption';
+import { logoUrl } from '@/data/imagesPath';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const USER_ID = '1';
 
 function AccountSettingForm() {
-  const [accountData, setAccountData] = useState(null);
-  const [isFormChanged, setIsFormChanged] = useState(false);
-  const [initialValues, setInitialValues] = useState({});
+  const [cities, setCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState('');
+  const [districts, setDistricts] = useState([]);
+
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const methods = useForm({
@@ -25,56 +34,49 @@ function AccountSettingForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-    getValues,
+    formState: { errors },
     watch,
     reset,
   } = methods;
 
-  const watchAllFields = watch();
-  const avatarUrl = watch('avatarUrl') || logo;
+  // const watchAllFields = watch();
+  const avatarUrl = watch('avatarUrl') || logoUrl;
+
+  const { data: userProfile } = useQuery(userQueryOption());
+
+  const { data: cityData, isPending } = useQuery(cityQueryOption());
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/users/${USER_ID}`);
-        setAccountData(res.data);
-        setIsDataLoaded(true);
-
-        const initialData = {
-          name: res.data.name || '',
-          nickName: res.data.nickName || '',
-          email: res.data.email || '',
-          phone: res.data.phone || '',
-          pickupCity: res.data.pickupCity || '',
-          pickupDistrict: res.data.pickupDistrict || '',
-          introduce: res.data.introduce || '',
-          avatarUrl: res.data.avatarUrl || null,
-        };
-        setInitialValues(initialData);
-        reset(initialData);
-      } catch (error) {
-        toast.error(`無法載入個人資料: ${error.message || '發生未知錯誤'}`);
-      }
-    })();
-  }, [reset]);
-
-  useEffect(() => {
-    const hasChanged = Object.keys(initialValues).some((key) => {
-      return getValues(key) !== initialValues[key];
-    });
-    setIsFormChanged(hasChanged);
-  }, [watchAllFields, initialValues, getValues]);
-
-  const changeData = async (data) => {
-    try {
-      const res = await axios.patch(`${BASE_URL}/users/${USER_ID}`, data);
-      setAccountData(res.data);
-      window.location.reload();
-    } catch (error) {
-      toast.error(`更新個人資料失敗: ${error.message || '發生未知錯誤'}`);
+    if (cityData) {
+      setCities(cityData);
     }
-  };
+    if (userProfile) {
+      setSelectedCity(userProfile.data.liveCity || '');
+      reset({
+        name: userProfile.data.name || '',
+        nickName: userProfile.data.nickname || '',
+        email: userProfile.data.email || '',
+        phone: userProfile.data.phone ? `0${userProfile.data.phone}` : '',
+        introduce: userProfile.data.introduce || '',
+        avatarUrl: userProfile.data.avatarUrl || '',
+        liveCity: userProfile.data.liveCity || '',
+        liveDistrict: userProfile.data.liveDistrict || '',
+      });
+
+      setIsDataLoaded(true);
+    }
+  }, [userProfile, cityData, reset]);
+
+  useEffect(() => {
+    if (selectedCity) {
+      const selectedCityData = cities.find(
+        (city) => city.name === selectedCity,
+      );
+      setDistricts(selectedCityData ? selectedCityData.districts : []);
+    } else {
+      setDistricts([]);
+    }
+  }, [selectedCity, cities]);
 
   const deletePhoto = async () => {
     try {
@@ -86,7 +88,7 @@ function AccountSettingForm() {
           loading: '處理中...',
           success: '照片刪除成功',
           error: '刪除失敗，請稍候再試',
-        }
+        },
       );
       window.location.reload();
     } catch (error) {
@@ -95,17 +97,13 @@ function AccountSettingForm() {
   };
 
   const onSubmit = (data) => {
-    changeData(data);
-    toast.success('個人資料已修改');
-    setIsFormChanged(false);
+    console.log(data);
+    // toast.success('個人資料已修改');
+    // setIsFormChanged(false);
   };
 
-  if (!accountData) {
-    return (
-      <div>
-        <FullScreenLoading />
-      </div>
-    );
+  if (!userProfile && !isPending) {
+    return <FullScreenLoading />;
   }
 
   return (
@@ -257,7 +255,7 @@ function AccountSettingForm() {
                   <div className="mb-7">
                     <label
                       className="form-label h6 fw-bold text-gray-700 pb-2"
-                      htmlFor="pickupCity"
+                      htmlFor="liveCity"
                     >
                       所在位置
                     </label>
@@ -265,50 +263,41 @@ function AccountSettingForm() {
                       {isDataLoaded ? (
                         <>
                           <div className="col-6 col-md-auto">
-                            <select
-                              className="form-select bg-white py-2 px-5 border-gray-400 rounded-3"
-                              id="pickupCity"
-                              aria-label="Default select example"
-                              name="pickupCity"
-                            >
-                              <option disabled>請選擇城市</option>
-                              <option value="臺北市">臺北市</option>
-                              <option value="臺北市">基隆市</option>
-                              <option value="新北市">新北市</option>
-                              <option value="宜蘭縣">宜蘭縣</option>
-                              <option value="連江縣">連江縣</option>
-                              <option value="新竹市">新竹市</option>
-                              <option value="新竹縣">新竹縣</option>
-                              <option value="苗栗縣">苗栗縣</option>
-                              <option value="臺中市">臺中市</option>
-                              <option value="彰化縣">彰化縣</option>
-                              <option value="南投縣">南投縣</option>
-                              <option value="嘉義市">嘉義市</option>
-                              <option value="嘉義縣">嘉義縣</option>
-                              <option value="南投縣">南投縣</option>
-                            </select>
+                            <SelectCity
+                              register={register}
+                              errors={errors}
+                              labelText="縣市"
+                              id="city"
+                              name="liveCity"
+                              options={cities}
+                              optionLabelKey="name"
+                              optionValueKey="name"
+                              rules={{
+                                required: {
+                                  value: true,
+                                  message: `請選擇縣市`,
+                                },
+                              }}
+                              onChange={(e) => setSelectedCity(e.target.value)}
+                            />
                           </div>
                           <div className="col-6 col-md-auto">
-                            <select
-                              className="form-select bg-white py-2 px-5 border-gray-400 rounded-3"
-                              id="pickupDistrict"
-                              aria-label="Default select example"
-                              name="pickupDistrict"
-                            >
-                              <option disabled>請選擇地區</option>
-                              <option value="信義區">信義區</option>
-                              <option value="中正區">中正區</option>
-                              <option value="南港區">南港區</option>
-                              <option value="大同區">大同區</option>
-                              <option value="中山區">中山區</option>
-                              <option value="松山區">松山區</option>
-                              <option value="大安區">大安區</option>
-                              <option value="萬華區">萬華區</option>
-                              <option value="士林區">士林區</option>
-                              <option value="北投區">北投區</option>
-                              <option value="內湖區">內湖區</option>
-                              <option value="文山區">文山區</option>
-                            </select>
+                            <SelectCity
+                              register={register}
+                              errors={errors}
+                              labelText="區域"
+                              id="district"
+                              name="liveDistrict"
+                              options={districts}
+                              optionLabelKey="name"
+                              optionValueKey="name"
+                              rules={{
+                                required: {
+                                  value: true,
+                                  message: `請選擇區域`,
+                                },
+                              }}
+                            />
                           </div>
                         </>
                       ) : (
@@ -348,7 +337,7 @@ function AccountSettingForm() {
                           type="submit"
                           className="btn btn-dark fw-bold h6"
                           id="updateSetting"
-                          disabled={!isValid || !isFormChanged}
+                          // disabled={!isValid || !isFormChanged}
                         >
                           更新個人設定
                         </button>

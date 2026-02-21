@@ -1,4 +1,7 @@
-import Front from '../layouts/Front';
+import Front from '@/layouts/Front';
+import Account from '@/layouts/Account';
+import Auth from '@/layouts/Auth';
+
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Event from '../pages/Event';
@@ -7,14 +10,12 @@ import AboutUs from '../pages/AboutUs';
 import GuideLine from '../pages/GuideLine';
 // import Post from '../pages/Post';
 import PageNotFound from '../pages/PageNotFound';
-import Account from '../layouts/Account';
-import AccountSetting from '../pages/account/AccountSetting';
+import AccountSetting from '../pages/AccountSetting';
 import AccountNotifications from '../pages/account/AccountNotifications';
 import AccountPosts from '../pages/account/AccountPosts';
 import AccountFollowing from '../pages/account/AccountFollowing';
 import AccountHistory from '../pages/account/AccountHistory';
 import PostDetail from '../pages/PostDetail';
-import Auth from '../layouts/Auth';
 
 const routes = [
   {
