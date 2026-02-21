@@ -54,7 +54,7 @@ import iconInstagramUrl from '/images/icon/instagram.svg'
 import iconFacebookUrl from '/images/icon/facebook.svg'
 import iconLineUrl from '/images/icon/hugeicons_line.svg'
 import iconSearchUrl from '/images/icon/search.svg'
-import iconCheckUrl from '../../public/images/icon/check.svg'
+import iconCheckUrl from '/images/icon/check.svg'
 
 
 export {
