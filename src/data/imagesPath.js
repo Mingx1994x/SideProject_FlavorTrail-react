@@ -53,6 +53,9 @@ import iconTwitterUrl from '/images/icon/twitter.svg'
 import iconInstagramUrl from '/images/icon/instagram.svg'
 import iconFacebookUrl from '/images/icon/facebook.svg'
 import iconLineUrl from '/images/icon/hugeicons_line.svg'
+import iconSearchUrl from '/images/icon/search.svg'
+import iconCheckUrl from '../../public/images/icon/check.svg'
+
 
 export {
   logoUrl,
@@ -93,5 +96,7 @@ export {
   iconTwitterUrl,
   iconInstagramUrl,
   iconFacebookUrl,
-  iconLineUrl
+  iconLineUrl,
+  iconSearchUrl,
+  iconCheckUrl
 }

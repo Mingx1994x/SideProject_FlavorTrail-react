@@ -6,14 +6,14 @@ import { toast } from 'react-hot-toast';
 
 import FullScreenLoading from '@/components/FullScreenLoading';
 import ChangePhotoModal from '@/components/account/ChangePhotoModal';
-import AccountSettingModalPassword from '@/pages/account/AccountSettingModalPassword';
+import AccountSettingModalPassword from '@/pages/account/setting/AccountSettingModalPassword';
 import InputText from '@/components/formElements/InputText';
 import SelectCity from '@/components/formElements/SelectCity';
 
 import {
   cityQueryOption,
   userQueryOption,
-} from '../../query/handleQueryOption';
+} from '../../../query/handleQueryOption';
 import { logoUrl } from '@/data/imagesPath';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
