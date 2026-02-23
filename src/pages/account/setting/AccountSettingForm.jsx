@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 import FullScreenLoading from '@/components/FullScreenLoading';
@@ -11,9 +11,11 @@ import InputText from '@/components/formElements/InputText';
 import SelectCity from '@/components/formElements/SelectCity';
 
 import {
+  authQueriesKey,
   cityQueryOption,
   userQueryOption,
-} from '../../../query/handleQueryOption';
+} from '@/query/handleQueryOption';
+import { updateUserProfile } from '@/query/api/user';
 import { logoUrl } from '@/data/imagesPath';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -34,7 +36,7 @@ function AccountSettingForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, dirtyFields },
     watch,
     reset,
   } = methods;
@@ -45,6 +47,16 @@ function AccountSettingForm() {
   const { data: userProfile } = useQuery(userQueryOption());
 
   const { data: cityData, isPending } = useQuery(cityQueryOption());
+
+  const queryClient = useQueryClient();
+  const { mutate: updateProfile } = useMutation({
+    mutationFn: (data) => updateUserProfile(data),
+    onSuccess: (res) => {
+      // console.log(res);
+      queryClient.invalidateQueries(authQueriesKey.user);
+      toast.success(res.message);
+    },
+  });
 
   useEffect(() => {
     if (cityData) {
@@ -96,10 +108,16 @@ function AccountSettingForm() {
     }
   };
 
+  const getDirtyValues = (dirtyFields, allValues) => {
+    return Object.keys(dirtyFields).reduce((acc, key) => {
+      acc[key] = allValues[key];
+      return acc;
+    }, {});
+  };
   const onSubmit = (data) => {
-    console.log(data);
-    // toast.success('個人資料已修改');
-    // setIsFormChanged(false);
+    // console.log(data);
+    const newProfileData = getDirtyValues(dirtyFields, data);
+    updateProfile(newProfileData);
   };
 
   if (!userProfile && !isPending) {
@@ -337,7 +355,7 @@ function AccountSettingForm() {
                           type="submit"
                           className="btn btn-dark fw-bold h6"
                           id="updateSetting"
-                          // disabled={!isValid || !isFormChanged}
+                          disabled={!isDirty}
                         >
                           更新個人設定
                         </button>

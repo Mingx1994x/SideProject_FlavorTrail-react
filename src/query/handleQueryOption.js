@@ -1,7 +1,7 @@
 import { queryKeys } from "../data/queryKeys";
 import { getCityData } from "./api/city";
 import { getComments, getPostById } from "./api/post";
-import { getUserProfileData } from "./api/user";
+import { getUserProfile } from "./api/user";
 
 // KEY
 // post
@@ -37,7 +37,7 @@ export const commentQueryOption = () => ({
 })
 export const userQueryOption = () => ({
   queryKey: authQueriesKey.user,
-  queryFn: getUserProfileData
+  queryFn: getUserProfile
 })
 // city
 export const cityQueryOption = () => ({
