@@ -6,9 +6,10 @@ import { toast } from 'react-hot-toast';
 
 import FullScreenLoading from '@/components/FullScreenLoading';
 import ChangePhotoModal from '@/components/account/ChangePhotoModal';
-import AccountSettingModalPassword from '@/pages/account/setting/AccountSettingModalPassword';
-import InputText from '@/components/formElements/InputText';
 import SelectCity from '@/components/formElements/SelectCity';
+import FormInput from '@/components/formElements/FormInput';
+import FormTextArea from '@/components/formElements/FormTextArea';
+import AccountSettingModalPassword from '@/pages/account/setting/AccountSettingModalPassword';
 
 import {
   authQueriesKey,
@@ -66,7 +67,7 @@ function AccountSettingForm() {
       setSelectedCity(userProfile.data.liveCity || '');
       reset({
         name: userProfile.data.name || '',
-        nickName: userProfile.data.nickname || '',
+        nickname: userProfile.data.nickname || '',
         email: userProfile.data.email || '',
         phone: userProfile.data.phone ? `0${userProfile.data.phone}` : '',
         introduce: userProfile.data.introduce || '',
@@ -180,12 +181,9 @@ function AccountSettingForm() {
                       >
                         姓名
                       </label>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        labelText="姓名"
+                      <FormInput
                         id="name"
-                        type="text"
+                        label="姓名"
                         name="name"
                         rules={{
                           required: {
@@ -202,17 +200,14 @@ function AccountSettingForm() {
                       >
                         暱稱
                       </label>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        labelText="暱稱"
-                        id="nickName"
-                        name="nickName"
-                        type="text"
+                      <FormInput
+                        id="nickname"
+                        name="nickname"
+                        label="暱稱"
                         rules={{
                           required: {
                             value: true,
-                            message: '標題為必填',
+                            message: '暱稱為必填',
                           },
                         }}
                       />
@@ -226,13 +221,18 @@ function AccountSettingForm() {
                       >
                         電子郵件
                       </label>
-                      <input
+                      <FormInput
                         id="email"
-                        type="text"
+                        type="email"
                         name="email"
-                        className="form-control py-2 px-5 border-gray-200 rounded-3 lh-account text-gray-700"
+                        label="信箱"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '信箱為必填',
+                          },
+                        }}
                         disabled
-                        {...register('email')}
                       />
                     </div>
                     <div className="mb-7">
@@ -242,13 +242,10 @@ function AccountSettingForm() {
                       >
                         聯絡電話
                       </label>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        labelText="聯絡電話"
+                      <FormInput
                         id="phone"
                         name="phone"
-                        type="text"
+                        label="聯絡電話"
                         rules={{
                           required: {
                             value: true,
@@ -330,13 +327,12 @@ function AccountSettingForm() {
                     >
                       個人介紹
                     </label>
-                    <textarea
-                      className="form-control py-2 px-5 border-gray-400 rounded-3 bg-white lh-account"
+                    <FormTextArea
                       id="introduce"
                       name="introduce"
+                      label="個人介紹"
                       rows="8"
-                      {...register('introduce')}
-                    ></textarea>
+                    />
                   </div>
                   <div className="border-top rounded-bottom-3 bg-white pt-7">
                     <div className="d-flex justify-content-end">
