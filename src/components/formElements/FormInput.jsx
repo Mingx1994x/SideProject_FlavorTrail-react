@@ -33,8 +33,8 @@ FormInput.propTypes = {
   label: PropTypes.string.isRequired,
   rules: PropTypes.object,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  disabled: PropTypes.boolean,
+  type: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default FormInput;
