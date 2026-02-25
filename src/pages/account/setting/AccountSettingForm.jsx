@@ -83,10 +83,6 @@ function AccountSettingForm() {
     }
   }, [userProfile, cityData, reset]);
 
-  useEffect(() => {
-    console.log('city', selectedCity);
-  }, [selectedCity]);
-
   const deletePhoto = async () => {
     try {
       await toast.promise(
