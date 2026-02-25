@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
+import AccountSettingModalPassword from '@/pages/account/setting/AccountSettingModalPassword';
 import FullScreenLoading from '@/components/FullScreenLoading';
 import ChangePhotoModal from '@/components/account/ChangePhotoModal';
-import SelectCity from '@/components/formElements/SelectCity';
 import FormInput from '@/components/formElements/FormInput';
 import FormTextArea from '@/components/formElements/FormTextArea';
-import AccountSettingModalPassword from '@/pages/account/setting/AccountSettingModalPassword';
+import FormSelect from '@/components/formElements/FormSelect';
 
 import {
   authQueriesKey,
@@ -24,9 +24,6 @@ const USER_ID = '1';
 
 function AccountSettingForm() {
   const [cities, setCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('');
-  const [districts, setDistricts] = useState([]);
-
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const methods = useForm({
@@ -35,25 +32,32 @@ function AccountSettingForm() {
   });
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isDirty, dirtyFields },
+    formState: { isDirty, dirtyFields },
     watch,
     reset,
+    setValue,
   } = methods;
 
-  // const watchAllFields = watch();
+  const selectedCity = watch('liveCity');
   const avatarUrl = watch('avatarUrl') || logoUrl;
+
+  const handleSelectChange = (e) => {
+    const cityName = e.target.value;
+    const city = cities.find((item) => item.name === cityName);
+    setValue('liveDistrict', city?.districts?.[0]?.name || '');
+  };
 
   const { data: userProfile } = useQuery(userQueryOption());
 
   const { data: cityData, isPending } = useQuery(cityQueryOption());
 
+  const districts =
+    cityData?.find((city) => city.name === selectedCity)?.districts || [];
   const queryClient = useQueryClient();
   const { mutate: updateProfile } = useMutation({
     mutationFn: (data) => updateUserProfile(data),
     onSuccess: (res) => {
-      // console.log(res);
       queryClient.invalidateQueries(authQueriesKey.user);
       toast.success(res.message);
     },
@@ -64,7 +68,6 @@ function AccountSettingForm() {
       setCities(cityData);
     }
     if (userProfile) {
-      setSelectedCity(userProfile.data.liveCity || '');
       reset({
         name: userProfile.data.name || '',
         nickname: userProfile.data.nickname || '',
@@ -81,15 +84,8 @@ function AccountSettingForm() {
   }, [userProfile, cityData, reset]);
 
   useEffect(() => {
-    if (selectedCity) {
-      const selectedCityData = cities.find(
-        (city) => city.name === selectedCity,
-      );
-      setDistricts(selectedCityData ? selectedCityData.districts : []);
-    } else {
-      setDistricts([]);
-    }
-  }, [selectedCity, cities]);
+    console.log('city', selectedCity);
+  }, [selectedCity]);
 
   const deletePhoto = async () => {
     try {
@@ -116,7 +112,6 @@ function AccountSettingForm() {
     }, {});
   };
   const onSubmit = (data) => {
-    // console.log(data);
     const newProfileData = getDirtyValues(dirtyFields, data);
     updateProfile(newProfileData);
   };
@@ -278,40 +273,24 @@ function AccountSettingForm() {
                       {isDataLoaded ? (
                         <>
                           <div className="col-6 col-md-auto">
-                            <SelectCity
-                              register={register}
-                              errors={errors}
-                              labelText="縣市"
+                            <FormSelect
                               id="city"
                               name="liveCity"
+                              label="縣市"
                               options={cities}
                               optionLabelKey="name"
                               optionValueKey="name"
-                              rules={{
-                                required: {
-                                  value: true,
-                                  message: `請選擇縣市`,
-                                },
-                              }}
-                              onChange={(e) => setSelectedCity(e.target.value)}
+                              handleChange={handleSelectChange}
                             />
                           </div>
                           <div className="col-6 col-md-auto">
-                            <SelectCity
-                              register={register}
-                              errors={errors}
-                              labelText="區域"
+                            <FormSelect
                               id="district"
                               name="liveDistrict"
+                              label="區域"
                               options={districts}
                               optionLabelKey="name"
                               optionValueKey="name"
-                              rules={{
-                                required: {
-                                  value: true,
-                                  message: `請選擇區域`,
-                                },
-                              }}
                             />
                           </div>
                         </>
@@ -331,7 +310,7 @@ function AccountSettingForm() {
                       id="introduce"
                       name="introduce"
                       label="個人介紹"
-                      rows="8"
+                      rows={8}
                     />
                   </div>
                   <div className="border-top rounded-bottom-3 bg-white pt-7">
