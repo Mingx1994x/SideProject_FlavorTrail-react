@@ -1,3 +1,5 @@
+import { iconCloseUrl } from '../../../data/imagesPath';
+
 function AccountSettingModalPassword() {
   return (
     <>
@@ -18,7 +20,7 @@ function AccountSettingModalPassword() {
                 變更密碼
               </h2>
               <img
-                src="./assets/images/icon/x.svg"
+                src={iconCloseUrl}
                 alt="close"
                 className="ms-auto p-2 pointer"
                 data-bs-dismiss="modal"
