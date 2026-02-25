@@ -1,9 +1,21 @@
 import { useForm } from 'react-hook-form';
-import { iconCloseUrl } from '@/data/imagesPath';
 import { get } from 'lodash';
-import { useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+
+import { updateUserPassword } from '@/query/api/user';
+import { iconCloseUrl } from '@/data/imagesPath';
 
 function AccountSettingModalPassword() {
+  const { mutate: updatePassword } = useMutation({
+    mutationFn: updateUserPassword,
+    onSuccess: (res) => {
+      toast.success(res.message);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
   const methods = useForm({
     defaultValues: {},
     mode: 'onTouched',
@@ -17,16 +29,11 @@ function AccountSettingModalPassword() {
   } = methods;
 
   const onSubmit = (data) => {
-    console.log(data);
+    updatePassword(data);
   };
 
   const fieldError = (name) => get(errors, name);
 
-  useEffect(() => {
-    if (Object.keys(errors).length !== 0) {
-      console.log(errors);
-    }
-  }, [errors]);
   return (
     <div
       className="modal fade"
@@ -106,27 +113,28 @@ function AccountSettingModalPassword() {
               </div>
               <div className="mb-7">
                 <label
-                  htmlFor="confirmNewPassword"
+                  htmlFor="confirmPassword"
                   className="form-label text-gray-700 lh-xs fw-bold"
                 >
                   確認新密碼
                 </label>
                 <input
                   type="password"
-                  className={`form-control bg-white border-gray-400 px-5 py-2 lh-base ${fieldError('confirmNewPassword') && 'is-invalid'}`}
-                  id="confirmNewPassword"
+                  className={`form-control bg-white border-gray-400 px-5 py-2 lh-base ${fieldError('confirmPassword') && 'is-invalid'}`}
+                  id="confirmPassword"
                   placeholder="請再次輸入新密碼"
-                  name="confirmNewPassword"
-                  {...register('confirmNewPassword', {
-                    required: '確認密碼為必填欄位',
+                  name="confirmPassword"
+                  {...register('confirmPassword', {
+                    required: '請再次輸入密碼',
+                    deps: ['password'],
                     validate: (value) =>
-                      value === getValues('newPassword') ||
+                      value === getValues('password') ||
                       '確認密碼與新密碼不相符',
                   })}
                 />
-                {fieldError('confirmNewPassword') && (
+                {fieldError('confirmPassword') && (
                   <div className="invalid-feedback">
-                    {fieldError('confirmNewPassword').message}
+                    {fieldError('confirmPassword').message}
                   </div>
                 )}
               </div>

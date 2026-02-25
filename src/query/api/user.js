@@ -10,3 +10,7 @@ export const getUserProfile = () => {
 export const updateUserProfile = (data) => {
   return flavorTrailApiNew.patch(`/user/profile`, data)
 }
+
+export const updateUserPassword = (data) => {
+  return flavorTrailApiNew.patch(`/user/password`, data)
+}
