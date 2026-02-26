@@ -1,21 +1,22 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
+import { forwardRef, useContext, useEffect, useState } from 'react';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { overfoodOptions, meatOrVeggieOptions } from '../data/radioOptions';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { shareFoodModalContext } from '@/contexts/modalContext';
+
 import InputTextGroup from './formElements/InputTextGroup';
 import InputText from './formElements/InputText';
 import TextArea from './formElements/TextArea';
 import SelectBox from './formElements/SelectBox';
 import RadioGroup from './formElements/RadioGroup';
 import TimePicker from './formElements/TimePicker';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import SelectCity from './formElements/SelectCity';
-import { forwardRef, useContext, useEffect, useState } from 'react';
-import { iconCloseUrl } from '../data/imagesPath';
-import { shareFoodModalContext } from '../contexts/foodModal/shareFoodContext';
+import { overfoodOptions, meatOrVeggieOptions } from '@/data/radioOptions';
+import { iconCloseUrl } from '@/data/imagesPath';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const ShareFoodModal = forwardRef((_props, ref) => {

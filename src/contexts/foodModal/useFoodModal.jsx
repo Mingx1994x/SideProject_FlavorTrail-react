@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { shareFoodModalContext } from './shareFoodContext';
+import { shareFoodModalContext } from '@/contexts/modalContext';
 import { useSelector } from 'react-redux';
-import AlertModal from '../../components/AlertModal';
+import AlertModal from '@/components/AlertModal';
 import { useNavigate } from 'react-router';
 
 const useOpenFoodModal = () => {
   const { openFoodModal } = useContext(shareFoodModalContext);
-  const { isLogin } = useSelector((state) => state.loginSlice.loginStatus);
+  const { isLogin } = useSelector((state) => state.authSlice);
   const navigate = useNavigate();
   const loginAlertModal = () => {
     AlertModal.confirmAction({
