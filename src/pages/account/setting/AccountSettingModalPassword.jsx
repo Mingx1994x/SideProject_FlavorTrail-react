@@ -1,15 +1,39 @@
+import { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { get } from 'lodash';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { Modal } from 'bootstrap';
 
 import { updateUserPassword } from '@/query/api/user';
 import { iconCloseUrl } from '@/data/imagesPath';
+import { accountModalContext } from '@/contexts/modalContext';
 
 function AccountSettingModalPassword() {
+  const { modal, closeModal } = useContext(accountModalContext);
+
+  const updatePasswordModal = useRef(null);
+  const updatePasswordModalRef = useRef(null);
+  useEffect(() => {
+    if (!updatePasswordModalRef.current) return;
+
+    updatePasswordModal.current = new Modal(updatePasswordModalRef.current);
+
+    return () => updatePasswordModal.current?.dispose();
+  }, []);
+
+  useEffect(() => {
+    if (modal === 'updatePassword') {
+      updatePasswordModal.current?.show();
+    } else {
+      updatePasswordModal.current?.hide();
+    }
+  }, [modal]);
+
   const { mutate: updatePassword } = useMutation({
     mutationFn: updateUserPassword,
     onSuccess: (res) => {
+      closeModal();
       toast.success(res.message);
     },
     onError: (error) => {
@@ -41,6 +65,7 @@ function AccountSettingModalPassword() {
       tabIndex="-1"
       aria-labelledby="passwordModalToggleLabel"
       aria-hidden="true"
+      ref={updatePasswordModalRef}
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="accountModal modal-content bg-white">
@@ -55,8 +80,8 @@ function AccountSettingModalPassword() {
               src={iconCloseUrl}
               alt="close"
               className="ms-auto p-2 pointer"
-              data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={closeModal}
             />
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -143,7 +168,7 @@ function AccountSettingModalPassword() {
               <button
                 type="button"
                 className="btn btn-white"
-                data-bs-dismiss="modal"
+                onClick={closeModal}
               >
                 取消
               </button>

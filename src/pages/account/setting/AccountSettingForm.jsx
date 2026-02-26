@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
@@ -17,12 +17,14 @@ import {
   userQueryOption,
 } from '@/query/handleQueryOption';
 import { updateUserProfile } from '@/query/api/user';
+import { accountModalContext } from '@/contexts/modalContext';
 import { logoUrl } from '@/data/imagesPath';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const USER_ID = '1';
 
 function AccountSettingForm() {
+  const { openModal } = useContext(accountModalContext);
   const [cities, setCities] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
@@ -315,8 +317,7 @@ function AccountSettingForm() {
                         <button
                           type="button"
                           className="btn btn-white fw-bold h6"
-                          data-bs-toggle="modal"
-                          data-bs-target="#passwordModalToggle"
+                          onClick={() => openModal('updatePassword')}
                         >
                           變更密碼
                         </button>
