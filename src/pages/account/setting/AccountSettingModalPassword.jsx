@@ -1,13 +1,16 @@
 import { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { get } from 'lodash';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import { Modal } from 'bootstrap';
 
 import { updateUserPassword } from '@/query/api/user';
 import { iconCloseUrl } from '@/data/imagesPath';
+import { queryKeys } from '@/data/queryKeys';
 import { accountModalContext } from '@/contexts/modalContext';
+import { removeToken } from '@/utils/handleToken';
 
 function AccountSettingModalPassword() {
   const { modal, closeModal } = useContext(accountModalContext);
@@ -30,11 +33,16 @@ function AccountSettingModalPassword() {
     }
   }, [modal]);
 
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { mutate: updatePassword } = useMutation({
     mutationFn: updateUserPassword,
     onSuccess: (res) => {
       closeModal();
       toast.success(res.message);
+      removeToken();
+      queryClient.invalidateQueries([queryKeys.auth]);
+      navigate('/login');
     },
     onError: (error) => {
       toast.error(error.message);
