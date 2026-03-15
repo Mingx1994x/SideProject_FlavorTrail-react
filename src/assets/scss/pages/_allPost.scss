@@ -34,7 +34,11 @@
     color: white !important;
     background-color: $primary;
     border-radius: 8px !important;
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.2s ease;
 
     svg path {
       stroke: white;
@@ -42,16 +46,11 @@
     }
   }
 
-  .nomoral-btn {
-    &:hover {
-      border: 1px solid transparent;
-      background: $gray-200;
-    }
-  }
-
+  .nomoral-btn,
   .nomoral-sm-btn {
     &:hover {
       border: 1px solid transparent;
+      background: $gray-200;
     }
   }
 
