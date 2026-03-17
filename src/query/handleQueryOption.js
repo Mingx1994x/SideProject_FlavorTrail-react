@@ -1,15 +1,18 @@
 import { queryKeys } from "../data/queryKeys";
 import { getCityData } from "./api/city";
-import { getComments, getPostById } from "./api/post";
+import { getComments, getPostById, getPosts } from "./api/post";
 import { getUserProfile } from "./api/user";
 
+
+
 // KEY
-// post
+// post 
 export const postQueriesKey = {
   all: [queryKeys.post],
   detail: (postId) => [queryKeys.post, postId],
 }
-// post_comments
+
+// post comments
 export const commentQueriesKey = {
   all: [queryKeys.comment],
   list: (postId) => [queryKeys.comment, postId]
@@ -24,13 +27,20 @@ export const cityQueriesKey = {
   city: ["city"],
 }
 
-// Query Options
-// post
+//Query Options
+// all posts
+export const allPostsQueryOption = () => ({
+  queryKey: postQueriesKey.all,
+  queryFn: getPosts
+})
+
+// post by id
 export const postByIdQueryOption = (id) => ({
   queryKey: postQueriesKey.detail(id),
   queryFn: () => getPostById(id),
 })
-// post_comments
+
+// post comments
 export const commentQueryOption = () => ({
   queryKey: commentQueriesKey.all,
   queryFn: getComments,
