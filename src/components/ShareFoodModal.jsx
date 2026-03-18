@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
@@ -19,34 +20,35 @@ import { overfoodOptions, meatOrVeggieOptions } from '@/data/radioOptions';
 import { iconCloseUrl } from '@/data/imagesPath';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const ShareFoodModal = forwardRef((_props, ref) => {
+const defaultValues = {
+  redeemCode: '',
+  title: '',
+  content: '',
+  food: {
+    name: '',
+    type: '',
+    saveMethod: '',
+    totalQuantity: 0,
+    restQuantity: 0,
+    expiryDate: '',
+    isPastBestBefore: '',
+    dietType: '',
+  },
+  pickup: {
+    city: '',
+    district: '',
+    time: '',
+    address: '',
+  },
+  imagesUrl: [],
+  viewCount: 1,
+  commentCount: 0,
+  likeCount: 0,
+  userId: 1,
+};
+const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
   const methods = useForm({
-    defaultValues: {
-      redeemCode: '',
-      title: '',
-      content: '',
-      food: {
-        name: '',
-        type: '',
-        saveMethod: '',
-        totalQuantity: 0,
-        restQuantity: 0,
-        expiryDate: null,
-        isPastBestBefore: '',
-        dietType: '',
-      },
-      pickup: {
-        city: '',
-        district: '',
-        time: '',
-        address: '',
-      },
-      imagesUrl: [],
-      viewCount: 1,
-      commentCount: 0,
-      likeCount: 0,
-      userId: 1,
-    },
+    defaultValues: {},
     mode: 'onTouched',
   });
 
@@ -56,6 +58,14 @@ const ShareFoodModal = forwardRef((_props, ref) => {
     formState: { errors, isValid },
     reset,
   } = methods;
+
+  useEffect(() => {
+    if (mode === 'edit' && formFields) {
+      reset(formFields);
+    } else {
+      reset(defaultValues);
+    }
+  }, [mode, formFields, reset]);
 
   const [cities, setCities] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
@@ -490,6 +500,36 @@ const ShareFoodModal = forwardRef((_props, ref) => {
     </>
   );
 });
+
+ShareFoodModal.propTypes = {
+  mode: PropTypes.oneOf(['edit', 'share']),
+  formFields: PropTypes.shape({
+    redeemCode: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.string,
+    imagesUrl: PropTypes.arrayOf(PropTypes.string),
+    viewCount: PropTypes.number,
+    commentCount: PropTypes.number,
+    likeCount: PropTypes.number,
+    userId: PropTypes.number,
+    pickup: PropTypes.shape({
+      city: PropTypes.string,
+      district: PropTypes.string,
+      time: PropTypes.string,
+      address: PropTypes.string,
+    }),
+    food: PropTypes.shape({
+      name: PropTypes.string,
+      type: PropTypes.string,
+      saveMethod: PropTypes.string,
+      totalQuantity: PropTypes.number,
+      restQuantity: PropTypes.number,
+      expiryDate: PropTypes.string,
+      isPastBestBefore: PropTypes.string,
+      dietType: PropTypes.string,
+    }),
+  }),
+};
 
 // ESLint 需要檢查 react/display-name
 ShareFoodModal.displayName = 'ShareFoodModal';

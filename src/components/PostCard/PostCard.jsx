@@ -11,9 +11,11 @@ import {
 import PostCardImage from './PostCardImage';
 import PostCardActionsDesktop from './PostCardActionsDesktop';
 import PostCardActionsMobile from './PostCardActionsMobile';
+import useOpenFoodModal from '../../contexts/foodModal/useFoodModal';
 
 const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
   const { userInfo, isLogin } = useSelector((state) => state.authSlice);
+  const openFoodModal = useOpenFoodModal();
   const timeAgo = daysFromNow(post.createdPostDate);
   const isNewPost = daysStateNew(post.createdPostDate);
   const isAvailable =
@@ -23,7 +25,7 @@ const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
   const postRoute = `/post/${post.id}`;
 
   return (
-    <div key={post.id} className="post-card bg-white p-5 my-5 rounded-3">
+    <div className="post-card bg-white p-5 my-5 rounded-3">
       <div className="row flex-column-reverse flex-lg-row">
         <div className="col-lg-9 position-relative">
           {variant === 'default' && (
@@ -50,13 +52,14 @@ const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
                     </p>
                   </div>
                 </div>
-                {post?.user?.id === userInfo.id && isLogin && (
+                {post?.user?.nickName === userInfo.nickname && isLogin && (
                   <a
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#shareFoodEditModal"
-                    // onClick={() => handleEditPost(post.id)}
                     className="z-1 ms-auto d-md-none"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openFoodModal('edit', post);
+                    }}
+                    // onClick={() => handleEditPost(post.id)}
                   >
                     <svg
                       width={24}
@@ -94,13 +97,13 @@ const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
             <div className="py-7 border-top border-bottom">
               <div className="d-flex">
                 <h2 className="fs-3 mb-5">{post.title}</h2>
-                {post?.user?.id === userInfo.id && isLogin && (
+                {post?.user?.nickName === userInfo.nickname && isLogin && (
                   <a
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#shareFoodEditModal"
-                    // onClick={() => handleEditPost(post.id)}
                     className="z-1 ms-auto d-none d-md-block"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openFoodModal('edit', post);
+                    }}
                   >
                     <svg
                       width={24}

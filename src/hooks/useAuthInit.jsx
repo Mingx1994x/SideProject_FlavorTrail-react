@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux';
 import { queryKeys } from '../data/queryKeys';
 import { checkout } from '../query/api/auth';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { setAuthChecked, setLogin, setLogout } from '../redux/AuthStateSlice';
 
 export const useAuthInit = () => {
