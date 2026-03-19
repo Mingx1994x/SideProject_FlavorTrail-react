@@ -1,13 +1,14 @@
+import { forwardRef, useContext, useEffect, useState } from 'react';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
-import { forwardRef, useContext, useEffect, useState } from 'react';
-import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { shareFoodModalContext } from '@/contexts/modalContext';
+
+import { shareFoodModalContext } from '@/contexts/foodModal/shareFoodContext';
 
 import InputTextGroup from './formElements/InputTextGroup';
 import InputText from './formElements/InputText';
@@ -151,7 +152,7 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                   className="modal-title fw-bolder lh-xs"
                   id="shareFoodModalLabel"
                 >
-                  分享美味
+                  {mode === 'share' ? '分享美味' : '編輯美味'}
                 </h1>
                 <img
                   src={iconCloseUrl}
@@ -202,7 +203,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       }}
                     />
                     <div className="col-lg-6">
-                      {/* 食物類型 */}
                       <div className="mb-7">
                         <div className="share-food-modal d-lg-flex">
                           <div className="me-lg-7 mb-2">
@@ -234,7 +234,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       </div>
                     </div>
                     <div className="col-lg-6">
-                      {/* 保存方式 */}
                       <div className="mb-7">
                         <div className="share-food-modal d-lg-flex">
                           <div className="me-lg-7 mb-2">
@@ -266,7 +265,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       </div>
                     </div>
                     <div className="col-lg-6">
-                      {/* 食物份數 */}
                       <div className="mb-4">
                         <div className="share-food-modal d-lg-flex">
                           <div className="me-lg-7 mb-2">
@@ -299,7 +297,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                         </div>
                       </div>
                     </div>
-                    {/* 有效期限 */}
                     <div className="col-lg-6">
                       <div className="mb-4">
                         <div className="share-food-modal d-lg-flex">
@@ -333,7 +330,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       </div>
                     </div>
                     <div className="col-lg-6">
-                      {/* 是否已過期 */}
                       <RadioGroup
                         register={register}
                         errors={errors}
@@ -347,7 +343,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       />
                     </div>
                     <div className="col-lg-6">
-                      {/* 葷食/素食 */}
                       <RadioGroup
                         register={register}
                         errors={errors}
@@ -361,7 +356,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       />
                     </div>
 
-                    {/* 領取地點 */}
                     <div className="share-food-modal mb-7 d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
                       <label
                         htmlFor="pickUpCity"
@@ -421,7 +415,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       />
                     </div>
 
-                    {/* 領取時間 */}
                     <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
                       <label
                         htmlFor="TimePicker"
@@ -433,7 +426,6 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       <TimePicker initialStartTime="" initialEndTime="" />
                     </div>
 
-                    {/* 上傳圖片 */}
                     <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
                       <label
                         htmlFor="UpdatePhoto"
@@ -488,7 +480,7 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       data-bs-dismiss="modal"
                       disabled={!isValid}
                     >
-                      送出
+                      {mode === 'share' ? '送出' : '更改貼文'}
                     </button>
                   </div>
                 </form>
