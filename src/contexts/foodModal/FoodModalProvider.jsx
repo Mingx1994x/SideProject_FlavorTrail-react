@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
-import { shareFoodModalContext } from './shareFoodContext';
+import { shareFoodModalContext } from '@/contexts/modalContext';
 import ShareFoodModal from '@/components/ShareFoodModal';
 
 const FoodModalProvider = ({ children }) => {

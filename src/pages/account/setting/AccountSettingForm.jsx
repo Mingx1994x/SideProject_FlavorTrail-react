@@ -1,20 +1,31 @@
 import axios from 'axios';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import InputText from '../../components/formElements/InputText';
-import AccountSettingModalPassword from './AccountSettingModalPassword';
-import ChangePhotoModal from '../../components/account/ChangePhotoModal';
-import logo from '/images/Logo.png';
+import { useContext, useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import FullScreenLoading from '../../components/FullScreenLoading';
+
+import AccountSettingModalPassword from '@/pages/account/setting/AccountSettingModalPassword';
+import FullScreenLoading from '@/components/FullScreenLoading';
+import ChangePhotoModal from '@/components/account/ChangePhotoModal';
+import FormInput from '@/components/formElements/FormInput';
+import FormTextArea from '@/components/formElements/FormTextArea';
+import FormSelect from '@/components/formElements/FormSelect';
+
+import {
+  authQueriesKey,
+  cityQueryOption,
+  userQueryOption,
+} from '@/query/handleQueryOption';
+import { updateUserProfile } from '@/query/api/user';
+import { accountModalContext } from '@/contexts/modalContext';
+import { logoUrl } from '@/data/imagesPath';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const USER_ID = '1';
 
 function AccountSettingForm() {
-  const [accountData, setAccountData] = useState(null);
-  const [isFormChanged, setIsFormChanged] = useState(false);
-  const [initialValues, setInitialValues] = useState({});
+  const { openModal } = useContext(accountModalContext);
+  const [cities, setCities] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const methods = useForm({
@@ -23,58 +34,56 @@ function AccountSettingForm() {
   });
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
-    getValues,
+    formState: { isDirty, dirtyFields },
     watch,
     reset,
+    setValue,
   } = methods;
 
-  const watchAllFields = watch();
-  const avatarUrl = watch('avatarUrl') || logo;
+  const selectedCity = watch('liveCity');
+  const avatarUrl = watch('avatarUrl') || logoUrl;
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/users/${USER_ID}`);
-        setAccountData(res.data);
-        setIsDataLoaded(true);
-
-        const initialData = {
-          name: res.data.name || '',
-          nickName: res.data.nickName || '',
-          email: res.data.email || '',
-          phone: res.data.phone || '',
-          pickupCity: res.data.pickupCity || '',
-          pickupDistrict: res.data.pickupDistrict || '',
-          introduce: res.data.introduce || '',
-          avatarUrl: res.data.avatarUrl || null,
-        };
-        setInitialValues(initialData);
-        reset(initialData);
-      } catch (error) {
-        toast.error(`無法載入個人資料: ${error.message || '發生未知錯誤'}`);
-      }
-    })();
-  }, [reset]);
-
-  useEffect(() => {
-    const hasChanged = Object.keys(initialValues).some((key) => {
-      return getValues(key) !== initialValues[key];
-    });
-    setIsFormChanged(hasChanged);
-  }, [watchAllFields, initialValues, getValues]);
-
-  const changeData = async (data) => {
-    try {
-      const res = await axios.patch(`${BASE_URL}/users/${USER_ID}`, data);
-      setAccountData(res.data);
-      window.location.reload();
-    } catch (error) {
-      toast.error(`更新個人資料失敗: ${error.message || '發生未知錯誤'}`);
-    }
+  const handleSelectChange = (e) => {
+    const cityName = e.target.value;
+    const city = cities.find((item) => item.name === cityName);
+    setValue('liveDistrict', city?.districts?.[0]?.name || '');
   };
+
+  const { data: userProfile } = useQuery(userQueryOption());
+
+  const { data: cityData, isPending } = useQuery(cityQueryOption());
+
+  const districts =
+    cityData?.find((city) => city.name === selectedCity)?.districts || [];
+  const queryClient = useQueryClient();
+  const { mutate: updateProfile } = useMutation({
+    mutationFn: (data) => updateUserProfile(data),
+    onSuccess: (res) => {
+      queryClient.invalidateQueries(authQueriesKey.user);
+      toast.success(res.message);
+    },
+  });
+
+  useEffect(() => {
+    if (cityData) {
+      setCities(cityData);
+    }
+    if (userProfile) {
+      reset({
+        name: userProfile.data.name || '',
+        nickname: userProfile.data.nickname || '',
+        email: userProfile.data.email || '',
+        phone: userProfile.data.phone ? `0${userProfile.data.phone}` : '',
+        introduce: userProfile.data.introduce || '',
+        avatarUrl: userProfile.data.avatarUrl || '',
+        liveCity: userProfile.data.liveCity || '',
+        liveDistrict: userProfile.data.liveDistrict || '',
+      });
+
+      setIsDataLoaded(true);
+    }
+  }, [userProfile, cityData, reset]);
 
   const deletePhoto = async () => {
     try {
@@ -86,7 +95,7 @@ function AccountSettingForm() {
           loading: '處理中...',
           success: '照片刪除成功',
           error: '刪除失敗，請稍候再試',
-        }
+        },
       );
       window.location.reload();
     } catch (error) {
@@ -94,18 +103,19 @@ function AccountSettingForm() {
     }
   };
 
+  const getDirtyValues = (dirtyFields, allValues) => {
+    return Object.keys(dirtyFields).reduce((acc, key) => {
+      acc[key] = allValues[key];
+      return acc;
+    }, {});
+  };
   const onSubmit = (data) => {
-    changeData(data);
-    toast.success('個人資料已修改');
-    setIsFormChanged(false);
+    const newProfileData = getDirtyValues(dirtyFields, data);
+    updateProfile(newProfileData);
   };
 
-  if (!accountData) {
-    return (
-      <div>
-        <FullScreenLoading />
-      </div>
-    );
+  if (!userProfile && !isPending) {
+    return <FullScreenLoading />;
   }
 
   return (
@@ -164,12 +174,9 @@ function AccountSettingForm() {
                       >
                         姓名
                       </label>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        labelText="姓名"
+                      <FormInput
                         id="name"
-                        type="text"
+                        label="姓名"
                         name="name"
                         rules={{
                           required: {
@@ -186,17 +193,14 @@ function AccountSettingForm() {
                       >
                         暱稱
                       </label>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        labelText="暱稱"
-                        id="nickName"
-                        name="nickName"
-                        type="text"
+                      <FormInput
+                        id="nickname"
+                        name="nickname"
+                        label="暱稱"
                         rules={{
                           required: {
                             value: true,
-                            message: '標題為必填',
+                            message: '暱稱為必填',
                           },
                         }}
                       />
@@ -210,13 +214,18 @@ function AccountSettingForm() {
                       >
                         電子郵件
                       </label>
-                      <input
+                      <FormInput
                         id="email"
-                        type="text"
+                        type="email"
                         name="email"
-                        className="form-control py-2 px-5 border-gray-200 rounded-3 lh-account text-gray-700"
+                        label="信箱"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '信箱為必填',
+                          },
+                        }}
                         disabled
-                        {...register('email')}
                       />
                     </div>
                     <div className="mb-7">
@@ -226,13 +235,10 @@ function AccountSettingForm() {
                       >
                         聯絡電話
                       </label>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        labelText="聯絡電話"
+                      <FormInput
                         id="phone"
                         name="phone"
-                        type="text"
+                        label="聯絡電話"
                         rules={{
                           required: {
                             value: true,
@@ -257,7 +263,7 @@ function AccountSettingForm() {
                   <div className="mb-7">
                     <label
                       className="form-label h6 fw-bold text-gray-700 pb-2"
-                      htmlFor="pickupCity"
+                      htmlFor="liveCity"
                     >
                       所在位置
                     </label>
@@ -265,50 +271,25 @@ function AccountSettingForm() {
                       {isDataLoaded ? (
                         <>
                           <div className="col-6 col-md-auto">
-                            <select
-                              className="form-select bg-white py-2 px-5 border-gray-400 rounded-3"
-                              id="pickupCity"
-                              aria-label="Default select example"
-                              name="pickupCity"
-                            >
-                              <option disabled>請選擇城市</option>
-                              <option value="臺北市">臺北市</option>
-                              <option value="臺北市">基隆市</option>
-                              <option value="新北市">新北市</option>
-                              <option value="宜蘭縣">宜蘭縣</option>
-                              <option value="連江縣">連江縣</option>
-                              <option value="新竹市">新竹市</option>
-                              <option value="新竹縣">新竹縣</option>
-                              <option value="苗栗縣">苗栗縣</option>
-                              <option value="臺中市">臺中市</option>
-                              <option value="彰化縣">彰化縣</option>
-                              <option value="南投縣">南投縣</option>
-                              <option value="嘉義市">嘉義市</option>
-                              <option value="嘉義縣">嘉義縣</option>
-                              <option value="南投縣">南投縣</option>
-                            </select>
+                            <FormSelect
+                              id="city"
+                              name="liveCity"
+                              label="縣市"
+                              options={cities}
+                              optionLabelKey="name"
+                              optionValueKey="name"
+                              handleChange={handleSelectChange}
+                            />
                           </div>
                           <div className="col-6 col-md-auto">
-                            <select
-                              className="form-select bg-white py-2 px-5 border-gray-400 rounded-3"
-                              id="pickupDistrict"
-                              aria-label="Default select example"
-                              name="pickupDistrict"
-                            >
-                              <option disabled>請選擇地區</option>
-                              <option value="信義區">信義區</option>
-                              <option value="中正區">中正區</option>
-                              <option value="南港區">南港區</option>
-                              <option value="大同區">大同區</option>
-                              <option value="中山區">中山區</option>
-                              <option value="松山區">松山區</option>
-                              <option value="大安區">大安區</option>
-                              <option value="萬華區">萬華區</option>
-                              <option value="士林區">士林區</option>
-                              <option value="北投區">北投區</option>
-                              <option value="內湖區">內湖區</option>
-                              <option value="文山區">文山區</option>
-                            </select>
+                            <FormSelect
+                              id="district"
+                              name="liveDistrict"
+                              label="區域"
+                              options={districts}
+                              optionLabelKey="name"
+                              optionValueKey="name"
+                            />
                           </div>
                         </>
                       ) : (
@@ -323,13 +304,12 @@ function AccountSettingForm() {
                     >
                       個人介紹
                     </label>
-                    <textarea
-                      className="form-control py-2 px-5 border-gray-400 rounded-3 bg-white lh-account"
+                    <FormTextArea
                       id="introduce"
                       name="introduce"
-                      rows="8"
-                      {...register('introduce')}
-                    ></textarea>
+                      label="個人介紹"
+                      rows={8}
+                    />
                   </div>
                   <div className="border-top rounded-bottom-3 bg-white pt-7">
                     <div className="d-flex justify-content-end">
@@ -337,8 +317,7 @@ function AccountSettingForm() {
                         <button
                           type="button"
                           className="btn btn-white fw-bold h6"
-                          data-bs-toggle="modal"
-                          data-bs-target="#passwordModalToggle"
+                          onClick={() => openModal('updatePassword')}
                         >
                           變更密碼
                         </button>
@@ -348,7 +327,7 @@ function AccountSettingForm() {
                           type="submit"
                           className="btn btn-dark fw-bold h6"
                           id="updateSetting"
-                          disabled={!isValid || !isFormChanged}
+                          disabled={!isDirty}
                         >
                           更新個人設定
                         </button>

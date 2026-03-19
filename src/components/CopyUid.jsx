@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import PropTypes from 'prop-types';
+import { iconCheckUrl } from '../data/imagesPath';
 
 const CopyUid = ({ uid, disabled }) => {
   const [copied, setCopied] = useState(false);
@@ -23,9 +24,7 @@ const CopyUid = ({ uid, disabled }) => {
     }
   };
 
-  const disabledImg = disabled
-    ? './assets/images/icon/x.svg'
-    : './assets/images/icon/copy.svg';
+  const disabledImg = disabled ? '/images/icon/x.svg' : '/images/icon/copy.svg';
   const copyUidClass = `px-2 text-end d-inline-flex align-items-center ${
     disabled ? 'text-gray-400 cursor-default' : 'cursor-pointer'
   }`;
@@ -34,7 +33,7 @@ const CopyUid = ({ uid, disabled }) => {
     <span onClick={handleClick} className={copyUidClass}>
       {copied ? (
         <>
-          <img src="./assets/images/icon/check.svg" alt="copy" />
+          <img src={iconCheckUrl} alt="copy" />
           <span className="text-gray-700 px-1">已複製</span>
         </>
       ) : (

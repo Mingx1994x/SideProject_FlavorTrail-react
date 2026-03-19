@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
+import { iconSearchUrl } from '@/data/imagesPath';
 
 function AccountFilter({
   setFilter,
@@ -24,13 +25,13 @@ function AccountFilter({
   }).length;
 
   const applyPostsCount = appData.filter(
-    (item) => item.type === '申請通知'
+    (item) => item.type === '申請通知',
   ).length;
   const receivePostsCount = appData.filter(
-    (item) => item.type === '領取通知'
+    (item) => item.type === '領取通知',
   ).length;
   const commentPostsCount = appData.filter(
-    (item) => item.type === '評價通知'
+    (item) => item.type === '評價通知',
   ).length;
 
   const scrollContainerRef = useRef(null);
@@ -98,7 +99,7 @@ function AccountFilter({
         ([entry]) => {
           searchInput.classList.toggle('border-white', entry.isIntersecting);
         },
-        { threshold: 0 }
+        { threshold: 0 },
       );
       observer.observe(searchInput);
       return () => observer.unobserve(searchInput);
@@ -170,7 +171,7 @@ function AccountFilter({
               />
             </form>
             <img
-              src="./assets/images/icon/search.svg"
+              src={iconSearchUrl}
               alt="icon-search"
               className="bg-white rounded-end pe-5 "
             />

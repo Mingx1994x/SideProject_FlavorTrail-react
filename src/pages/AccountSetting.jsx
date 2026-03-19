@@ -1,4 +1,4 @@
-import AccountSettingForm from '../section/AccountSettingForm';
+import AccountSettingForm from '@/pages/account/setting/AccountSettingForm';
 
 function AccountSetting() {
   return (

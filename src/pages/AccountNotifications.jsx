@@ -1,11 +1,11 @@
 import axios from 'axios';
-import ApplyModal from '../../components/account-notify/ApplyModal';
-import ReceiveModal from '../../components/account-notify/ReceiveModal';
-import ApplyReplyModal from '../../components/account-notify/ApplyReplyModal';
-import AccountFilter from '../../components/account/AccountFilter';
-import AccountFilterStatus from '../../components/account/AccountFilterStatus';
+import ApplyModal from '../components/account-notify/ApplyModal';
+import ReceiveModal from '../components/account-notify/ReceiveModal';
+import ApplyReplyModal from '../components/account-notify/ApplyReplyModal';
+import AccountFilter from '../components/account/AccountFilter';
+import AccountFilterStatus from '../components/account/AccountFilterStatus';
 import { useEffect, useState } from 'react';
-import FullScreenLoading from '../../components/FullScreenLoading';
+import FullScreenLoading from '../components/FullScreenLoading';
 import { toast } from 'react-hot-toast';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -30,7 +30,7 @@ function AccountNotifications() {
     const getAppData = async () => {
       try {
         const app = await axios.get(
-          `${BASE_URL}/applications?_expand=user&_expand=post`
+          `${BASE_URL}/applications?_expand=user&_expand=post`,
         );
         setAppData(app.data);
       } catch (error) {
@@ -46,7 +46,7 @@ function AccountNotifications() {
         isRead: true,
       });
       setAppData((prev) =>
-        prev.map((app) => (app.id === id ? { ...app, isRead: true } : app))
+        prev.map((app) => (app.id === id ? { ...app, isRead: true } : app)),
       );
       console.log(appData);
     } catch (error) {
@@ -128,7 +128,7 @@ function AccountNotifications() {
               <li className="px-0" key={app.id}>
                 <a
                   className={`notify-cover row align-items-center position-relative stretched-link p-7 border-bottom border-gray-400 mx-4 ${getBackgroundColorClass(
-                    app.isRead
+                    app.isRead,
                   )}`}
                   onClick={() => handleNotifyClick(app)}
                 >

@@ -13,3 +13,7 @@ export function getToken() {
   return document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1",);
 }
 
+// 刪除 cookie
+export const removeToken = () => {
+  return document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+};

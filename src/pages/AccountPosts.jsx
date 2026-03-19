@@ -1,11 +1,11 @@
 import axios from 'axios';
-import AccountFilter from '../../components/account/AccountFilter';
+import AccountFilter from '@/components/account/AccountFilter';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import ShareFoodModal from '../../components/ShareFoodModal';
-import DeletePostModal from '../../components/account/DeletePostModal';
-import CopyUid from '../../components/CopyUid';
-import FullScreenLoading from '../../components/FullScreenLoading';
+import ShareFoodModal from '@/components/ShareFoodModal';
+import DeletePostModal from '@/components/account/DeletePostModal';
+import CopyUid from '@/components/CopyUid';
+import FullScreenLoading from '@/components/FullScreenLoading';
 import { toast } from 'react-hot-toast';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -52,7 +52,7 @@ function AccountPosts() {
 
   const handleDeleteSuccess = () => {
     setPostData((prevPosts) =>
-      prevPosts.filter((post) => post.id !== selectedPostId)
+      prevPosts.filter((post) => post.id !== selectedPostId),
     );
     setSelectedPostId(null);
   };
