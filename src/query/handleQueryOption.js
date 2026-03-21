@@ -1,5 +1,5 @@
 import { queryKeys } from "../data/queryKeys";
-import { getCityData } from "./api/city";
+import { getCityData, getFoodTypeData, getSaveMethodsData } from "./api/formSelectOptions";
 import { getComments, getPostById, getPosts } from "./api/post";
 import { getUserProfile } from "./api/user";
 
@@ -23,8 +23,10 @@ export const authQueriesKey = {
   user: [queryKeys.auth, "user"]
 }
 // city
-export const cityQueriesKey = {
+export const formSelectOptionsQueriesKey = {
   city: ["city"],
+  foodType: ["food-type"],
+  saveMethod: ["save-method"],
 }
 
 //Query Options
@@ -49,8 +51,19 @@ export const userQueryOption = () => ({
   queryKey: authQueriesKey.user,
   queryFn: getUserProfile
 })
-// city
+
+// form select options_city
 export const cityQueryOption = () => ({
-  queryKey: cityQueriesKey.city,
+  queryKey: formSelectOptionsQueriesKey.city,
   queryFn: getCityData
+})
+// form select options_food types
+export const foodTypeQueryOption = () => ({
+  queryKey: formSelectOptionsQueriesKey.foodType,
+  queryFn: getFoodTypeData
+})
+// form select options_save methods
+export const saveMethodsQueryOption = () => ({
+  queryKey: formSelectOptionsQueriesKey.saveMethod,
+  queryFn: getSaveMethodsData
 })
