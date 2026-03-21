@@ -1,5 +1,6 @@
 import { forwardRef, useContext, useEffect, useState } from 'react';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -8,17 +9,17 @@ import { toast } from 'react-hot-toast';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { shareFoodModalContext } from '@/contexts/foodModal/shareFoodContext';
+import { shareFoodModalContext } from '@/contexts/modalContext';
+import { cityQueryOption } from '@/query/handleQueryOption';
+import { overfoodOptions, meatOrVeggieOptions } from '@/data/radioOptions';
+import { iconCloseUrl } from '@/data/imagesPath';
 
-import InputTextGroup from './formElements/InputTextGroup';
-import InputText from './formElements/InputText';
-import TextArea from './formElements/TextArea';
+import FormInput from './formElements/FormInput';
+import FormTextArea from './formElements/FormTextArea';
 import SelectBox from './formElements/SelectBox';
 import RadioGroup from './formElements/RadioGroup';
 import TimePicker from './formElements/TimePicker';
-import SelectCity from './formElements/SelectCity';
-import { overfoodOptions, meatOrVeggieOptions } from '@/data/radioOptions';
-import { iconCloseUrl } from '@/data/imagesPath';
+import FormSelect from './formElements/FormSelect';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const defaultValues = {
@@ -48,6 +49,8 @@ const defaultValues = {
   userId: 1,
 };
 const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
+  const { data: cityData } = useQuery(cityQueryOption());
+
   const methods = useForm({
     defaultValues: {},
     mode: 'onTouched',
@@ -58,6 +61,7 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    watch,
   } = methods;
 
   useEffect(() => {
@@ -68,32 +72,16 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
     }
   }, [mode, formFields, reset]);
 
+  const selectedCity = watch('pickup.city');
+  const districts =
+    cityData?.find((city) => city.name === selectedCity)?.districts || [];
+
   const [cities, setCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('');
-  const [districts, setDistricts] = useState([]);
-
   useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/twCities`);
-        setCities(res.data);
-      } catch (error) {
-        toast.error(`${error.message ? '載入縣市失敗' : ''}`);
-      }
-    };
-    fetchCities();
-  }, []);
-
-  useEffect(() => {
-    if (selectedCity) {
-      const selectedCityData = cities.find(
-        (city) => city.name === selectedCity,
-      );
-      setDistricts(selectedCityData ? selectedCityData.districts : []);
-    } else {
-      setDistricts([]);
+    if (cityData) {
+      setCities(cityData);
     }
-  }, [selectedCity, cities]);
+  }, [cityData, reset]);
 
   const onSubmit = async (data) => {
     const { food, expiryDate, imagesUrl, ...rest } = data;
@@ -135,51 +123,50 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
   const { closeFoodModal } = useContext(shareFoodModalContext);
 
   return (
-    <>
-      <FormProvider {...methods}>
-        <div
-          className="modal fade"
-          id="shareFoodModal"
-          tabIndex="-1"
-          aria-labelledby="shareFoodModal"
-          aria-hidden="true"
-          ref={ref}
-        >
-          <div className="modal-dialog modal-xl">
-            <div className="modal-content bg-white">
-              <div className="modal-header border-0 p-lg-7 py-7 px-4">
-                <h1
-                  className="modal-title fw-bolder lh-xs"
-                  id="shareFoodModalLabel"
-                >
-                  {mode === 'share' ? '分享美味' : '編輯美味'}
-                </h1>
-                <img
-                  src={iconCloseUrl}
-                  alt="Close"
-                  className="ms-auto pointer"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={closeFoodModal}
-                />
-              </div>
-              <div className="modal-body p-lg-7">
-                <p className="text-black mb-5">
-                  請回答以下所有問題，讓領取者清楚了解您分享的食物。
-                </p>
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  id="shareFood"
-                  noValidate
-                >
-                  <div className="row">
-                    <InputTextGroup
-                      register={register}
-                      errors={errors}
-                      labelText="貼文標題"
-                      id="InputTitle"
+    <FormProvider {...methods}>
+      <div
+        className="modal fade"
+        id="shareFoodModal"
+        tabIndex="-1"
+        aria-labelledby="shareFoodModal"
+        aria-hidden="true"
+        ref={ref}
+      >
+        <div className="modal-dialog modal-xl">
+          <div className="modal-content bg-white">
+            <div className="modal-header border-0 p-lg-7 py-7 px-4">
+              <h1
+                className="modal-title fw-bolder lh-xs"
+                id="shareFoodModalLabel"
+              >
+                {mode === 'share' ? '分享美味' : '編輯美味'}
+              </h1>
+              <img
+                src={iconCloseUrl}
+                alt="Close"
+                className="ms-auto pointer"
+                aria-label="Close"
+                onClick={closeFoodModal}
+              />
+            </div>
+            <div className="modal-body p-lg-7">
+              <p className="text-black mb-5">
+                請回答以下所有問題，讓領取者清楚了解您分享的食物。
+              </p>
+              <form onSubmit={handleSubmit(onSubmit)} id="shareFood" noValidate>
+                <div className="row">
+                  <div className="share-food-modal mb-7 d-flex flex-column flex-lg-row gap-2">
+                    <label
+                      htmlFor="PostTitle"
+                      className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7 py-4"
+                    >
+                      貼文標題
+                      <span className="text-danger"> * </span>
+                    </label>
+                    <FormInput
+                      id="PostTitle"
                       name="title"
-                      type="text"
+                      label="貼文標題"
                       rules={{
                         required: {
                           value: true,
@@ -187,14 +174,19 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                         },
                       }}
                     />
-
-                    <InputTextGroup
-                      register={register}
-                      errors={errors}
-                      labelText="食物名稱"
-                      id="InputFood"
+                  </div>
+                  <div className="share-food-modal mb-7 d-flex flex-column flex-lg-row gap-2">
+                    <label
+                      htmlFor="FoodName"
+                      className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7 py-4"
+                    >
+                      食物名稱
+                      <span className="text-danger"> * </span>
+                    </label>
+                    <FormInput
+                      id="FoodName"
                       name="food.name"
-                      type="text"
+                      label="食物名稱"
                       rules={{
                         required: {
                           value: true,
@@ -202,294 +194,267 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                         },
                       }}
                     />
-                    <div className="col-lg-6">
-                      <div className="mb-7">
-                        <div className="share-food-modal d-lg-flex">
-                          <div className="me-lg-7 mb-2">
-                            <label
-                              htmlFor="FoodType"
-                              className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap py-4 pe-1"
-                            >
-                              食物類型
-                              <span className="text-danger"> * </span>
-                            </label>
-                          </div>
-                          <SelectBox
-                            register={register}
-                            errors={errors}
-                            labelText="食物類型"
-                            id="FoodType"
-                            name="food.type"
-                            apiEndpoint="/foodTypes"
-                            optionLabelKey="type"
-                            optionValueKey="value"
-                            rules={{
-                              required: {
-                                value: true,
-                                message: `請選擇食物類型`,
-                              },
-                            }}
-                          />
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="mb-7">
+                      <div className="share-food-modal d-lg-flex">
+                        <div className="me-lg-7 mb-2">
+                          <label
+                            htmlFor="FoodType"
+                            className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap py-4 pe-1"
+                          >
+                            食物類型
+                            <span className="text-danger"> * </span>
+                          </label>
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6">
-                      <div className="mb-7">
-                        <div className="share-food-modal d-lg-flex">
-                          <div className="me-lg-7 mb-2">
-                            <label
-                              htmlFor="SaveMethod"
-                              className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap py-4"
-                            >
-                              保存方式
-                              <span className="text-danger"> * </span>
-                            </label>
-                          </div>
-                          <SelectBox
-                            register={register}
-                            errors={errors}
-                            labelText="保存方式"
-                            id="SaveMethod"
-                            name="food.saveMethod"
-                            apiEndpoint="/saveMethod"
-                            optionLabelKey="type"
-                            optionValueKey="value"
-                            rules={{
-                              required: {
-                                value: true,
-                                message: `請選擇食物保存的方式`,
-                              },
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6">
-                      <div className="mb-4">
-                        <div className="share-food-modal d-lg-flex">
-                          <div className="me-lg-7 mb-2">
-                            <label
-                              htmlFor="FoodNum"
-                              className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap pe-8 py-4"
-                            >
-                              食物份數
-                              <span className="text-danger"> * </span>
-                            </label>
-                          </div>
-                          <InputText
-                            register={register}
-                            errors={errors}
-                            labelText="食物份數"
-                            id="FoodNum"
-                            name="food.totalQuantity"
-                            type="number"
-                            rules={{
-                              required: {
-                                value: true,
-                                message: '請最少輸入一份',
-                              },
-                              min: {
-                                value: 0,
-                                message: '數字不能小於 0',
-                              },
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6">
-                      <div className="mb-4">
-                        <div className="share-food-modal d-lg-flex">
-                          <div className="me-lg-7 mb-2">
-                            <label
-                              htmlFor="exp"
-                              className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap pe-7 py-2"
-                            >
-                              有效期限
-                              <span className="text-danger"> * </span>
-                            </label>
-                          </div>
-                          <Controller
-                            name="expiryDate"
-                            control={methods.control}
-                            rules={{
-                              required: '請選擇有效期限',
-                            }}
-                            render={({ field }) => (
-                              <DatePicker
-                                id="exp"
-                                selected={field.value}
-                                onChange={field.onChange}
-                                dateFormat="yyyy/MM/dd"
-                                className="form-select border-gray-400 py-2 px-5 rounded-3 bg-white"
-                                placeholderText="請選擇有效期限"
-                              />
-                            )}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6">
-                      <RadioGroup
-                        register={register}
-                        errors={errors}
-                        labelText="是否已過期"
-                        id="overfood"
-                        name="food.isPastBestBefore"
-                        options={overfoodOptions}
-                        rules={{
-                          required: { value: true, message: '請至少選擇一項' },
-                        }}
-                      />
-                    </div>
-                    <div className="col-lg-6">
-                      <RadioGroup
-                        register={register}
-                        errors={errors}
-                        labelText="葷食/素食"
-                        id="MeatOrVeggie"
-                        name="food.dietType"
-                        options={meatOrVeggieOptions}
-                        rules={{
-                          required: { value: true, message: '請至少選擇一項' },
-                        }}
-                      />
-                    </div>
-
-                    <div className="share-food-modal mb-7 d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
-                      <label
-                        htmlFor="pickUpCity"
-                        className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7"
-                      >
-                        領取地點
-                        <span className="text-danger"> * </span>
-                      </label>
-                      <div className="w-lg-50 w-100 d-flex gap-2">
-                        <SelectCity
+                        <SelectBox
                           register={register}
                           errors={errors}
-                          labelText="縣市"
-                          id="city"
-                          name="pickup.city"
-                          options={cities}
-                          optionLabelKey="name"
-                          optionValueKey="name"
+                          labelText="食物類型"
+                          id="FoodType"
+                          name="food.type"
+                          apiEndpoint="/foodTypes"
+                          optionLabelKey="type"
+                          optionValueKey="value"
                           rules={{
                             required: {
                               value: true,
-                              message: `請選擇縣市`,
-                            },
-                          }}
-                          onChange={(e) => setSelectedCity(e.target.value)}
-                        />
-                        <SelectCity
-                          register={register}
-                          errors={errors}
-                          labelText="區域"
-                          id="district"
-                          name="pickup.district"
-                          options={districts}
-                          optionLabelKey="name"
-                          optionValueKey="name"
-                          rules={{
-                            required: {
-                              value: true,
-                              message: `請選擇區域`,
+                              message: `請選擇食物類型`,
                             },
                           }}
                         />
                       </div>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        type="text"
-                        id="inputAddress"
-                        name="pickup.address"
-                        labelText="地址"
-                        rules={{
-                          required: {
-                            value: true,
-                            message: '請填入地址',
-                          },
-                        }}
-                      />
-                    </div>
-
-                    <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
-                      <label
-                        htmlFor="TimePicker"
-                        className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7"
-                      >
-                        領取時間
-                        <span className="text-danger"> * </span>
-                      </label>
-                      <TimePicker initialStartTime="" initialEndTime="" />
-                    </div>
-
-                    <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
-                      <label
-                        htmlFor="UpdatePhoto"
-                        className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7"
-                      >
-                        上傳圖片
-                        <span className="text-danger"> * </span>
-                      </label>
-                      <InputText
-                        register={register}
-                        errors={errors}
-                        labelText="圖片網址，https://images.unsplash.com/photo-15689013"
-                        id="UpdatePhoto"
-                        name="imagesUrl"
-                        type="text"
-                        rules={{
-                          required: {
-                            value: true,
-                            message: '請輸入圖片網址',
-                          },
-                        }}
-                      />
-                    </div>
-                    <div className="share-food-modal mb-7 d-flex flex-column flex-lg-row gap-2">
-                      <label
-                        htmlFor="ReplyMessage"
-                        className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7 mt-lg-3"
-                      >
-                        介紹與描述
-                        <span className="text-danger"> * </span>
-                      </label>
-                      <TextArea
-                        register={register}
-                        errors={errors}
-                        labelText="介紹與描述"
-                        id="ReplyMessage"
-                        name="content"
-                        rows={5}
-                        rules={{
-                          required: {
-                            value: true,
-                            message: '請輸入食物介紹',
-                          },
-                        }}
-                      />
                     </div>
                   </div>
-                  <div className="modal-footer px-0">
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      data-bs-dismiss="modal"
-                      disabled={!isValid}
+                  <div className="col-lg-6">
+                    <div className="mb-7">
+                      <div className="share-food-modal d-lg-flex">
+                        <div className="me-lg-7 mb-2">
+                          <label
+                            htmlFor="SaveMethod"
+                            className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap py-4"
+                          >
+                            保存方式
+                            <span className="text-danger"> * </span>
+                          </label>
+                        </div>
+                        <SelectBox
+                          register={register}
+                          errors={errors}
+                          labelText="保存方式"
+                          id="SaveMethod"
+                          name="food.saveMethod"
+                          apiEndpoint="/saveMethod"
+                          optionLabelKey="type"
+                          optionValueKey="value"
+                          rules={{
+                            required: {
+                              value: true,
+                              message: `請選擇食物保存的方式`,
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="mb-4">
+                      <div className="share-food-modal d-lg-flex">
+                        <div className="me-lg-7 mb-2">
+                          <label
+                            htmlFor="FoodQty"
+                            className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap pe-8 py-4"
+                          >
+                            食物份數
+                            <span className="text-danger"> * </span>
+                          </label>
+                        </div>
+                        <FormInput
+                          id="FoodQty"
+                          name="food.totalQuantity"
+                          type="number"
+                          label="食物份數"
+                          rules={{
+                            required: {
+                              value: true,
+                              message: '請最少輸入一份',
+                            },
+                            min: {
+                              value: 0,
+                              message: '數字不能小於 0',
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="mb-4">
+                      <div className="share-food-modal d-lg-flex">
+                        <div className="me-lg-7 mb-2">
+                          <label
+                            htmlFor="exp"
+                            className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap pe-7 py-2"
+                          >
+                            有效期限
+                            <span className="text-danger"> * </span>
+                          </label>
+                        </div>
+                        <Controller
+                          name="expiryDate"
+                          control={methods.control}
+                          rules={{
+                            required: '請選擇有效期限',
+                          }}
+                          render={({ field }) => (
+                            <DatePicker
+                              id="exp"
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="yyyy/MM/dd"
+                              className="form-select border-gray-400 py-2 px-5 rounded-3 bg-white"
+                              placeholderText="請選擇有效期限"
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <RadioGroup
+                      register={register}
+                      errors={errors}
+                      labelText="是否已過期"
+                      id="overfood"
+                      name="food.isPastBestBefore"
+                      options={overfoodOptions}
+                      rules={{
+                        required: { value: true, message: '請至少選擇一項' },
+                      }}
+                    />
+                  </div>
+                  <div className="col-lg-6">
+                    <RadioGroup
+                      register={register}
+                      errors={errors}
+                      labelText="葷食/素食"
+                      id="MeatOrVeggie"
+                      name="food.dietType"
+                      options={meatOrVeggieOptions}
+                      rules={{
+                        required: { value: true, message: '請至少選擇一項' },
+                      }}
+                    />
+                  </div>
+
+                  <div className="share-food-modal mb-7 d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
+                    <label
+                      htmlFor="inputAddress"
+                      className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7"
                     >
-                      {mode === 'share' ? '送出' : '更改貼文'}
-                    </button>
+                      領取地點
+                      <span className="text-danger"> * </span>
+                    </label>
+                    <div className="w-lg-50 w-100 d-flex gap-2">
+                      <FormSelect
+                        id="city"
+                        name="pickup.city"
+                        label="縣市"
+                        options={cities}
+                        optionLabelKey="name"
+                        optionValueKey="name"
+                      />
+                      <FormSelect
+                        id="district"
+                        name="pickup.district"
+                        label="區域"
+                        options={districts}
+                        optionLabelKey="name"
+                        optionValueKey="name"
+                      />
+                    </div>
+                    <FormInput
+                      id="inputAddress"
+                      label="地址"
+                      name="pickup.address"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '請填入地址',
+                        },
+                      }}
+                    />
                   </div>
-                </form>
-              </div>
+
+                  <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
+                    <label
+                      htmlFor="TimePicker"
+                      className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7"
+                    >
+                      領取時間
+                      <span className="text-danger"> * </span>
+                    </label>
+                    <TimePicker initialStartTime="" initialEndTime="" />
+                  </div>
+
+                  <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
+                    <label
+                      htmlFor="UpdatePhoto"
+                      className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7"
+                    >
+                      上傳圖片
+                      <span className="text-danger"> * </span>
+                    </label>
+                    <FormInput
+                      id="UpdatePhoto"
+                      label="圖片網址，ex:https://images.unsplash.com/photo-15689013"
+                      name="imagesUrl"
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '請輸入圖片網址',
+                        },
+                      }}
+                    />
+                  </div>
+                  <div className="share-food-modal mb-7 d-flex flex-column flex-lg-row gap-2">
+                    <label
+                      htmlFor="ReplyMessage"
+                      className="form-label h6 fw-bold text-gray-700 col-lg-1 text-nowrap me-lg-7 mt-lg-3"
+                    >
+                      介紹與描述
+                      <span className="text-danger"> * </span>
+                    </label>
+                    <FormTextArea
+                      id="ReplyMessage"
+                      name="content"
+                      label="介紹與描述"
+                      rows={5}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: '請輸入食物介紹',
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="modal-footer px-0">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    data-bs-dismiss="modal"
+                    disabled={!isValid}
+                  >
+                    {mode === 'share' ? '送出' : '更改貼文'}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-      </FormProvider>
-    </>
+      </div>
+    </FormProvider>
   );
 });
 
