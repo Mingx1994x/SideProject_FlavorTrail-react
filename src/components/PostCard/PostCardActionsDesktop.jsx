@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 const PostCardActionsDesktop = ({
   userId,
@@ -8,18 +8,19 @@ const PostCardActionsDesktop = ({
   isAvailable,
   isFollow,
   isLike,
+  handleChangeLike,
+  handelChangeFollow,
 }) => {
   const { userInfo } = useSelector((state) => state.authSlice);
-  const navigate = useNavigate();
   return (
     <div className="post-card-md-btn-list d-none d-md-block mt-5">
       <div className="row mx-0">
         {userId !== userInfo.id && (
           <div className="col ps-0 pe-1">
             <button
-              onClick={() => {
-                navigate(postRoute);
-              }}
+              // onClick={() => {
+              //   navigate(postRoute);
+              // }}
               type="button"
               className={`get-btn btn bg-black text-white w-100 ${
                 !isAvailable ? 'not-allowed' : ''
@@ -47,9 +48,7 @@ const PostCardActionsDesktop = ({
         )}
         <div className="col px-1">
           <button
-            // onClick={() => {
-            //   handleChangeLike(post.id);
-            // }}
+            onClick={handleChangeLike}
             type="button"
             className="nomoral-btn btn w-100 d-flex justify-content-center align-items-center"
           >
@@ -96,9 +95,7 @@ const PostCardActionsDesktop = ({
         </div>
         <div className="col ps-1 pe-0">
           <button
-            // onClick={() => {
-            //   handelChangeFllow(post.id);
-            // }}
+            onClick={handelChangeFollow}
             type="button"
             className="nomoral-btn btn w-100 d-flex justify-content-center align-items-center"
           >
@@ -133,6 +130,8 @@ PostCardActionsDesktop.propTypes = {
   isFollow: PropTypes.bool,
   isLike: PropTypes.bool,
   isAvailable: PropTypes.bool,
+  handelChangeFollow: PropTypes.func,
+  handleChangeLike: PropTypes.func,
 };
 
 export default PostCardActionsDesktop;

@@ -8,6 +8,8 @@ const PostCardActionsMobile = ({
   isAvailable,
   isFollow,
   isLike,
+  handleChangeLike,
+  handelChangeFollow,
 }) => {
   const { userInfo } = useSelector((state) => state.authSlice);
   return (
@@ -15,9 +17,7 @@ const PostCardActionsMobile = ({
       <div className="row mb-4 mx-0">
         <div className="col ps-0 pe-1">
           <button
-            // onClick={() => {
-            //   handleChangeLike(post.id);
-            // }}
+            onClick={handleChangeLike}
             type="button"
             className="nomoral-sm-btn btn p-5 w-100 d-flex justify-content-center"
           >
@@ -64,9 +64,7 @@ const PostCardActionsMobile = ({
         </div>
         <div className="col ps-1 pe-0">
           <button
-            // onClick={() => {
-            //   handelChangeFllow(post.id);
-            // }}
+            onClick={handelChangeFollow}
             type="button"
             className="nomoral-sm-btn btn p-5 w-100 d-flex justify-content-center"
           >
@@ -130,6 +128,8 @@ PostCardActionsMobile.propTypes = {
   isFollow: PropTypes.bool,
   isLike: PropTypes.bool,
   isAvailable: PropTypes.bool,
+  handelChangeFollow: PropTypes.func,
+  handleChangeLike: PropTypes.func,
 };
 
 export default PostCardActionsMobile;

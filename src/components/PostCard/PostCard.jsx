@@ -1,7 +1,9 @@
-import { Link } from 'react-router';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
+import useOpenFoodModal from '@/contexts/foodModal/useFoodModal';
 import {
   daysFromNow,
   daysStateExpired,
@@ -11,9 +13,9 @@ import {
 import PostCardImage from './PostCardImage';
 import PostCardActionsDesktop from './PostCardActionsDesktop';
 import PostCardActionsMobile from './PostCardActionsMobile';
-import useOpenFoodModal from '../../contexts/foodModal/useFoodModal';
+import AlertModal from '@/components/AlertModal';
 
-const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
+const PostCard = ({ post, variant = 'default' }) => {
   const { userInfo, isLogin } = useSelector((state) => state.authSlice);
   const openFoodModal = useOpenFoodModal();
   const timeAgo = daysFromNow(post.createdPostDate);
@@ -23,6 +25,59 @@ const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
   const isPopular = post.likeCount > 100;
   // const isTaken = useState(false);
   const postRoute = `/post/${post.id}`;
+
+  const navigate = useNavigate();
+  const [isLike, setIsLike] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
+
+  const handleChangeLike = () => {
+    // 登入後才能按讚
+    if (!isLogin) {
+      AlertModal.confirmAction({
+        title: '請先登入',
+        text: '迷路的尋者，登入後才能使用會員功能喔！',
+        icon: 'info',
+        confirmButtonText: '登入',
+        cancelButtonText: '取消',
+        onConfirm: () => {
+          navigate('/login');
+        },
+      });
+      return;
+    }
+
+    setIsLike((prevState) => !prevState);
+    // setLike((prevLikes) => {
+    //   const updatedLikes = { ...prevLikes };
+    //   return updatedLikes;
+    // });
+  };
+  const handelChangeFollow = () => {
+    if (!isLogin) {
+      AlertModal.confirmAction({
+        title: '請先登入',
+        text: '迷路的尋者，登入後才能使用會員功能喔！',
+        icon: 'info',
+        confirmButtonText: '登入',
+        cancelButtonText: '取消',
+        onConfirm: () => {
+          navigate('/login');
+        },
+      });
+      return;
+    }
+
+    setIsFollow((prevState) => !prevState);
+    // setFollows((prev) => {
+    //   const follows = { ...prev };
+    //   if (follows[id]) {
+    //     delete follows[id];
+    //   } else {
+    //     follows[id] = true;
+    //   }
+    //   return follows;
+    // });
+  };
 
   return (
     <div className="post-card bg-white p-5 my-5 rounded-3">
@@ -197,6 +252,8 @@ const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
               isAvailable={isAvailable}
               isFollow={isFollow}
               isLike={isLike}
+              handelChangeFollow={handelChangeFollow}
+              handleChangeLike={handleChangeLike}
             />
             <PostCardActionsMobile
               userId={post.user?.id}
@@ -204,6 +261,8 @@ const PostCard = ({ post, isFollow, isLike, variant = 'default' }) => {
               isAvailable={isAvailable}
               isFollow={isFollow}
               isLike={isLike}
+              handelChangeFollow={handelChangeFollow}
+              handleChangeLike={handleChangeLike}
             />
           </div>
         </div>
@@ -259,8 +318,6 @@ PostCard.propTypes = {
       pickupDistrict: PropTypes.string,
     }),
   }),
-  isFollow: PropTypes.bool,
-  isLike: PropTypes.bool,
   variant: PropTypes.oneOf(['default', 'otherPost']),
 };
 

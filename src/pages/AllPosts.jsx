@@ -1,59 +1,27 @@
 import { useRef, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Modal } from 'bootstrap';
-import ShareFoodModal from '../components/ShareFoodModal';
-import ShareFoodEditModal from '../components/ShareFoodEditModal';
-// import AlertModal from '../components/AlertModal';
-import CircleCTAButton from '../components/CircleCTAButton';
-import FullScreenLoading from '../components/FullScreenLoading';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/zh-tw';
-import { useQuery } from '@tanstack/react-query';
-import { allPostsQueryOption } from '../query/handleQueryOption';
-import PostCard from '../components/PostCard/PostCard';
 dayjs.extend(relativeTime);
 dayjs.locale('zh-tw');
+
+import { allPostsQueryOption } from '@/query/handleQueryOption';
+
+import PostCard from '@/components/PostCard/PostCard';
+import CircleCTAButton from '@/components/CircleCTAButton';
+import FullScreenLoading from '@/components/FullScreenLoading';
 const { VITE_BASE_URL } = import.meta.env;
 
 function AllPosts() {
-  const defaultValues = {
-    redeemCode: '',
-    title: '',
-    content: '',
-    food: {
-      name: '',
-      type: '',
-      saveMethod: '',
-      totalQuantity: 0,
-      restQuantity: 0,
-      expiryDate: '',
-      isPastBestBefore: '',
-      dietType: '',
-    },
-    pickup: {
-      city: '',
-      district: '',
-      time: '',
-      address: '',
-    },
-    imagesUrl: [],
-    viewCount: 1,
-    commentCount: 0,
-    likeCount: 0,
-    userId: 1,
-  };
   const [city, setCity] = useState([]);
   const [foodType, setFoodType] = useState([]);
   const [activeFilter, setActiveFilter] = useState('全部貼文');
   const [activeCity, setActiveCity] = useState('地理位置');
   const [activeFood, setActiveFood] = useState('美食類型');
-  // const [result, setResult] = useState([]);
-  const [tempPost, setTempPost] = useState(defaultValues);
   const [loading, setLoading] = useState(false);
-  // const [likes, setLike] = useState({});
-  // const [follows, setFollows] = useState({});
   const startTriggerRef = useRef();
   const endTriggerRef = useRef();
   // 添加這些代碼讀取 URL 參數
@@ -180,10 +148,6 @@ function AllPosts() {
   ];
 
   const { data: allPosts, isPending } = useQuery(allPostsQueryOption());
-  // 定義 getPosts 函式
-  const getPosts = async () => {
-    console.log('測試中');
-  };
 
   useEffect(() => {
     (async () => {
@@ -250,31 +214,6 @@ function AllPosts() {
     // setResult(tempData); // 更新篩選結果
   }, [activeFilter, activeCity, activeFood, searchKeyword]);
 
-  const editModalRef = useRef(null);
-  const myEditModal = useRef(null);
-  const closeEditModal = () => {
-    myEditModal.current.hide();
-    setTempPost(defaultValues);
-  };
-
-  useEffect(() => {
-    myEditModal.current = new Modal(editModalRef.current, {
-      backdrop: 'static',
-      keyboard: false,
-    });
-  }, []);
-  // 點擊編輯貼文按鈕 (傳入貼文 ID)
-  // const handleEditPost = async (postId) => {
-  //   setLoading(true);
-  //   try {
-  //     const { data } = await axios.get(`${VITE_BASE_URL}/posts/${postId}`);
-  //     setTempPost(data); // 確保資料結構正確
-  //     setLoading(false);
-  //     myEditModal.current.show();
-  //   } catch (error) {
-  //     alert('取得貼文資料失敗:', error);
-  //   }
-  // };
   const handlePostFilter = (filter) => {
     setActiveFilter(filter);
   };
@@ -292,70 +231,6 @@ function AllPosts() {
     setActiveFood('美食類型');
     setSearchKeyword('');
   };
-  // const handleChangeLike = (id) => {
-  //   // 登入後才能按讚
-  //   if (!isLogin) {
-  //     AlertModal.confirmAction({
-  //       title: '請先登入',
-  //       text: '迷路的尋者，登入後才能使用會員功能喔！',
-  //       icon: 'info',
-  //       confirmButtonText: '登入',
-  //       cancelButtonText: '取消',
-  //       onConfirm: () => {
-  //         navigate('/login');
-  //       },
-  //     });
-  //     return;
-  //   }
-  //   setLike((prevLikes) => {
-  //     const updatedLikes = { ...prevLikes };
-
-  //     if (updatedLikes[id]) {
-  //       // 如果已經按讚，取消按讚並 -1
-  //       delete updatedLikes[id];
-  //       setPosts((prevPosts) =>
-  //         prevPosts.map((post) =>
-  //           post.id === id
-  //             ? { ...post, likeCount: Math.max(post.likeCount - 1, 0) }
-  //             : post,
-  //         ),
-  //       );
-  //     } else {
-  //       // 如果未按讚，按讚並 +1
-  //       updatedLikes[id] = true;
-  //       setPosts((prevPosts) =>
-  //         prevPosts.map((post) =>
-  //           post.id === id ? { ...post, likeCount: post.likeCount + 1 } : post,
-  //         ),
-  //       );
-  //     }
-  //     return updatedLikes;
-  //   });
-  // };
-  // const handelChangeFllow = (id) => {
-  //   if (!isLogin) {
-  //     AlertModal.confirmAction({
-  //       title: '請先登入',
-  //       text: '迷路的尋者，登入後才能使用會員功能喔！',
-  //       icon: 'info',
-  //       confirmButtonText: '登入',
-  //       cancelButtonText: '取消',
-  //       onConfirm: () => {
-  //         navigate('/login');
-  //       },
-  //     });
-  //     return;
-  //   }
-  //   setFollows((prev) => {
-  //     const follows = { ...prev };
-  //     if (follows[id]) {
-  //       delete follows[id];
-  //     } else {
-  //       follows[id] = true;
-  //     }
-  //     return follows;
-  //   });
-  // };
 
   if (isPending) {
     return <FullScreenLoading />;
@@ -363,12 +238,6 @@ function AllPosts() {
 
   return (
     <>
-      <ShareFoodEditModal
-        closeEditModal={closeEditModal}
-        editModalRef={editModalRef}
-        tempPost={tempPost}
-        getPosts={getPosts}
-      />
       <div className="allPost container">
         {/* 小螢幕時顯示下拉選單 */}
         <div className="account-nav dropdown position-relative d-lg-none mt-10 mb-13">
@@ -617,8 +486,6 @@ function AllPosts() {
         </main>
       </div>
       <div ref={endTriggerRef}></div>
-
-      <ShareFoodModal />
 
       {/* CTA */}
       <CircleCTAButton
