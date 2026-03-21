@@ -59,8 +59,8 @@ FormSelect.propTypes = {
       [PropTypes.string]: PropTypes.any, // 或可針對你的資料結構細化
     }),
   ),
-  optionLabelKey: PropTypes.string.isRequired,
-  optionValueKey: PropTypes.string.isRequired,
+  optionLabelKey: PropTypes.string,
+  optionValueKey: PropTypes.string,
   name: PropTypes.string.isRequired,
   handleChange: PropTypes.func,
 };
