@@ -1,6 +1,5 @@
 import { forwardRef, useContext, useEffect, useState } from 'react';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
-import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -9,17 +8,16 @@ import { toast } from 'react-hot-toast';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import useFormSelectOptions from '@/hooks/useFormSelectOptions';
 import { shareFoodModalContext } from '@/contexts/modalContext';
-import { cityQueryOption } from '@/query/handleQueryOption';
 import { overfoodOptions, meatOrVeggieOptions } from '@/data/radioOptions';
 import { iconCloseUrl } from '@/data/imagesPath';
 
 import FormInput from './formElements/FormInput';
 import FormTextArea from './formElements/FormTextArea';
-import SelectBox from './formElements/SelectBox';
+import FormSelect from './formElements/FormSelect';
 import RadioGroup from './formElements/RadioGroup';
 import TimePicker from './formElements/TimePicker';
-import FormSelect from './formElements/FormSelect';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const defaultValues = {
@@ -49,8 +47,20 @@ const defaultValues = {
   userId: 1,
 };
 const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
-  const { data: cityData } = useQuery(cityQueryOption());
+  const { cityData, foodType, saveMethod } = useFormSelectOptions();
 
+  useEffect(() => {
+    if (cityData) {
+      console.log(cityData);
+    }
+    if (foodType) {
+      console.log(foodType);
+    }
+
+    if (saveMethod) {
+      console.log(saveMethod);
+    }
+  }, [cityData, foodType, saveMethod]);
   const methods = useForm({
     defaultValues: {},
     mode: 'onTouched',
@@ -207,19 +217,17 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                             <span className="text-danger"> * </span>
                           </label>
                         </div>
-                        <SelectBox
-                          register={register}
-                          errors={errors}
-                          labelText="食物類型"
+                        <FormSelect
                           id="FoodType"
                           name="food.type"
-                          apiEndpoint="/foodTypes"
+                          label="食物類型"
+                          options={foodType}
                           optionLabelKey="type"
                           optionValueKey="value"
                           rules={{
                             required: {
                               value: true,
-                              message: `請選擇食物類型`,
+                              message: '請選擇食物類型',
                             },
                           }}
                         />
@@ -238,19 +246,17 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                             <span className="text-danger"> * </span>
                           </label>
                         </div>
-                        <SelectBox
-                          register={register}
-                          errors={errors}
-                          labelText="保存方式"
+                        <FormSelect
                           id="SaveMethod"
                           name="food.saveMethod"
-                          apiEndpoint="/saveMethod"
+                          label="保存方式"
+                          options={saveMethod}
                           optionLabelKey="type"
                           optionValueKey="value"
                           rules={{
                             required: {
                               value: true,
-                              message: `請選擇食物保存的方式`,
+                              message: '請選擇食物保存的方式',
                             },
                           }}
                         />

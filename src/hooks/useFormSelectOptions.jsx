@@ -3,7 +3,7 @@ import {
   cityQueryOption,
   foodTypeQueryOption,
   saveMethodsQueryOption,
-} from '../query/handleQueryOption';
+} from '@/query/handleQueryOption';
 
 const useFormSelectOptions = () => {
   const cityDataQuery = useQuery(cityQueryOption());
