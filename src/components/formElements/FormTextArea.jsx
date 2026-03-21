@@ -10,7 +10,7 @@ const FormTextArea = ({ label, id, rows, name, rules }) => {
   const error = get(errors, name);
 
   return (
-    <>
+    <div className="d-flex flex-column w-100">
       <textarea
         id={id}
         name={name}
@@ -22,7 +22,7 @@ const FormTextArea = ({ label, id, rows, name, rules }) => {
         {...register(name, rules)}
       ></textarea>
       {error && <div className="invalid-feedback">{error?.message}</div>}
-    </>
+    </div>
   );
 };
 
