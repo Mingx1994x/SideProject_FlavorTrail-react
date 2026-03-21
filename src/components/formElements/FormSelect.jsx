@@ -7,8 +7,9 @@ const FormSelect = ({
   name,
   label,
   options = [],
-  optionValueKey,
-  optionLabelKey,
+  optionValueKey = 'name',
+  optionLabelKey = 'name',
+  rules,
   handleChange,
 }) => {
   const {
@@ -16,7 +17,7 @@ const FormSelect = ({
     formState: { errors },
   } = useFormContext();
   const error = get(errors, name);
-  const { onChange, ...rest } = register(name);
+  const { onChange, ...rest } = register(name, rules);
 
   const handleSelectChange = (e) => {
     onChange(e);

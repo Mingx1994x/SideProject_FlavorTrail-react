@@ -355,35 +355,45 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       領取地點
                       <span className="text-danger"> * </span>
                     </label>
-                    <div className="w-lg-50 w-100 d-flex gap-2">
-                      <FormSelect
-                        id="city"
-                        name="pickup.city"
-                        label="縣市"
-                        options={cities}
-                        optionLabelKey="name"
-                        optionValueKey="name"
-                      />
-                      <FormSelect
-                        id="district"
-                        name="pickup.district"
-                        label="區域"
-                        options={districts}
-                        optionLabelKey="name"
-                        optionValueKey="name"
+                    <div className="w-100 d-flex align-items-start gap-2">
+                      <div className="w-lg-50 w-100 d-flex gap-2">
+                        <FormSelect
+                          id="city"
+                          name="pickup.city"
+                          label="縣市"
+                          options={cities}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: `請選擇縣市類型`,
+                            },
+                          }}
+                        />
+                        <FormSelect
+                          id="district"
+                          name="pickup.district"
+                          label="區域"
+                          options={districts}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: `請選擇區域類型`,
+                            },
+                          }}
+                        />
+                      </div>
+                      <FormInput
+                        id="inputAddress"
+                        label="地址"
+                        name="pickup.address"
+                        rules={{
+                          required: {
+                            value: true,
+                            message: '請填入地址',
+                          },
+                        }}
                       />
                     </div>
-                    <FormInput
-                      id="inputAddress"
-                      label="地址"
-                      name="pickup.address"
-                      rules={{
-                        required: {
-                          value: true,
-                          message: '請填入地址',
-                        },
-                      }}
-                    />
                   </div>
 
                   <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
