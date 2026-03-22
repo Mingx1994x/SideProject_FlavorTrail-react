@@ -307,7 +307,7 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                           </label>
                         </div>
                         <Controller
-                          name="expiryDate"
+                          name="food.expiryDate"
                           control={methods.control}
                           rules={{
                             required: '請選擇有效期限',
