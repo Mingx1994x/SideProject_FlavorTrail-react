@@ -44,9 +44,9 @@ const FoodModalProvider = ({ children }) => {
   };
 
   const closeFoodModal = () => {
-    foodModal.current?.hide();
     setMode('share');
     setFormFields(defaultValues);
+    foodModal.current?.hide();
   };
 
   useEffect(() => {

@@ -119,6 +119,10 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
   };
 
   const { closeFoodModal } = useContext(shareFoodModalContext);
+  const closeModal = () => {
+    reset();
+    closeFoodModal();
+  };
 
   return (
     <FormProvider {...methods}>
@@ -144,7 +148,7 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                 alt="Close"
                 className="ms-auto pointer"
                 aria-label="Close"
-                onClick={closeFoodModal}
+                onClick={closeModal}
               />
             </div>
             <div className="modal-body p-lg-7">
