@@ -16,7 +16,7 @@ import { iconCloseUrl } from '@/data/imagesPath';
 import FormInput from './formElements/FormInput';
 import FormTextArea from './formElements/FormTextArea';
 import FormSelect from './formElements/FormSelect';
-import RadioGroup from './formElements/RadioGroup';
+import FormRadioGroup from './formElements/FormRadioGroup';
 import TimePicker from './formElements/TimePicker';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -55,9 +55,8 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
   });
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid, isDirty },
     reset,
     watch,
   } = methods;
@@ -319,28 +318,24 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                     </div>
                   </div>
                   <div className="col-lg-6">
-                    <RadioGroup
-                      register={register}
-                      errors={errors}
-                      labelText="是否已過期"
-                      id="overfood"
+                    <FormRadioGroup
+                      id="expiredFood"
                       name="food.isPastBestBefore"
+                      label="是否已過期"
                       options={overfoodOptions}
                       rules={{
-                        required: { value: true, message: '請至少選擇一項' },
+                        required: '請至少選擇一項',
                       }}
                     />
                   </div>
                   <div className="col-lg-6">
-                    <RadioGroup
-                      register={register}
-                      errors={errors}
-                      labelText="葷食/素食"
+                    <FormRadioGroup
                       id="MeatOrVeggie"
                       name="food.dietType"
+                      label="葷食/素食"
                       options={meatOrVeggieOptions}
                       rules={{
-                        required: { value: true, message: '請至少選擇一項' },
+                        required: '請至少選擇一項',
                       }}
                     />
                   </div>
@@ -452,7 +447,7 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                     type="submit"
                     className="btn btn-primary"
                     data-bs-dismiss="modal"
-                    disabled={!isValid}
+                    disabled={!isValid || !isDirty}
                   >
                     {mode === 'share' ? '送出' : '更改貼文'}
                   </button>
