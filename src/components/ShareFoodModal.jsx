@@ -49,18 +49,6 @@ const defaultValues = {
 const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
   const { cityData, foodType, saveMethod } = useFormSelectOptions();
 
-  useEffect(() => {
-    if (cityData) {
-      console.log(cityData);
-    }
-    if (foodType) {
-      console.log(foodType);
-    }
-
-    if (saveMethod) {
-      console.log(saveMethod);
-    }
-  }, [cityData, foodType, saveMethod]);
   const methods = useForm({
     defaultValues: {},
     mode: 'onTouched',
@@ -410,7 +398,7 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
                       領取時間
                       <span className="text-danger"> * </span>
                     </label>
-                    <TimePicker initialStartTime="" initialEndTime="" />
+                    <TimePicker />
                   </div>
 
                   <div className="share-food-modal mb-7  d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
