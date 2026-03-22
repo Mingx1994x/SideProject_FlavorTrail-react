@@ -33,12 +33,6 @@ const TimePicker = () => {
     return generateTimeOptions('endTime', startTime);
   }, [startTime]);
 
-  useEffect(() => {
-    if (pickupTime) {
-      console.log('pickTime:', pickupTime);
-    }
-  }, [pickupTime]);
-
   const updatePickupTime = (start, end) => {
     setValue('pickup.time', `${start} - ${end}`, {
       shouldDirty: true,
@@ -115,7 +109,11 @@ const TimePicker = () => {
               id="start-time"
             >
               {startTimeOptions.map((time) => (
-                <li key={time} onClick={() => handleStartTimeClick(time)}>
+                <li
+                  key={time}
+                  className={`${startTime === time ? 'checked' : ''}`}
+                  onClick={() => handleStartTimeClick(time)}
+                >
                   {time}
                 </li>
               ))}
@@ -128,7 +126,11 @@ const TimePicker = () => {
               id="end-time"
             >
               {endTimeOptions.map((time) => (
-                <li key={time} onClick={() => handleEndTimeClick(time)}>
+                <li
+                  key={time}
+                  className={`${endTime === time ? 'checked' : ''}`}
+                  onClick={() => handleEndTimeClick(time)}
+                >
                   {time}
                 </li>
               ))}
