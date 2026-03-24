@@ -7,8 +7,9 @@ const FormSelect = ({
   name,
   label,
   options = [],
-  optionValueKey,
-  optionLabelKey,
+  optionValueKey = 'name',
+  optionLabelKey = 'name',
+  rules,
   handleChange,
 }) => {
   const {
@@ -16,7 +17,7 @@ const FormSelect = ({
     formState: { errors },
   } = useFormContext();
   const error = get(errors, name);
-  const { onChange, ...rest } = register(name);
+  const { onChange, ...rest } = register(name, rules);
 
   const handleSelectChange = (e) => {
     onChange(e);
@@ -58,8 +59,8 @@ FormSelect.propTypes = {
       [PropTypes.string]: PropTypes.any, // 或可針對你的資料結構細化
     }),
   ),
-  optionLabelKey: PropTypes.string.isRequired,
-  optionValueKey: PropTypes.string.isRequired,
+  optionLabelKey: PropTypes.string,
+  optionValueKey: PropTypes.string,
   name: PropTypes.string.isRequired,
   handleChange: PropTypes.func,
 };
