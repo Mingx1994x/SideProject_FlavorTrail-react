@@ -1,25 +1,25 @@
 import { forwardRef, useContext, useEffect, useState } from 'react';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 import { toast } from 'react-hot-toast';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import useFormSelectOptions from '@/hooks/useFormSelectOptions';
-import { shareFoodModalContext } from '@/contexts/modalContext';
+import useCreatePost from '@/query/useCreatePost';
+import useUpdatePost from '@/query/useUpdatePost';
+import { daysFormat } from '@/utils/formatTIme';
 import { overfoodOptions, meatOrVeggieOptions } from '@/data/radioOptions';
 import { iconCloseUrl } from '@/data/imagesPath';
 
+import { shareFoodModalContext } from '@/contexts/modalContext';
 import FormInput from './formElements/FormInput';
 import FormTextArea from './formElements/FormTextArea';
 import FormSelect from './formElements/FormSelect';
 import FormRadioGroup from './formElements/FormRadioGroup';
 import TimePicker from './formElements/TimePicker';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 const defaultValues = {
   redeemCode: '',
   title: '',
@@ -44,6 +44,7 @@ const defaultValues = {
   viewCount: 1,
   commentCount: 0,
   likeCount: 0,
+  // 還沒有整合使用者系統，預設新增貼文為法國地頭蛇
   userId: 1,
 };
 const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
@@ -80,41 +81,80 @@ const ShareFoodModal = forwardRef(({ mode, formFields }, ref) => {
     }
   }, [cityData, reset]);
 
-  const onSubmit = async (data) => {
-    const { food, expiryDate, imagesUrl, ...rest } = data;
-    const { totalQuantity, ...submitData } = food;
-    const formattedExpiryDate = dayjs(expiryDate).format('YYYY-MM-DD');
-    const createdPostDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
+  const createNewPostData = (formData) => {
+    const { food, imagesUrl, ...rest } = formData;
+    const { totalQuantity, expiryDate, ...submitData } = food;
+    const formattedExpiryDate = daysFormat(expiryDate, 'YYYY-MM-DD');
+    const createdPostDate = daysFormat();
     const uid = nanoid(6);
     const imagesUrlArray = imagesUrl ? [imagesUrl] : [];
 
-    try {
-      await toast.promise(
-        axios.post(`${BASE_URL}/posts`, {
-          ...rest,
-          redeemCode: uid,
-          food: {
-            ...submitData,
-            expiryDate: formattedExpiryDate,
-            totalQuantity: Number(totalQuantity),
-            restQuantity: Number(totalQuantity),
-          },
-          pickup: {
-            ...data.pickup,
-          },
-          createdPostDate,
-          imagesUrl: imagesUrlArray,
-        }),
-        {
-          loading: '發送食物中...',
-          success: '分享食物成功',
-          error: '分享失敗，請稍候再試',
+    return {
+      ...rest,
+      redeemCode: uid,
+      imagesUrl: imagesUrlArray,
+      createdPostDate,
+      food: {
+        ...submitData,
+        expiryDate: formattedExpiryDate,
+        totalQuantity: Number(totalQuantity),
+        restQuantity: Number(totalQuantity),
+      },
+      pickup: {
+        ...formData.pickup,
+      },
+    };
+  };
+
+  const updatePostData = (formData) => {
+    const { food, imagesUrl, pickup, ...rest } = formData;
+    const { expiryDate, ...submitData } = food;
+    const formattedExpiryDate = daysFormat(expiryDate, 'YYYY-MM-DD');
+    const imagesUrlArray = imagesUrl ? [imagesUrl] : [];
+
+    return {
+      id: formData.id,
+      data: {
+        ...rest,
+        imagesUrl: imagesUrlArray,
+        food: {
+          ...submitData,
+          expiryDate: formattedExpiryDate,
         },
-      );
-    } catch (error) {
-      toast.error(`發送貼文失敗:: ${error.message || '未知錯誤'}`);
-    }
-    reset();
+        pickup: {
+          ...pickup,
+        },
+      },
+    };
+  };
+
+  const { mutate: createPostMutation } = useCreatePost();
+  const { mutate: updatePostMutation } = useUpdatePost();
+
+  const createPost = (formData) => {
+    const data = createNewPostData(formData);
+    createPostMutation(data, {
+      onSuccess: () => toast.success(`分享食物貼文發送成功`),
+      onError: (error) =>
+        toast.error(`發送貼文失敗:: ${error.message || '未知錯誤'}`),
+    });
+  };
+
+  const updatePost = (formData) => {
+    const { id, data } = updatePostData(formData);
+    updatePostMutation(
+      { id, data },
+      {
+        onSuccess: () => toast.success(`編輯貼文成功`),
+        onError: (error) =>
+          toast.error(`編輯貼文失敗:: ${error.message || '未知錯誤'}`),
+      },
+    );
+  };
+
+  const onSubmit = (data) => {
+    const mutationFn = mode === 'share' ? createPost : updatePost;
+    mutationFn(data);
   };
 
   const { closeFoodModal } = useContext(shareFoodModalContext);
