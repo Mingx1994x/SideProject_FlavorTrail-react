@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/zh-tw';
@@ -13,15 +12,13 @@ import { allPostsQueryOption } from '@/query/handleQueryOption';
 import PostCard from '@/components/PostCard/PostCard';
 import CircleCTAButton from '@/components/CircleCTAButton';
 import FullScreenLoading from '@/components/FullScreenLoading';
-const { VITE_BASE_URL } = import.meta.env;
+import useFormSelectOptions from '../hooks/useFormSelectOptions';
 
 function AllPosts() {
-  const [city, setCity] = useState([]);
-  const [foodType, setFoodType] = useState([]);
   const [activeFilter, setActiveFilter] = useState('全部貼文');
   const [activeCity, setActiveCity] = useState('地理位置');
   const [activeFood, setActiveFood] = useState('美食類型');
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const startTriggerRef = useRef();
   const endTriggerRef = useRef();
   // 添加這些代碼讀取 URL 參數
@@ -148,33 +145,8 @@ function AllPosts() {
   ];
 
   const { data: allPosts, isPending } = useQuery(allPostsQueryOption());
+  const { cityData, foodType } = useFormSelectOptions();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const resCity = await axios.get(`${VITE_BASE_URL}/twCities`);
-        setCity(resCity.data);
-        setLoading(false);
-      } catch (error) {
-        alert(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-  useEffect(() => {
-    (async () => {
-      try {
-        const resFoodTypes = await axios.get(`${VITE_BASE_URL}/foodTypes`);
-        setFoodType(resFoodTypes.data);
-        setLoading(false);
-      } catch (error) {
-        alert(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
   // 根據 activeFilter 變化篩選貼文
   useEffect(() => {
     let tempData = []; // 預設顯示全部貼文
@@ -353,17 +325,18 @@ function AllPosts() {
                       </svg>
                     </button>
                     <ul className="dropdown-menu custom-dropdown-menu position-absolute overflow-y-scroll scrollbar-max-height hide-scrollbar">
-                      {city.map((city) => (
-                        <li key={city.id}>
-                          <a
-                            onClick={(e) => handleChangeCity(e, city.name)}
-                            className="dropdown-item"
-                            href="#"
-                          >
-                            {city.name}
-                          </a>
-                        </li>
-                      ))}
+                      {cityData &&
+                        cityData.map((city) => (
+                          <li key={city.id}>
+                            <a
+                              onClick={(e) => handleChangeCity(e, city.name)}
+                              className="dropdown-item"
+                              href="#"
+                            >
+                              {city.name}
+                            </a>
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 </div>
@@ -393,17 +366,18 @@ function AllPosts() {
                     </svg>
                   </button>
                   <ul className="dropdown-menu custom-dropdown-menu position-absolute overflow-y-scroll scrollbar-max-height hide-scrollbar">
-                    {foodType.map((food) => (
-                      <li key={food.id}>
-                        <a
-                          onClick={(e) => handleChangeFood(e, food.type)}
-                          className="dropdown-item"
-                          href="#"
-                        >
-                          {food.type}
-                        </a>
-                      </li>
-                    ))}
+                    {foodType &&
+                      foodType.map((food) => (
+                        <li key={food.id}>
+                          <a
+                            onClick={(e) => handleChangeFood(e, food.type)}
+                            className="dropdown-item"
+                            href="#"
+                          >
+                            {food.type}
+                          </a>
+                        </li>
+                      ))}
                   </ul>
                 </div>
                 <div className="d-lg-none d-flex align-items-center">
