@@ -1,4 +1,5 @@
 import { queryKeys } from "../data/queryKeys";
+import { buildPostsParams } from "../utils/handlePostsParam";
 import { getCityData, getFoodTypeData, getSaveMethodsData } from "./api/formSelectOptions";
 import { getComments, getPostById, getPosts } from "./api/post";
 import { getUserProfile } from "./api/user";
@@ -8,7 +9,7 @@ import { getUserProfile } from "./api/user";
 // KEY
 // post 
 export const postQueriesKey = {
-  all: [queryKeys.post],
+  all: (filter) => [queryKeys.post, filter],
   detail: (postId) => [queryKeys.post, postId],
 }
 
@@ -31,9 +32,9 @@ export const formSelectOptionsQueriesKey = {
 
 //Query Options
 // all posts
-export const allPostsQueryOption = () => ({
-  queryKey: postQueriesKey.all,
-  queryFn: getPosts
+export const allPostsQueryOption = (filter) => ({
+  queryKey: postQueriesKey.all(filter),
+  queryFn: () => getPosts(buildPostsParams(filter))
 })
 
 // post by id

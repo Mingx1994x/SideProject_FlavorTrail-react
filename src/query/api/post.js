@@ -1,8 +1,13 @@
 import { flavorTrailApi } from './apiInstance'
 
 // 貼文相關
-export function getPosts() {
-  return flavorTrailApi.get('/posts?_expand=user')
+export function getPosts(filter = []) {
+  return flavorTrailApi.get('/posts', {
+    params: {
+      ...filter,
+      _expand: 'user'
+    }
+  })
 }
 
 export function getPostById(id) {
