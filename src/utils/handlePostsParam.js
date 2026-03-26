@@ -11,11 +11,11 @@ export const buildPostsParams = (filter) => {
   }
 
   if (filter.city) {
-    params.city = filter.city;
+    params['pickup.city'] = filter.city;
   }
 
   if (filter.foodType) {
-    params.category = filter.foodType;
+    params['food.type'] = filter.foodType;
   }
 
   return params;

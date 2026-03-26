@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useRef, useState } from 'react';
+// import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -120,70 +120,16 @@ const defaultFilter = {
 
 function AllPosts() {
   const [filter, setFilter] = useState(defaultFilter);
-  // const [activeFilter, setActiveFilter] = useState('全部貼文');
-  const [activeCity, setActiveCity] = useState('地理位置');
-  const [activeFood, setActiveFood] = useState('美食類型');
-  // const [loading, setLoading] = useState(false);
   const startTriggerRef = useRef();
   const endTriggerRef = useRef();
   // 添加這些代碼讀取 URL 參數
-  const [searchParams] = useSearchParams();
-  const urlKeyword = searchParams.get('keyword');
-  const urlLocation = searchParams.get('location');
-  const urlFoodType = searchParams.get('foodType');
-
-  // 如果 URL 中有參數，則自動設置相應的篩選條件
-  useEffect(() => {
-    handleClearFilter();
-    if (urlLocation) {
-      setActiveCity(urlLocation);
-    }
-
-    if (urlFoodType) {
-      setActiveFood(urlFoodType);
-    }
-  }, [urlKeyword, urlLocation, urlFoodType]);
-  const [searchKeyword, setSearchKeyword] = useState('');
-
-  // 當 URL 參數變化時，更新搜尋關鍵字
-  useEffect(() => {
-    handleClearFilter();
-    if (urlKeyword) {
-      setSearchKeyword(urlKeyword);
-    } else {
-      setSearchKeyword('');
-    }
-  }, [urlKeyword]);
+  // const [searchParams] = useSearchParams();
+  // const urlKeyword = searchParams.get('keyword');
+  // const urlLocation = searchParams.get('location');
+  // const urlFoodType = searchParams.get('foodType');
 
   const { data: allPosts, isPending } = useQuery(allPostsQueryOption(filter));
   const { cityData, foodType } = useFormSelectOptions();
-
-  // 根據 activeFilter 變化篩選貼文
-  useEffect(() => {
-    let tempData = []; // 預設顯示全部貼文
-    if (searchKeyword) {
-      // 轉為小寫進行不區分大小寫的搜尋
-      const keyword = searchKeyword.toLowerCase();
-
-      tempData = tempData.filter((post) => {
-        // 確保屬性存在並轉為小寫
-        const title = (post.title || '').toLowerCase();
-        const content = (post.content || '').toLowerCase();
-
-        // 判斷標題或內容中是否包含關鍵字
-        return title.includes(keyword) || content.includes(keyword);
-      });
-    }
-
-    // 熱門貼文 且為選取的縣市
-    if (activeCity !== '地理位置') {
-      tempData = tempData.filter((post) => post.pickup?.city === activeCity);
-    }
-    // 熱門貼文 且為選取縣市 且為選取美食類型
-    if (activeFood !== '美食類型') {
-      tempData = tempData.filter((post) => post.food?.type === activeFood);
-    }
-  }, [activeCity, activeFood, searchKeyword]);
 
   const handleTagsFilter = (filter) => {
     setFilter((prev) => ({
@@ -191,19 +137,22 @@ function AllPosts() {
       sort: filter,
     }));
   };
-  const handleChangeCity = (e, city) => {
+  const handleCityFilter = (e, city) => {
     e.preventDefault();
-    setActiveCity(city);
+    setFilter((prev) => ({
+      ...prev,
+      city,
+    }));
   };
-  const handleChangeFood = (e, food) => {
+  const handleFoodTypeFilter = (e, foodType) => {
     e.preventDefault();
-    setActiveFood(food);
+    setFilter((prev) => ({
+      ...prev,
+      foodType,
+    }));
   };
   const handleClearFilter = () => {
-    // setActiveFilter('全部貼文');
-    setActiveCity('地理位置');
-    setActiveFood('美食類型');
-    setSearchKeyword('');
+    setFilter(defaultFilter);
   };
 
   if (isPending) {
@@ -213,6 +162,7 @@ function AllPosts() {
   return (
     <>
       <div className="allPost container">
+        {/*貼文類型篩選*/}
         {/* 小螢幕時顯示下拉選單 */}
         <div className="account-nav dropdown position-relative d-lg-none mt-10 mb-13">
           {
@@ -272,7 +222,7 @@ function AllPosts() {
         </div>
         <div ref={startTriggerRef} className="postNav container mb-13 mb-lg-7">
           <div className="row flex-lg-nowrap justify-content-between align-items-center bg-white rounded-3 p-3">
-            {/*貼文篩選*/}
+            {/*貼文類型篩選*/}
             <div className="col-lg-auto px-0">
               {/* 大螢幕時顯示按鈕群組 */}
               <div className="d-none d-lg-block">
@@ -299,9 +249,8 @@ function AllPosts() {
                 </div>
               </div>
             </div>
-            {/*類型篩選*/}
             <div className="col-auto d-flex justify-content-lg-between flex-grow-1 px-0">
-              {/*地理位置 & 美食類型*/}
+              {/*貼文地理位置 & 美食類型篩選*/}
               <div className="d-flex flex-grow-1">
                 <div className="me-2 mx-lg-2">
                   <div className="dropdown position-relative">
@@ -311,7 +260,7 @@ function AllPosts() {
                       data-bs-toggle="dropdown"
                       style={{ width: 116, height: 40 }}
                     >
-                      {activeCity}
+                      {filter.city ? filter.city : '地理位置'}
                       <svg
                         width={16}
                         height={16}
@@ -334,7 +283,7 @@ function AllPosts() {
                         cityData.map((city) => (
                           <li key={city.id}>
                             <a
-                              onClick={(e) => handleChangeCity(e, city.name)}
+                              onClick={(e) => handleCityFilter(e, city.name)}
                               className="dropdown-item"
                               href="#"
                             >
@@ -352,7 +301,7 @@ function AllPosts() {
                     data-bs-toggle="dropdown"
                     style={{ width: 116, height: 40 }}
                   >
-                    {activeFood}
+                    {filter.foodType ? filter.foodType : '美食類型'}
                     <svg
                       width={16}
                       height={16}
@@ -375,7 +324,7 @@ function AllPosts() {
                       foodType.map((food) => (
                         <li key={food.id}>
                           <a
-                            onClick={(e) => handleChangeFood(e, food.type)}
+                            onClick={(e) => handleFoodTypeFilter(e, food.type)}
                             className="dropdown-item"
                             href="#"
                           >
@@ -426,7 +375,7 @@ function AllPosts() {
                   style={{ width: 40, height: 40 }}
                   aria-label="Page 1"
                 >
-                  {allPosts?.length}
+                  {allPosts ? allPosts.length : '0'}
                 </button>
                 <button
                   type="button"
@@ -457,11 +406,12 @@ function AllPosts() {
           </div>
         </div>
         <main className="postCard mb-18">
-          {allPosts?.length === 0 ? (
-            <p className="fs-4 text-center py-20">目前還沒有貼文 ( ´•̥̥̥ω•̥̥̥` )</p>
-          ) : (
-            allPosts.map((post) => <PostCard key={post.id} post={post} />)
-          )}
+          {allPosts &&
+            (allPosts.length === 0 ? (
+              <p className="fs-4 text-center py-20">目前還沒有貼文 ( ´•̥̥̥ω•̥̥̥` )</p>
+            ) : (
+              allPosts.map((post) => <PostCard key={post.id} post={post} />)
+            ))}
         </main>
       </div>
       <div ref={endTriggerRef}></div>

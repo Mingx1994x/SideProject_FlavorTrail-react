@@ -1,7 +1,7 @@
 import { flavorTrailApi } from './apiInstance'
 
 // 貼文相關
-export function getPosts(filter = []) {
+export function getPosts(filter = {}) {
   return flavorTrailApi.get('/posts', {
     params: {
       ...filter,
