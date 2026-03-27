@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -13,6 +12,7 @@ import PostCard from '@/components/PostCard/PostCard';
 import CircleCTAButton from '@/components/CircleCTAButton';
 import FullScreenLoading from '@/components/FullScreenLoading';
 import useFormSelectOptions from '@/hooks/useFormSelectOptions';
+import usePostFilterParams from '../hooks/usePostFilterParams';
 
 const filterOptions = [
   {
@@ -118,37 +118,16 @@ const defaultFilter = {
   category: '',
 };
 
-function AllPosts() {
+const AllPosts = () => {
   const startTriggerRef = useRef();
   const endTriggerRef = useRef();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const filter = {
-    sort: searchParams.get('sort') || 'all',
-    location: searchParams.get('location') || '',
-    category: searchParams.get('category') || '',
-  };
+  const { filterParams: filter, updateParams } = usePostFilterParams();
   const selectFilterSortName = filterOptions.find(
     (option) => option.tag === filter.sort,
   ).name;
 
   const { data: allPosts, isPending } = useQuery(allPostsQueryOption(filter));
   const { cityData, foodType } = useFormSelectOptions();
-
-  const updateParams = (newParams) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-
-      Object.entries(newParams).forEach(([key, value]) => {
-        if (!value) {
-          params.delete(key);
-        } else {
-          params.set(key, value);
-        }
-      });
-
-      return params;
-    });
-  };
 
   const handleTagsFilter = (sort) => {
     updateParams({
@@ -437,6 +416,6 @@ function AllPosts() {
       />
     </>
   );
-}
+};
 
 export default AllPosts;
