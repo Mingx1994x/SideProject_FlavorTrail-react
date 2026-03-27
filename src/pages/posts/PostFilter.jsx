@@ -193,7 +193,7 @@ const PostFilter = ({ postLength }) => {
                     <li key={city.id}>
                       <a
                         onClick={(e) => handleCityFilter(e, city.name)}
-                        className="dropdown-item"
+                        className={`dropdown-item ${filter.location === city.name ? 'active' : ''}`}
                         href="#"
                       >
                         {city.name}
@@ -234,7 +234,7 @@ const PostFilter = ({ postLength }) => {
                   <li key={food.id}>
                     <a
                       onClick={(e) => handleFoodTypeFilter(e, food.type)}
-                      className="dropdown-item"
+                      className={`dropdown-item ${filter.category === food.type ? 'active' : ''}`}
                       href="#"
                     >
                       {food.type}
@@ -244,14 +244,13 @@ const PostFilter = ({ postLength }) => {
             </ul>
           </div>
           <div className="d-lg-none d-flex align-items-center">
-            <button
-              type="button"
-              className="btn btn-gray-200 justify-content-center align-items-center p-3 ms-2 rounded-3"
+            <a
+              href="#"
+              className="btn btn-gray-200 justify-content-center align-items-center p-3 ms-2 rounded-3 pe-none"
               style={{ width: 40, height: 40 }}
-              aria-label="Page 1"
             >
-              {postLength}
-            </button>
+              {postLength ? postLength : '0'}
+            </a>
             <button
               type="button"
               onClick={handleClearFilter}
@@ -278,14 +277,14 @@ const PostFilter = ({ postLength }) => {
         </div>
         {/*數字 & 重置*/}
         <div className="d-flex align-items-center">
-          <button
-            type="button"
-            className="d-none d-lg-flex btn btn-gray-200 justify-content-center align-items-center p-3 ms-2 rounded-3"
+          <a
+            href="#"
+            className="d-none d-lg-flex btn btn-gray-200 justify-content-center align-items-center p-3 ms-2 rounded-3 pe-none"
             style={{ width: 40, height: 40 }}
             aria-label="Page 1"
           >
             {postLength ? postLength : '0'}
-          </button>
+          </a>
           <button
             type="button"
             onClick={handleClearFilter}
