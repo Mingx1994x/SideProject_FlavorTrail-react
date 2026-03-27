@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-// import { useSearchParams } from 'react-router';
+import { useRef } from 'react';
+import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -114,45 +114,61 @@ const filterOptions = [
 
 const defaultFilter = {
   sort: 'all',
-  city: '',
-  foodType: '',
+  location: '',
+  category: '',
 };
 
 function AllPosts() {
-  const [filter, setFilter] = useState(defaultFilter);
   const startTriggerRef = useRef();
   const endTriggerRef = useRef();
-  // 添加這些代碼讀取 URL 參數
-  // const [searchParams] = useSearchParams();
-  // const urlKeyword = searchParams.get('keyword');
-  // const urlLocation = searchParams.get('location');
-  // const urlFoodType = searchParams.get('foodType');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filter = {
+    sort: searchParams.get('sort') || 'all',
+    location: searchParams.get('location') || '',
+    category: searchParams.get('category') || '',
+  };
+  const selectFilterSortName = filterOptions.find(
+    (option) => option.tag === filter.sort,
+  ).name;
 
   const { data: allPosts, isPending } = useQuery(allPostsQueryOption(filter));
   const { cityData, foodType } = useFormSelectOptions();
 
-  const handleTagsFilter = (filter) => {
-    setFilter((prev) => ({
-      ...prev,
-      sort: filter,
-    }));
+  const updateParams = (newParams) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+
+      Object.entries(newParams).forEach(([key, value]) => {
+        if (!value) {
+          params.delete(key);
+        } else {
+          params.set(key, value);
+        }
+      });
+
+      return params;
+    });
   };
-  const handleCityFilter = (e, city) => {
-    e.preventDefault();
-    setFilter((prev) => ({
-      ...prev,
-      city,
-    }));
+
+  const handleTagsFilter = (sort) => {
+    updateParams({
+      sort,
+    });
   };
-  const handleFoodTypeFilter = (e, foodType) => {
+  const handleCityFilter = (e, location) => {
     e.preventDefault();
-    setFilter((prev) => ({
-      ...prev,
-      foodType,
-    }));
+    updateParams({
+      location,
+    });
+  };
+  const handleFoodTypeFilter = (e, category) => {
+    e.preventDefault();
+    updateParams({
+      category,
+    });
   };
   const handleClearFilter = () => {
-    setFilter(defaultFilter);
+    updateParams(defaultFilter);
   };
 
   if (isPending) {
@@ -165,60 +181,55 @@ function AllPosts() {
         {/*貼文類型篩選*/}
         {/* 小螢幕時顯示下拉選單 */}
         <div className="account-nav dropdown position-relative d-lg-none mt-10 mb-13">
-          {
-            <h1 className="d-flex align-items-center fs-1 fw-bolder">
-              {
-                filterOptions.filter((option) => option.tag === filter.sort)[0]
-                  ?.name
-              }
-              <button
-                className="dropdown-btn d-flex align-items-center justify-content-between p-2 rounded-3 bg-white rounded-circle border-0 ms-2"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="true"
+          <h1 className="d-flex align-items-center fs-1 fw-bolder">
+            {selectFilterSortName}
+            <button
+              className="dropdown-btn d-flex align-items-center justify-content-between p-2 rounded-3 bg-white rounded-circle border-0 ms-2"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="true"
+            >
+              <svg
+                width={24}
+                height={24}
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="dropdown-arrow"
               >
-                <svg
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="dropdown-arrow"
+                <path
+                  d="M6 9L12 15L18 9"
+                  stroke="black"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+            </button>
+            <ul
+              className="dropdown-menu custom-dropdown-menu"
+              data-bs-popper="static"
+            >
+              {filterOptions.map(({ name, tag, icon }) => (
+                <button
+                  key={name}
+                  onClick={() => handleTagsFilter(tag)}
+                  type="button"
+                  className={`filter-btn btn w-100 fw-normal text-gray-700 btn-gray-200 py-2 px-3 d-flex justify-content-start align-items-center ${
+                    filter?.sort === tag ? 'active' : ''
+                  }`}
+                  style={{
+                    height: 40,
+                  }}
                 >
-                  <path
-                    d="M6 9L12 15L18 9"
-                    stroke="black"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>
-                </svg>
-              </button>
-              <ul
-                className="dropdown-menu custom-dropdown-menu"
-                data-bs-popper="static"
-              >
-                {filterOptions.map(({ name, tag, icon }) => (
-                  <button
-                    key={name}
-                    onClick={() => handleTagsFilter(tag)}
-                    type="button"
-                    className={`filter-btn btn w-100 fw-normal text-gray-700 btn-gray-200 py-2 px-3 d-flex justify-content-start align-items-center ${
-                      filter.sort === tag ? 'active' : ''
-                    }`}
-                    style={{
-                      height: 40,
-                    }}
-                  >
-                    <span style={{ width: 16, height: 16 }} className="me-2">
-                      {icon}
-                    </span>
-                    {name}
-                  </button>
-                ))}
-              </ul>
-            </h1>
-          }
+                  <span style={{ width: 16, height: 16 }} className="me-2">
+                    {icon}
+                  </span>
+                  {name}
+                </button>
+              ))}
+            </ul>
+          </h1>
         </div>
         <div ref={startTriggerRef} className="postNav container mb-13 mb-lg-7">
           <div className="row flex-lg-nowrap justify-content-between align-items-center bg-white rounded-3 p-3">
@@ -233,7 +244,7 @@ function AllPosts() {
                       onClick={() => handleTagsFilter(tag)}
                       type="button"
                       className={`filter-btn btn fw-normal text-gray-700 btn-gray-200 py-2 px-3 d-flex justify-content-center align-items-center ${
-                        filter.sort === tag ? 'active' : ''
+                        filter?.sort === tag ? 'active' : ''
                       }`}
                       style={{
                         width: 112,
@@ -260,7 +271,7 @@ function AllPosts() {
                       data-bs-toggle="dropdown"
                       style={{ width: 116, height: 40 }}
                     >
-                      {filter.city ? filter.city : '地理位置'}
+                      {filter?.location ? filter.location : '地理位置'}
                       <svg
                         width={16}
                         height={16}
@@ -301,7 +312,7 @@ function AllPosts() {
                     data-bs-toggle="dropdown"
                     style={{ width: 116, height: 40 }}
                   >
-                    {filter.foodType ? filter.foodType : '美食類型'}
+                    {filter?.category ? filter.category : '美食類型'}
                     <svg
                       width={16}
                       height={16}

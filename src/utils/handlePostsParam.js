@@ -10,12 +10,12 @@ export const buildPostsParams = (filter) => {
     params._order = 'desc';
   }
 
-  if (filter.city) {
-    params['pickup.city'] = filter.city;
+  if (filter.location) {
+    params['pickup.city'] = filter.location;
   }
 
-  if (filter.foodType) {
-    params['food.type'] = filter.foodType;
+  if (filter.category) {
+    params['food.type'] = filter.category;
   }
 
   return params;
