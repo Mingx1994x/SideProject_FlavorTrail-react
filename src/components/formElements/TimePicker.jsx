@@ -1,72 +1,58 @@
-import { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { useFormContext } from 'react-hook-form';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
-const TimePicker = ({ initialStartTime, initialEndTime }) => {
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+const TimePicker = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [startTimeOptions, setStartTimeOptions] = useState([]);
-  const [endTimeOptions, setEndTimeOptions] = useState([]);
   const dropdownRef = useRef(null);
   const { setValue } = useFormContext();
+  const pickupTime = useWatch({
+    name: 'pickup.time',
+  });
+  const [startTime, endTime] = pickupTime?.split(' - ') ?? ['', ''];
 
-  useEffect(() => {
-    if (initialStartTime) {
-      setStartTime(initialStartTime);
-    }
-    if (initialEndTime) {
-      setEndTime(initialEndTime);
-    }
-  }, [initialStartTime, initialEndTime]);
-
-  useEffect(() => {
-    const generateTimeOptions = () => {
-      const options = [];
-      for (let hour = 0; hour < 24; hour++) {
-        for (let minute = 0; minute < 60; minute += 15) {
-          const time = ('0' + hour).slice(-2) + ':' + ('0' + minute).slice(-2);
-          options.push(time);
-        }
+  const generateTimeOptions = (type = 'startTime', initTime = '0:0') => {
+    let [initHour, initMin] = initTime.split(':').map(Number);
+    const newTimeOptions = [];
+    for (let hour = initHour; hour < 24; hour++) {
+      let startMinute =
+        hour === initHour ? (type === 'startTime' ? initMin : initMin + 15) : 0;
+      for (let minute = startMinute; minute < 60; minute += 15) {
+        const newTime = ('0' + hour).slice(-2) + ':' + ('0' + minute).slice(-2);
+        newTimeOptions.push(newTime);
       }
-      return options;
-    };
+    }
+    return newTimeOptions;
+  };
 
-    const allOptions = generateTimeOptions();
-    setStartTimeOptions(allOptions);
+  const startTimeOptions = useMemo(() => {
+    return generateTimeOptions();
   }, []);
 
+  const endTimeOptions = useMemo(() => {
+    if (!startTime) return [];
+    return generateTimeOptions('endTime', startTime);
+  }, [startTime]);
+
+  const updatePickupTime = (start, end) => {
+    setValue('pickup.time', `${start} - ${end}`, {
+      shouldDirty: true,
+    });
+  };
+
   const handleStartTimeClick = (time) => {
-    setStartTime(time);
-    const [startHour, startMinute] = time.split(':').map(Number);
-    const newEndTimeOptions = [];
-    for (let hour = startHour; hour < 24; hour++) {
-      for (
-        let minute = hour === startHour ? startMinute + 15 : 0;
-        minute < 60;
-        minute += 15
-      ) {
-        const newTime = ('0' + hour).slice(-2) + ':' + ('0' + minute).slice(-2);
-        newEndTimeOptions.push(newTime);
-      }
-    }
-    setEndTimeOptions(newEndTimeOptions);
-    if (endTime === '' || !newEndTimeOptions.includes(endTime)) {
-      setEndTime(newEndTimeOptions[0]);
-    }
-    setValue('pickup.time', `${startTime} - ${endTime}`);
+    const [clickHour, clickMin] = time.split(':').map(Number);
+    const defaultEndTime =
+      clickMin === 45
+        ? `${('0' + (clickHour + 1)).slice(-2)}:00`
+        : `${('0' + clickHour).slice(-2)}:${clickMin + 15}`;
+
+    updatePickupTime(time, defaultEndTime);
   };
 
   const handleEndTimeClick = (time) => {
-    setEndTime(time);
-    setValue('pickup.time', `${startTime} - ${time}`);
+    updatePickupTime(startTime, time);
+    toggleDropdown();
   };
-
-  useEffect(() => {
-    if (startTime && endTime) {
-      setValue('pickup.time', `${startTime} - ${endTime}`);
-    }
-  }, [startTime, endTime, setValue]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -123,7 +109,11 @@ const TimePicker = ({ initialStartTime, initialEndTime }) => {
               id="start-time"
             >
               {startTimeOptions.map((time) => (
-                <li key={time} onClick={() => handleStartTimeClick(time)}>
+                <li
+                  key={time}
+                  className={`${startTime === time ? 'checked' : ''}`}
+                  onClick={() => handleStartTimeClick(time)}
+                >
                   {time}
                 </li>
               ))}
@@ -136,7 +126,11 @@ const TimePicker = ({ initialStartTime, initialEndTime }) => {
               id="end-time"
             >
               {endTimeOptions.map((time) => (
-                <li key={time} onClick={() => handleEndTimeClick(time)}>
+                <li
+                  key={time}
+                  className={`${endTime === time ? 'checked' : ''}`}
+                  onClick={() => handleEndTimeClick(time)}
+                >
                   {time}
                 </li>
               ))}
@@ -146,9 +140,5 @@ const TimePicker = ({ initialStartTime, initialEndTime }) => {
       </div>
     </div>
   );
-};
-TimePicker.propTypes = {
-  initialStartTime: PropTypes.string,
-  initialEndTime: PropTypes.string,
 };
 export default TimePicker;
